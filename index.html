@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>CatOS 2.0</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<!-- ═══════════════════ WELCOME SCREEN ═══════════════════ -->
+<div id="welcome-screen">
+  <div class="welcome-bg-blur"></div>
+  <div class="welcome-card clay-card">
+    <div class="welcome-owner-wrap">
+      <img src="owner.jpg" alt="Owner" class="welcome-owner-photo" onerror="this.src='https://placecats.com/200/200'"/>
+      <div class="welcome-owner-badge">
+        <img src="cat-icon.png" alt="cat" width="22" onerror="this.style.display='none'"/>
+        <span>CatOS Admin</span>
+      </div>
+    </div>
+    <h1 class="welcome-title">CatOS <span>2.0</span></h1>
+    <p class="welcome-sub">Powered by Paws™ — Loading your kingdom</p>
+    <div class="welcome-progress-track"><div class="welcome-progress-fill" id="wProgressFill"></div></div>
+    <p class="welcome-status" id="wStatus">Waking up the cat...</p>
+    <div class="welcome-paws">🐾🐾🐾</div>
+  </div>
+</div>
+
+<!-- ═══════════════════ DESKTOP ═══════════════════ -->
+<div id="desktop" class="hidden">
+
+  <!-- Custom cursor overlays -->
+  <div id="cursor-cat" class="cursor-overlay"></div>
+
+  <!-- CLOCK BAR (top right) -->
+  <div id="top-bar">
+    <div id="top-bar-left">
+      <div class="tb-icon" onclick="openApp('notifications')" title="Notifications">
+        🔔
+        <span id="notif-badge" class="notif-badge hidden">0</span>
+      </div>
+      <div class="tb-icon" onclick="openApp('settings')" title="Settings">⚙️</div>
+    </div>
+    <div id="taskbar-clock"></div>
+  </div>
+
+  <!-- MAC DOCK -->
+  <div id="dock">
+    <div class="dock-inner">
+      <div class="dock-item" onclick="toggleStartMenu()" title="CatOS Menu">
+        <div class="dock-icon-wrap"><img src="cat-icon.png" onerror="this.outerHTML='🐱'"/></div>
+        <div class="dock-label">CatOS</div>
+      </div>
+      <div class="dock-separator"></div>
+      <div class="dock-item" onclick="openApp('memes')" title="Meme Gallery" data-app="memes">
+        <div class="dock-icon-wrap"><img src="icons/gallery.png" onerror="this.outerHTML='🖼️'"/></div>
+        <div class="dock-label">Memes</div>
+        <div class="dock-dot hidden"></div>
+      </div>
+      <div class="dock-item" onclick="openApp('browser')" title="PurrFox" data-app="browser">
+        <div class="dock-icon-wrap"><img src="icons/browser.png" onerror="this.outerHTML='🌐'"/></div>
+        <div class="dock-label">PurrFox</div>
+        <div class="dock-dot hidden"></div>
+      </div>
+      <div class="dock-item" onclick="openApp('notepad')" title="Pawpad" data-app="notepad">
+        <div class="dock-icon-wrap"><img src="icons/notepad.png" onerror="this.outerHTML='📝'"/></div>
+        <div class="dock-label">Pawpad</div>
+        <div class="dock-dot hidden"></div>
+      </div>
+      <div class="dock-item" onclick="openApp('music')" title="MeowTunes" data-app="music">
+        <div class="dock-icon-wrap"><img src="icons/music.png" onerror="this.outerHTML='🎵'"/></div>
+        <div class="dock-label">MeowTunes</div>
+        <div class="dock-dot hidden"></div>
+      </div>
+      <div class="dock-item" onclick="openApp('paint')" title="CatPaint" data-app="paint">
+        <div class="dock-icon-wrap"><img src="icons/paint.png" onerror="this.outerHTML='🎨'"/></div>
+        <div class="dock-label">CatPaint</div>
+        <div class="dock-dot hidden"></div>
+      </div>
+      <div class="dock-item" onclick="openApp('terminal')" title="CatShell" data-app="terminal">
+        <div class="dock-icon-wrap"><img src="icons/terminal.png" onerror="this.outerHTML='💻'"/></div>
+        <div class="dock-label">Terminal</div>
+        <div class="dock-dot hidden"></div>
+      </div>
+      <div class="dock-item" onclick="openApp('files')" title="Fur Files" data-app="files">
+        <div class="dock-icon-wrap"><img src="icons/files.png" onerror="this.outerHTML='📁'"/></div>
+        <div class="dock-label">Files</div>
+        <div class="dock-dot hidden"></div>
+      </div>
+      <div class="dock-separator"></div>
+      <div class="dock-item" onclick="openApp('calculator')" title="Calc-Cat" data-app="calculator">
+        <div class="dock-icon-wrap"><img src="icons/calc.png" onerror="this.outerHTML='🔢'"/></div>
+        <div class="dock-label">Calc</div>
+        <div class="dock-dot hidden"></div>
+      </div>
+      <div class="dock-item" onclick="openApp('game')" title="Catch Yarn" data-app="game">
+        <div class="dock-icon-wrap"><img src="icons/game.png" onerror="this.outerHTML='🎮'"/></div>
+        <div class="dock-label">Game</div>
+        <div class="dock-dot hidden"></div>
+      </div>
+      <div class="dock-item" onclick="openApp('chat')" title="MeowChat" data-app="chat">
+        <div class="dock-icon-wrap"><img src="icons/chat.png" onerror="this.outerHTML='💬'"/></div>
+        <div class="dock-label">MeowChat</div>
+        <div class="dock-dot hidden"></div>
+      </div>
+      <div class="dock-item" onclick="openApp('aboutme')" title="About Me" data-app="aboutme">
+        <div class="dock-icon-wrap"><img src="owner.jpg" onerror="this.src='https://placecats.com/44/44'" style="border-radius:50%;object-fit:cover;width:100%;height:100%"/></div>
+        <div class="dock-label">About Me</div>
+        <div class="dock-dot hidden"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- START MENU -->
+  <div id="start-menu" class="hidden clay-card">
+    <div class="start-header">
+      <img src="owner.jpg" class="start-avatar" onerror="this.src='https://placecats.com/60/60'"/>
+      <div>
+        <div class="start-username">Meow User</div>
+        <div class="start-sub">meow@catos.cat</div>
+      </div>
+    </div>
+    <div class="start-search-wrap">
+      <img src="icons/search.png" width="14" onerror="this.outerHTML='🔍'"/>
+      <input id="start-search" type="text" placeholder="Search apps..." oninput="filterStartApps(this.value)"/>
+    </div>
+    <div class="start-grid" id="start-grid">
+      <div class="start-item" data-app="memes"><img src="icons/gallery.png" onerror="this.outerHTML='🖼️'"/><small>Meme Gallery</small></div>
+      <div class="start-item" data-app="browser"><img src="icons/browser.png" onerror="this.outerHTML='🌐'"/><small>PurrFox</small></div>
+      <div class="start-item" data-app="notepad"><img src="icons/notepad.png" onerror="this.outerHTML='📝'"/><small>Pawpad</small></div>
+      <div class="start-item" data-app="music"><img src="icons/music.png" onerror="this.outerHTML='🎵'"/><small>MeowTunes</small></div>
+      <div class="start-item" data-app="paint"><img src="icons/paint.png" onerror="this.outerHTML='🎨'"/><small>CatPaint</small></div>
+      <div class="start-item" data-app="terminal"><img src="icons/terminal.png" onerror="this.outerHTML='💻'"/><small>CatShell</small></div>
+      <div class="start-item" data-app="files"><img src="icons/files.png" onerror="this.outerHTML='📁'"/><small>Fur Files</small></div>
+      <div class="start-item" data-app="calculator"><img src="icons/calc.png" onerror="this.outerHTML='🔢'"/><small>Calc-Cat</small></div>
+      <div class="start-item" data-app="game"><img src="icons/game.png" onerror="this.outerHTML='🎮'"/><small>Catch Yarn</small></div>
+      <div class="start-item" data-app="calendar"><img src="icons/calendar.png" onerror="this.outerHTML='📅'"/><small>PurrPlanner</small></div>
+      <div class="start-item" data-app="chat"><img src="icons/chat.png" onerror="this.outerHTML='💬'"/><small>MeowChat</small></div>
+      <div class="start-item" data-app="settings"><img src="icons/settings.png" onerror="this.outerHTML='⚙️'"/><small>Settings</small></div>
+    </div>
+    <div class="start-footer">
+      <button class="clay-btn sm" onclick="shutDown()"><img src="icons/power.png" width="14" onerror="this.outerHTML='🔴'"/> Nap Mode</button>
+      <button class="clay-btn sm" onclick="closeStartMenu()">✕ Close</button>
+    </div>
+  </div>
+
+  <!-- DESKTOP ICONS -->
+  <div id="desktop-icons">
+    <div class="desk-icon" ondblclick="openApp('memes')"><img src="icons/gallery.png" onerror="this.outerHTML='🖼️'"/><small>Meme Gallery</small></div>
+    <div class="desk-icon" ondblclick="openApp('browser')"><img src="icons/browser.png" onerror="this.outerHTML='🌐'"/><small>PurrFox</small></div>
+    <div class="desk-icon" ondblclick="openApp('notepad')"><img src="icons/notepad.png" onerror="this.outerHTML='📝'"/><small>Pawpad</small></div>
+    <div class="desk-icon" ondblclick="openApp('music')"><img src="icons/music.png" onerror="this.outerHTML='🎵'"/><small>MeowTunes</small></div>
+    <div class="desk-icon" ondblclick="openApp('paint')"><img src="icons/paint.png" onerror="this.outerHTML='🎨'"/><small>CatPaint</small></div>
+    <div class="desk-icon" ondblclick="openApp('terminal')"><img src="icons/terminal.png" onerror="this.outerHTML='💻'"/><small>CatShell</small></div>
+    <div class="desk-icon" ondblclick="openApp('files')"><img src="icons/files.png" onerror="this.outerHTML='📁'"/><small>Fur Files</small></div>
+    <div class="desk-icon" ondblclick="openApp('calculator')"><img src="icons/calc.png" onerror="this.outerHTML='🔢'"/><small>Calc-Cat</small></div>
+    <div class="desk-icon" ondblclick="openApp('game')"><img src="icons/game.png" onerror="this.outerHTML='🎮'"/><small>Catch Yarn</small></div>
+    <div class="desk-icon" ondblclick="openApp('calendar')"><img src="icons/calendar.png" onerror="this.outerHTML='📅'"/><small>PurrPlanner</small></div>
+    <div class="desk-icon" ondblclick="openApp('chat')"><img src="icons/chat.png" onerror="this.outerHTML='💬'"/><small>MeowChat</small></div>
+    <div class="desk-icon" ondblclick="openApp('settings')"><img src="icons/settings.png" onerror="this.outerHTML='⚙️'"/><small>Settings</small></div>
+  </div>
+
+  <!-- WINDOW CONTAINER -->
+  <div id="windows-container"></div>
+
+  <!-- CONTEXT MENU -->
+  <div id="context-menu" class="hidden clay-card">
+    <div class="ctx-item" onclick="openWallpaperPicker()"><img src="icons/paint.png" width="14" onerror="this.outerHTML='🖼️'"/> Change Wallpaper</div>
+    <div class="ctx-item" onclick="openApp('settings');hideCtx()"><img src="icons/settings.png" width="14" onerror="this.outerHTML='⚙️'"/> Settings</div>
+    <div class="ctx-item" onclick="openApp('memes');hideCtx()"><img src="icons/gallery.png" width="14" onerror="this.outerHTML='😹'"/> Open Memes</div>
+    <div class="ctx-item ctx-sep"></div>
+    <div class="ctx-item" onclick="hideCtx()">✕ Close</div>
+  </div>
+
+  <!-- WALLPAPER PICKER OVERLAY -->
+  <div id="wp-picker" class="hidden modal-overlay">
+    <div class="modal-card clay-card">
+      <h3>🖼️ Change Wallpaper</h3>
+      <div class="wp-presets" id="wp-presets"></div>
+      <div class="wp-upload-row">
+        <label class="clay-btn sm wp-upload-label">
+          <img src="icons/files.png" width="14" onerror="this.outerHTML='📁'"/> Upload your own
+          <input type="file" id="wp-upload-input" accept="image/*,.gif" style="display:none" onchange="handleWpUpload(event)"/>
+        </label>
+        <button class="clay-btn sm" onclick="closeWpPicker()">✕ Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toaster"></div>
+  <!-- SOUND -->
+  <audio id="snd-click" src="sounds/click.mp3" preload="auto"></audio>
+  <audio id="snd-open"  src="sounds/open.mp3"  preload="auto"></audio>
+  <audio id="snd-close" src="sounds/close.mp3" preload="auto"></audio>
+  <audio id="snd-notif" src="sounds/notif.mp3" preload="auto"></audio>
+  <audio id="snd-meow"  src="sounds/meow.mp3"  preload="auto"></audio>
+  <audio id="snd-purr"  src="sounds/purr.mp3"  preload="auto" loop></audio>
+</div>
+
+<!-- ═══════════════ APP TEMPLATES ═══════════════ -->
+
+<!-- MEMES -->
+<template id="tpl-memes">
+<div class="app-inner">
+  <div class="app-tb">
+    <button class="clay-btn sm" onclick="prevMeme()">◀ Prev</button>
+    <span id="meme-counter" class="tb-label">1 / 12</span>
+    <button class="clay-btn sm" onclick="nextMeme()">Next ▶</button>
+    <button class="clay-btn sm" onclick="shuffleMeme()">⇀ Shuffle</button>
+  </div>
+  <div class="meme-stage">
+    <img id="meme-img" src="" alt="meme" class="meme-main-img"/>
+    <div id="meme-top-text" class="meme-text top"></div>
+    <div id="meme-bot-text" class="meme-text bot"></div>
+  </div>
+  <div id="meme-caption" class="meme-caption"></div>
+  <div class="meme-strip" id="meme-strip"></div>
+</div>
+</template>
+
+<!-- BROWSER -->
+<template id="tpl-browser">
+<div class="app-inner browser-wrap">
+  <div class="browser-chrome">
+    <div class="browser-tabs" id="browser-tabs">
+      <div class="browser-tab active" id="btab-0">
+        <img src="icons/browser.png" width="12" onerror="this.outerHTML='🐱'"/>
+        <span id="btab-title-0">New Tab</span>
+        <span class="btab-close" onclick="closeBrowserTab(0)">×</span>
+      </div>
+      <button class="browser-new-tab clay-btn sm" onclick="newBrowserTab()">+</button>
+    </div>
+    <div class="browser-bar">
+      <button class="br-nav-btn" onclick="browserBack()" title="Back">◀</button>
+      <button class="br-nav-btn" onclick="browserFwd()"  title="Forward">▶</button>
+      <button class="br-nav-btn" onclick="browserRefresh()" title="Refresh">↺</button>
+      <div class="browser-url-wrap">
+        <img src="icons/lock.png" width="12" class="url-lock" onerror="this.outerHTML='🔒'"/>
+        <input id="browser-url" type="text" value="cat://newtab" spellcheck="false"
+          onkeydown="if(event.key==='Enter')browserNav(this.value)"/>
+      </div>
+      <button class="br-nav-btn" onclick="browserNav(document.getElementById('browser-url').value)">Go</button>
+      <button class="br-nav-btn" onclick="browserBookmark()" title="Bookmark">☆</button>
+    </div>
+  </div>
+  <div id="browser-content" class="browser-content"></div>
+</div>
+</template>
+
+<!-- NOTEPAD -->
+<template id="tpl-notepad">
+<div class="app-inner notepad-wrap">
+  <div class="app-tb">
+    <button class="clay-btn sm" onclick="notepadNew()">New</button>
+    <button class="clay-btn sm" onclick="notepadSave()">Save</button>
+    <button class="clay-btn sm" onclick="notepadLoad()">Load</button>
+    <select class="clay-select" onchange="notepadFont(this.value)">
+      <option value="'Nunito',sans-serif">Nunito</option>
+      <option value="monospace">Mono</option>
+      <option value="serif">Serif</option>
+    </select>
+    <select class="clay-select" onchange="notepadSize(this.value)">
+      <option value="14">14</option><option value="16">16</option>
+      <option value="18">18</option><option value="20">20</option>
+    </select>
+  </div>
+  <textarea id="notepad-area" placeholder="Meow your thoughts here... 🐾"></textarea>
+  <div class="notepad-status" id="notepad-status">Ready · 0 chars</div>
+</div>
+</template>
+
+<!-- MUSIC -->
+<template id="tpl-music">
+<div class="app-inner music-wrap">
+  <div class="music-header">
+    <img id="music-art" src="music/cover1.jpg" onerror="this.src='cat-music.jpg'" class="music-art"/>
+    <div class="music-info">
+      <div class="music-title" id="music-title">Purring in the Rain</div>
+      <div class="music-artist" id="music-artist">DJ Whiskers</div>
+      <div class="music-album" id="music-album">Meow Beats Vol.1</div>
+    </div>
+  </div>
+  <div class="music-progress-row">
+    <span id="music-cur">0:00</span>
+    <div class="music-track-bar" id="music-track-bar" onclick="musicSeek(event)">
+      <div id="music-fill" class="music-fill"></div>
+      <div id="music-thumb" class="music-thumb"></div>
+    </div>
+    <span id="music-dur">0:00</span>
+  </div>
+  <div class="music-controls">
+    <button class="mc-btn" onclick="musicShuffle()" id="mc-shuf" title="Shuffle">⇀</button>
+    <button class="mc-btn" onclick="musicPrev()">⏮</button>
+    <button class="mc-btn mc-play" onclick="musicToggle()" id="mc-play">▶</button>
+    <button class="mc-btn" onclick="musicNext()">⏭</button>
+    <button class="mc-btn" onclick="musicRepeat()" id="mc-rep" title="Repeat">↻</button>
+  </div>
+  <div class="music-vol-row">
+    <img src="icons/vol-low.png" width="16" onerror="this.outerHTML='🔈'"/>
+    <input type="range" min="0" max="1" step="0.01" value="0.7" id="music-vol" oninput="musicVol(this.value)" class="clay-range"/>
+    <img src="icons/vol-high.png" width="16" onerror="this.outerHTML='🔊'"/>
+  </div>
+  <audio id="music-audio" onended="musicEnded()" ontimeupdate="musicTick()" oncanplay="musicCanPlay()"></audio>
+  <div class="music-playlist" id="music-playlist"></div>
+</div>
+</template>
+
+<!-- PAINT -->
+<template id="tpl-paint">
+<div class="app-inner paint-wrap">
+  <div class="paint-sidebar">
+    <button class="paint-tool-btn active" data-tool="pen"     onclick="setPaintTool('pen',this)"    title="Pen">✏️</button>
+    <button class="paint-tool-btn"        data-tool="eraser"  onclick="setPaintTool('eraser',this)"  title="Eraser">🧹</button>
+    <button class="paint-tool-btn"        data-tool="fill"    onclick="setPaintTool('fill',this)"    title="Fill">🪣</button>
+    <button class="paint-tool-btn"        data-tool="line"    onclick="setPaintTool('line',this)"    title="Line">╱</button>
+    <button class="paint-tool-btn"        data-tool="rect"    onclick="setPaintTool('rect',this)"    title="Rectangle">▭</button>
+    <button class="paint-tool-btn"        data-tool="circle"  onclick="setPaintTool('circle',this)"  title="Circle">○</button>
+    <div class="paint-sep"></div>
+    <input type="color" id="paint-color" value="#c084fc" class="paint-color-swatch" title="Color"/>
+    <input type="range" min="1" max="40" value="5" id="paint-size" class="clay-range paint-size-slider" title="Size"/>
+    <div class="paint-sep"></div>
+    <button class="paint-tool-btn" onclick="paintStamp()"  title="Cat Stamp">🐾</button>
+    <button class="paint-tool-btn" onclick="paintClear()"  title="Clear">🗑️</button>
+    <button class="paint-tool-btn" onclick="paintSaveImg()" title="Save">💾</button>
+  </div>
+  <canvas id="paint-canvas"></canvas>
+</div>
+</template>
+
+<!-- TERMINAL -->
+<template id="tpl-terminal">
+<div class="app-inner terminal-wrap">
+  <div id="terminal-output"></div>
+  <div class="term-input-row">
+    <span class="term-prompt">meow@catos:~$&nbsp;</span>
+    <input id="terminal-input" type="text" autocomplete="off" spellcheck="false"
+      onkeydown="termKey(event)" placeholder="type 'help'"/>
+  </div>
+</div>
+</template>
+
+<!-- FILES -->
+<template id="tpl-files">
+<div class="app-inner files-wrap">
+  <div class="files-sidebar">
+    <div class="files-section-hd">Locations</div>
+    <div class="files-nav-item active" onclick="filesNav('home',this)">
+      <img src="icons/home.png" width="14" onerror="this.outerHTML='🏠'"/> Home</div>
+    <div class="files-nav-item" onclick="filesNav('pictures',this)">
+      <img src="icons/gallery.png" width="14" onerror="this.outerHTML='🖼️'"/> Paw-tures</div>
+    <div class="files-nav-item" onclick="filesNav('music',this)">
+      <img src="icons/music.png" width="14" onerror="this.outerHTML='🎵'"/> Meow-sic</div>
+    <div class="files-nav-item" onclick="filesNav('documents',this)">
+      <img src="icons/notepad.png" width="14" onerror="this.outerHTML='📄'"/> Docu-meows</div>
+    <div class="files-nav-item" onclick="filesNav('trash',this)">
+      <img src="icons/trash.png" width="14" onerror="this.outerHTML='🗑️'"/> Litter Box</div>
+  </div>
+  <div class="files-main">
+    <div class="files-path-bar" id="files-path">Home</div>
+    <div class="files-grid" id="files-grid"></div>
+  </div>
+</div>
+</template>
+
+<!-- CALCULATOR -->
+<template id="tpl-calculator">
+<div class="app-inner calc-wrap">
+  <div class="calc-display">
+    <div class="calc-expr" id="calc-expr">&nbsp;</div>
+    <div class="calc-result" id="calc-result">0</div>
+  </div>
+  <div class="calc-grid">
+    <button class="calc-btn fn" onclick="calcFn('C')">C</button>
+    <button class="calc-btn fn" onclick="calcFn('±')">±</button>
+    <button class="calc-btn fn" onclick="calcFn('%')">%</button>
+    <button class="calc-btn op" onclick="calcOp('÷')">÷</button>
+    <button class="calc-btn" onclick="calcNum('7')">7</button>
+    <button class="calc-btn" onclick="calcNum('8')">8</button>
+    <button class="calc-btn" onclick="calcNum('9')">9</button>
+    <button class="calc-btn op" onclick="calcOp('×')">×</button>
+    <button class="calc-btn" onclick="calcNum('4')">4</button>
+    <button class="calc-btn" onclick="calcNum('5')">5</button>
+    <button class="calc-btn" onclick="calcNum('6')">6</button>
+    <button class="calc-btn op" onclick="calcOp('−')">−</button>
+    <button class="calc-btn" onclick="calcNum('1')">1</button>
+    <button class="calc-btn" onclick="calcNum('2')">2</button>
+    <button class="calc-btn" onclick="calcNum('3')">3</button>
+    <button class="calc-btn op" onclick="calcOp('+')">+</button>
+    <button class="calc-btn wide" onclick="calcNum('0')">0</button>
+    <button class="calc-btn" onclick="calcNum('.')">.</button>
+    <button class="calc-btn eq" onclick="calcEq()">=</button>
+  </div>
+  <div class="calc-cat-say" id="calc-cat-say">🐱 Ready to count fish!</div>
+</div>
+</template>
+
+<!-- GAME -->
+<template id="tpl-game">
+<div class="app-inner game-wrap">
+  <div class="game-hud">
+    <span>Score: <b id="g-score">0</b></span>
+    <span>Level: <b id="g-level">1</b></span>
+    <span>Lives: <span id="g-lives">🐱🐱🐱</span></span>
+    <button class="clay-btn sm" onclick="gameStart()" id="g-start-btn">▶ Start</button>
+  </div>
+  <canvas id="game-canvas"></canvas>
+  <div class="game-tip">Mouse or ← → keys to catch yarn · 🐟 fish = bonus!</div>
+</div>
+</template>
+
+<!-- SETTINGS -->
+<template id="tpl-settings">
+<div class="app-inner settings-wrap">
+  <div class="settings-nav">
+    <div class="s-nav active" onclick="settingsTab('appearance',this)">🎨 Appearance</div>
+    <div class="s-nav" onclick="settingsTab('sound',this)">🔊 Sound</div>
+    <div class="s-nav" onclick="settingsTab('cat',this)">🐱 Cat Profile</div>
+    <div class="s-nav" onclick="settingsTab('about',this)">ℹ️ About</div>
+  </div>
+  <div class="settings-panel" id="settings-panel"></div>
+</div>
+</template>
+
+<!-- CALENDAR -->
+<template id="tpl-calendar">
+<div class="app-inner cal-wrap">
+  <div class="cal-nav">
+    <button class="clay-btn sm" onclick="calPrev()">◀</button>
+    <span id="cal-title" class="cal-month-title">Month</span>
+    <button class="clay-btn sm" onclick="calNext()">▶</button>
+  </div>
+  <div class="cal-dow">
+    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+  </div>
+  <div class="cal-grid" id="cal-grid"></div>
+  <div class="cal-events">
+    <div class="cal-ev-title">🐾 Cat Events</div>
+    <div id="cal-ev-list"></div>
+  </div>
+</div>
+</template>
+
+<!-- CHAT -->
+<template id="tpl-chat">
+<div class="app-inner chat-wrap">
+  <div class="chat-sidebar">
+    <div class="chat-sb-head">MeowChat</div>
+    <div class="chat-contact active" onclick="chatSelect('whiskers',this)">
+      <img src="cat1.jpg" class="chat-av" onerror="this.src='https://placecats.com/40/40'"/>
+      <div><div class="chat-cn">Whiskers</div><div class="chat-cp">Meow! You there?</div></div>
+      <div class="chat-online"></div>
+    </div>
+    <div class="chat-contact" onclick="chatSelect('mittens',this)">
+      <img src="cat2.jpg" class="chat-av" onerror="this.src='https://placecats.com/41/41'"/>
+      <div><div class="chat-cn">Mittens</div><div class="chat-cp">Did u see that laser?!</div></div>
+      <div class="chat-online"></div>
+    </div>
+    <div class="chat-contact" onclick="chatSelect('chairman',this)">
+      <img src="cat3.jpg" class="chat-av" onerror="this.src='https://placecats.com/42/42'"/>
+      <div><div class="chat-cn">Chairman Meow</div><div class="chat-cp">I demand treats NOW</div></div>
+      <div class="chat-away"></div>
+    </div>
+    <div class="chat-contact" onclick="chatSelect('nyancat',this)">
+      <img src="nyan.gif" class="chat-av" onerror="this.src='https://placecats.com/43/43'"/>
+      <div><div class="chat-cn">Nyan Cat</div><div class="chat-cp">nyan nyan nyan</div></div>
+      <div class="chat-online"></div>
+    </div>
+  </div>
+  <div class="chat-main">
+    <div class="chat-header" id="chat-hdr">
+      <img id="chat-hdr-av" src="" class="chat-hdr-av" onerror="this.src='https://placecats.com/36/36'"/>
+      <div><div id="chat-hdr-name">Select a cat</div><div id="chat-hdr-status" class="chat-hdr-status"></div></div>
+    </div>
+    <div class="chat-msgs" id="chat-msgs"></div>
+    <div class="chat-input-row">
+      <button class="clay-btn sm" onclick="chatEmoji()">😺</button>
+      <input id="chat-input" type="text" placeholder="Meow something..."
+        onkeydown="if(event.key==='Enter')chatSend()"/>
+      <button class="clay-btn sm accent" onclick="chatSend()">Send</button>
+    </div>
+  </div>
+</div>
+</template>
+
+<!-- NOTIFICATIONS -->
+<template id="tpl-notifications">
+<div class="app-inner notif-wrap">
+  <div class="notif-hdr">
+    <span>🔔 Notifications</span>
+    <button class="clay-btn sm" onclick="clearNotifs()">Clear all</button>
+  </div>
+  <div id="notif-list"></div>
+</div>
+</template>
+
+<!-- ABOUT ME -->
+<template id="tpl-aboutme">
+<div class="app-inner aboutme-wrap">
+  <div class="aboutme-hero">
+    <div class="aboutme-avatar-ring">
+      <img src="owner.jpg" class="aboutme-avatar" onerror="this.src='https://placecats.com/160/160'"/>
+      <div class="aboutme-status-dot"></div>
+    </div>
+    <div class="aboutme-name" id="aboutme-name">Your Name</div>
+    <div class="aboutme-handle" id="aboutme-handle">@yourhandle · CatOS Admin</div>
+    <div class="aboutme-tags">
+      <span class="aboutme-tag">🐱 Cat Person</span>
+      <span class="aboutme-tag">💻 Developer</span>
+      <span class="aboutme-tag">🎨 Creator</span>
+    </div>
+  </div>
+  <div class="aboutme-body">
+    <div class="aboutme-section">
+      <div class="aboutme-section-title">👤 About</div>
+      <div class="aboutme-bio" id="aboutme-bio">Welcome to my CatOS! Edit your info in the fields below.</div>
+    </div>
+    <div class="aboutme-section">
+      <div class="aboutme-section-title">📊 Stats</div>
+      <div class="aboutme-stats">
+        <div class="aboutme-stat"><div class="stat-val">∞</div><div class="stat-lbl">Cats Loved</div></div>
+        <div class="aboutme-stat"><div class="stat-val">9</div><div class="stat-lbl">Lives Left</div></div>
+        <div class="aboutme-stat"><div class="stat-val">100%</div><div class="stat-lbl">Vibe Check</div></div>
+        <div class="aboutme-stat"><div class="stat-val">☀️</div><div class="stat-lbl">Mood</div></div>
+      </div>
+    </div>
+    <div class="aboutme-section">
+      <div class="aboutme-section-title">✏️ Edit Your Info</div>
+      <div class="aboutme-edit-row"><label>Name</label><input id="edit-name" type="text" placeholder="Your name..." class="aboutme-input"/></div>
+      <div class="aboutme-edit-row"><label>Handle</label><input id="edit-handle" type="text" placeholder="@yourhandle" class="aboutme-input"/></div>
+      <div class="aboutme-edit-row"><label>Bio</label><textarea id="edit-bio" placeholder="Tell the world about yourself..." class="aboutme-input aboutme-textarea"></textarea></div>
+      <button class="clay-btn accent" onclick="saveAboutMe()" style="margin-top:8px">💾 Save Profile</button>
+    </div>
+  </div>
+</div>
+</template>
+
+<script src="script.js"></script>
+</body>
+</html>
