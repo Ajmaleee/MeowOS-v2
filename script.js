@@ -14,26 +14,6 @@ const SND = {
   purr(on){ try{ const a=document.getElementById('snd-purr'); if(!a)return; a.volume=0.15; on?a.play().catch(()=>{}):a.pause(); }catch(e){} }
 };
 
-/* ── CUSTOM CURSOR ───────────────────────────── */
-(function initCursor(){
-  const cur = document.getElementById('cursor-cat');
-  if(!cur) return;
-  let moveTimer;
-  document.addEventListener('mousemove', e=>{
-    cur.style.left = e.clientX+'px';
-    cur.style.top  = e.clientY+'px';
-    document.body.classList.add('cursor-move');
-    document.body.classList.remove('cursor-idle');
-    clearTimeout(moveTimer);
-    moveTimer = setTimeout(()=>{
-      document.body.classList.remove('cursor-move');
-      document.body.classList.add('cursor-idle');
-    }, 2000);
-  });
-  document.addEventListener('mousedown', ()=>document.body.classList.add('cursor-click'));
-  document.addEventListener('mouseup',   ()=>document.body.classList.remove('cursor-click'));
-})();
-
 /* ── BOOT / WELCOME ──────────────────────────── */
 const BOOT_MSGS = [
   'Waking up the cat...','Loading purr engine...','Fluffing the desktop...',
@@ -85,22 +65,21 @@ function startClock(){
 
 /* ── WALLPAPER ───────────────────────────────── */
 const WP_PRESETS = [
-  { name:'Purple Dream', src:'wallpapers/wp1.jpg' },
-  { name:'Night Forest', src:'wallpapers/wp2.jpg' },
-  { name:'Candy Sky',    src:'wallpapers/wp3.jpg' },
-  { name:'Cat Cafe',     src:'wallpapers/wp4.jpg' },
-  { name:'Space Meow',   src:'wallpapers/wp5.jpg' },
-  { name:'Pastel Paws',  src:'wallpapers/wp6.jpg' },
+  { name:'Purple Dream', src:'wp1.jpg' },
+  { name:'Night Forest', src:'wp2.jpg' },
+  { name:'Candy Sky',    src:'wp3.jpg' },
+  { name:'Cat Cafe',     src:'wp4.jpg' },
+  { name:'Space Meow',   src:'wp5.jpg' },
+  { name:'Pastel Paws',  src:'wp6.jpg' },
 ];
 
 function loadWallpaper(){
   const saved = LS.get('catos-wallpaper', null);
   if(saved){ applyWallpaper(saved); }
-  else { applyWallpaper('wallpapers/wp1.jpg'); }
+  else { applyWallpaper('wp1.jpg'); }
 }
 function applyWallpaper(src){
   const desk = document.getElementById('desktop');
-  // For GIFs, use an img element as background so animation plays
   if(src.startsWith('data:image/gif') || src.endsWith('.gif')){
     desk.style.backgroundImage = 'none';
     let gifBg = document.getElementById('desktop-gif-bg');
@@ -198,7 +177,7 @@ document.getElementById('start-grid').querySelectorAll('.start-item').forEach(it
 });
 document.addEventListener('click', e=>{
   const sm=document.getElementById('start-menu'), logo=document.querySelector('.taskbar-logo');
-  if(!sm.contains(e.target) && e.target!==logo && !logo.contains(e.target)) sm.classList.add('hidden');
+  if(!sm.contains(e.target) && e.target!==logo && !(logo&&logo.contains(e.target))) sm.classList.add('hidden');
 });
 function filterStartApps(q){
   const lc=q.toLowerCase();
@@ -212,20 +191,20 @@ let zTop=200;
 const openWins={};
 
 const APP_META={
-  memes:        { title:'Meme Gallery',    icon:'icons/gallery.png',  w:640, h:520 },
-  browser:      { title:'PurrFox',         icon:'icons/browser.png',  w:740, h:540 },
-  notepad:      { title:'Pawpad',          icon:'icons/notepad.png',  w:560, h:430 },
-  music:        { title:'MeowTunes',       icon:'icons/music.png',    w:420, h:580 },
-  paint:        { title:'CatPaint',        icon:'icons/paint.png',    w:760, h:540 },
-  terminal:     { title:'CatShell',        icon:'icons/terminal.png', w:600, h:420 },
-  files:        { title:'Fur Files',       icon:'icons/files.png',    w:600, h:440 },
-  calculator:   { title:'Calc-Cat',        icon:'icons/calc.png',     w:300, h:500 },
-  game:         { title:'Catch Yarn',      icon:'icons/game.png',     w:640, h:500 },
-  settings:     { title:'Settings',        icon:'icons/settings.png', w:540, h:440 },
-  calendar:     { title:'PurrPlanner',     icon:'icons/calendar.png', w:500, h:480 },
-  chat:         { title:'MeowChat',        icon:'icons/chat.png',     w:640, h:460 },
-  aboutme:      { title:'About Me',          icon:'owner.jpg',          w:420, h:560 },
-  notifications:{ title:'Notifications',   icon:'icons/bell.png',     w:380, h:420 },
+  memes:        { title:'Meme Gallery',    icon:'gallery.png',  w:640, h:520 },
+  browser:      { title:'PurrFox',         icon:'browser.png',  w:740, h:540 },
+  notepad:      { title:'Pawpad',          icon:'notepad.png',  w:560, h:430 },
+  music:        { title:'MeowTunes',       icon:'music.png',    w:420, h:580 },
+  paint:        { title:'CatPaint',        icon:'paint.png',    w:760, h:540 },
+  terminal:     { title:'CatShell',        icon:'terminal.png', w:600, h:420 },
+  files:        { title:'Fur Files',       icon:'files.png',    w:600, h:440 },
+  calculator:   { title:'Calc-Cat',        icon:'calc.png',     w:300, h:500 },
+  game:         { title:'Catch Yarn',      icon:'game.png',     w:640, h:500 },
+  settings:     { title:'Settings',        icon:'settings.png', w:540, h:440 },
+  calendar:     { title:'PurrPlanner',     icon:'calendar.png', w:500, h:480 },
+  chat:         { title:'MeowChat',        icon:'chat.png',     w:640, h:460 },
+  aboutme:      { title:'About Me',        icon:'owner.jpg',    w:420, h:560 },
+  notifications:{ title:'Notifications',   icon:'bell.png',     w:380, h:420 },
 };
 
 function openApp(id){
@@ -270,7 +249,6 @@ function closeWin(id){
   SND.play('close');
   const win=document.getElementById('win-'+id); if(win) win.remove();
   delete openWins[id];
-  // Hide dock dot
   const dockItem = document.querySelector(`.dock-item[data-app="${id}"]`);
   if(dockItem){ dockItem.querySelector('.dock-dot')?.classList.add('hidden'); }
   if(id==='game') gameStop();
@@ -281,7 +259,6 @@ function minimizeWin(id){
   win.classList.add('minimizing');
   setTimeout(()=>{ win.style.display='none'; win.classList.remove('minimizing'); }, 280);
   openWins[id].minimized=true;
-  const tb=document.getElementById('tb-'+id); if(tb) tb.classList.remove('active');
 }
 function unminimizeWin(id){
   const win=document.getElementById('win-'+id); if(!win) return;
@@ -300,13 +277,11 @@ function maximizeWin(id){
   }
 }
 function addTbBtn(id, meta){
-  // Show dot on dock icon instead of taskbar button + bounce animation
   const dockItem = document.querySelector(`.dock-item[data-app="${id}"]`);
   if(dockItem){
     dockItem.querySelector('.dock-dot')?.classList.remove('hidden');
     dockItem.classList.add('bouncing');
     setTimeout(()=>dockItem.classList.remove('bouncing'), 450);
-    // Make dock icon toggle minimize on click
     dockItem.onclick = ()=>{
       if(openWins[id]?.minimized) unminimizeWin(id);
       else if(openWins[id]) minimizeWin(id);
@@ -357,18 +332,18 @@ function initApp(id){
    MEMES APP
 ══════════════════════════════════════════════════ */
 const MEMES=[
-  { img:'memes/meme1.jpg', top:'ONE DOES NOT SIMPLY',   bot:'IGNORE A CAT',            sub:'When the cat stares into your soul at 3am' },
-  { img:'memes/meme2.jpg', top:'I CAN HAS',             bot:'CHEEZBURGER?',            sub:'The original. The legend. The classic.' },
-  { img:'memes/meme3.jpg', top:'NOT SURE IF HUNGRY',    bot:'OR JUST BORED',           sub:'Cats eating for emotional reasons' },
-  { img:'memes/meme4.jpg', top:'THIS IS FINE',          bot:'*everything is on fire*', sub:'Cat comfort level: maximum denial' },
-  { img:'memes/meme5.jpg', top:'NOBODY:',               bot:'CAT AT 3AM: ZOOMIES',     sub:'Midnight energy is a feline superpower' },
-  { img:'memes/meme6.jpg', top:'GRUMPY CAT SAYS',       bot:'NO. JUST NO.',            sub:'Every Monday. Forever.' },
-  { img:'memes/meme7.jpg', top:'IN ANCIENT EGYPT',      bot:'I WAS WORSHIPPED',        sub:'Cats have not forgotten this' },
-  { img:'memes/meme8.jpg', top:'YOU HAD ME AT',         bot:'"PSPSPSPSPS"',            sub:'Cats and the sacred summoning call' },
-  { img:'memes/meme9.jpg', top:'SURPRISE MOTHERFLUFFER',bot:'🐾🐾🐾',                  sub:'When you open the treat cabinet' },
-  { img:'memes/meme10.jpg',top:'HOVER CAT',             bot:'IS WATCHING YOU',         sub:'Always watching. Always judging.' },
-  { img:'memes/meme11.jpg',top:'I SLEEP',               bot:'NOT YOUR PROBLEM',        sub:'Cat work ethic: aspirational' },
-  { img:'memes/meme12.jpg',top:'NYAN NYAN NYAN',        bot:'NYAN NYAN NYAN NYAN',     sub:'2011 forever' },
+  { img:'meme1.jpg', top:'ONE DOES NOT SIMPLY',   bot:'IGNORE A CAT',            sub:'When the cat stares into your soul at 3am' },
+  { img:'meme2.jpg', top:'I CAN HAS',             bot:'CHEEZBURGER?',            sub:'The original. The legend. The classic.' },
+  { img:'meme3.jpg', top:'NOT SURE IF HUNGRY',    bot:'OR JUST BORED',           sub:'Cats eating for emotional reasons' },
+  { img:'meme4.jpg', top:'THIS IS FINE',          bot:'*everything is on fire*', sub:'Cat comfort level: maximum denial' },
+  { img:'meme5.jpg', top:'NOBODY:',               bot:'CAT AT 3AM: ZOOMIES',     sub:'Midnight energy is a feline superpower' },
+  { img:'meme6.jpg', top:'GRUMPY CAT SAYS',       bot:'NO. JUST NO.',            sub:'Every Monday. Forever.' },
+  { img:'meme7.jpg', top:'IN ANCIENT EGYPT',      bot:'I WAS WORSHIPPED',        sub:'Cats have not forgotten this' },
+  { img:'meme8.jpg', top:'YOU HAD ME AT',         bot:'"PSPSPSPSPS"',            sub:'Cats and the sacred summoning call' },
+  { img:'meme9.jpg', top:'SURPRISE MOTHERFLUFFER',bot:'🐾🐾🐾',                  sub:'When you open the treat cabinet' },
+  { img:'meme10.jpg',top:'HOVER CAT',             bot:'IS WATCHING YOU',         sub:'Always watching. Always judging.' },
+  { img:'meme11.jpg',top:'I SLEEP',               bot:'NOT YOUR PROBLEM',        sub:'Cat work ethic: aspirational' },
+  { img:'meme12.jpg',top:'NYAN NYAN NYAN',        bot:'NYAN NYAN NYAN NYAN',     sub:'2011 forever' },
 ];
 let memeIdx=0;
 
@@ -406,14 +381,14 @@ const BPAGES={
       <button onclick="browserNav('cat://search/'+document.getElementById('br-search-in').value)">Search</button>
     </div>
     <div class="br-shortcuts">
-      <div class="br-shortcut" onclick="browserNav('cat://news')"><img src="icons/news.png" onerror="this.outerHTML='📰'"/>News</div>
-      <div class="br-shortcut" onclick="browserNav('cat://social')"><img src="icons/chat.png" onerror="this.outerHTML='💬'"/>PawBook</div>
-      <div class="br-shortcut" onclick="browserNav('cat://wiki')"><img src="icons/notepad.png" onerror="this.outerHTML='📚'"/>WikiPurrdia</div>
-      <div class="br-shortcut" onclick="browserNav('cat://shop')"><img src="icons/shop.png" onerror="this.outerHTML='🛍️'"/>PawMart</div>
-      <div class="br-shortcut" onclick="browserNav('cat://games')"><img src="icons/game.png" onerror="this.outerHTML='🎮'"/>Games</div>
-      <div class="br-shortcut" onclick="browserNav('cat://weather')"><img src="icons/weather.png" onerror="this.outerHTML='🌤️'"/>Weather</div>
-      <div class="br-shortcut" onclick="browserNav('cat://music')"><img src="icons/music.png" onerror="this.outerHTML='🎵'"/>MeowTunes</div>
-      <div class="br-shortcut" onclick="browserNav('cat://mail')"><img src="icons/mail.png" onerror="this.outerHTML='📧'"/>PurrMail</div>
+      <div class="br-shortcut" onclick="browserNav('cat://news')"><img src="news.png" onerror="this.outerHTML='📰'"/>News</div>
+      <div class="br-shortcut" onclick="browserNav('cat://social')"><img src="chat.png" onerror="this.outerHTML='💬'"/>PawBook</div>
+      <div class="br-shortcut" onclick="browserNav('cat://wiki')"><img src="notepad.png" onerror="this.outerHTML='📚'"/>WikiPurrdia</div>
+      <div class="br-shortcut" onclick="browserNav('cat://shop')"><img src="shop.png" onerror="this.outerHTML='🛍️'"/>PawMart</div>
+      <div class="br-shortcut" onclick="browserNav('cat://games')"><img src="game.png" onerror="this.outerHTML='🎮'"/>Games</div>
+      <div class="br-shortcut" onclick="browserNav('cat://weather')"><img src="weather.png" onerror="this.outerHTML='🌤️'"/>Weather</div>
+      <div class="br-shortcut" onclick="browserNav('cat://music')"><img src="music.png" onerror="this.outerHTML='🎵'"/>MeowTunes</div>
+      <div class="br-shortcut" onclick="browserNav('cat://mail')"><img src="mail.png" onerror="this.outerHTML='📧'"/>PurrMail</div>
     </div>
   </div>`,
   'cat://news': ()=>`<div class="br-page">
@@ -500,7 +475,6 @@ function browserNav(url){
   } else {
     content.innerHTML = fn ? fn() : `<div class="br-page"><h1>😿 404 — Page Not Found</h1><p>The cat knocked this page off the table.</p><span class="br-link" onclick="browserNav('cat://newtab')">← Home</span></div>`;
   }
-  // update tab title
   const titles={'cat://newtab':'New Tab','cat://news':'CatNews','cat://social':'PawBook','cat://wiki':'WikiPurrdia',
     'cat://shop':'PawMart','cat://games':'CatArcade','cat://weather':'PurrCast','cat://music':'MeowTunes','cat://mail':'PurrMail'};
   const tt=document.getElementById('btab-title-0');
@@ -535,13 +509,12 @@ function notepadSize(s){ const a=document.getElementById('notepad-area'); if(a) 
 /* ══════════════════════════════════════════════════
    MEOWTUNES — REAL AUDIO
 ══════════════════════════════════════════════════ */
-// Upload your MP3 files to /music/ folder in GitHub root
 const TRACKS=[
-  { title:'Nyan Cat Theme',          artist:'Daniwell',    album:'Nyan Cat OST',   src:'music/nyan.mp3',   cover:'music/cover1.jpg', dur:'3:37' },
-  { title:'Meow (Cat Song)',         artist:'Jingle Punks', album:'Cat Beats',     src:'music/meow.mp3',   cover:'music/cover2.jpg', dur:'2:15' },
-  { title:'Keyboard Cat',            artist:'Charlie Schmidt',album:'Internet Gold',src:'music/keyboard.mp3',cover:'music/cover3.jpg',dur:'0:54' },
-  { title:'Cat Vibes Lo-fi',         artist:'LoFi Cat',    album:'Chill Paws',     src:'music/lofi.mp3',   cover:'music/cover4.jpg', dur:'3:50' },
-  { title:'Stray Cat Strut',         artist:'The Stray Cats',album:'Built for Speed',src:'music/stray.mp3',cover:'music/cover5.jpg', dur:'3:12' },
+  { title:'Nyan Cat Theme',     artist:'Daniwell',      album:'Nyan Cat OST',    src:'nyan.mp3',     cover:'cover1.jpg', dur:'3:37' },
+  { title:'Meow (Cat Song)',    artist:'Jingle Punks',  album:'Cat Beats',       src:'meow.mp3',     cover:'cover2.jpg', dur:'2:15' },
+  { title:'Keyboard Cat',       artist:'Charlie Schmidt',album:'Internet Gold',   src:'keyboard.mp3', cover:'cover3.jpg', dur:'0:54' },
+  { title:'Cat Vibes Lo-fi',    artist:'LoFi Cat',      album:'Chill Paws',      src:'lofi.mp3',     cover:'cover4.jpg', dur:'3:50' },
+  { title:'Stray Cat Strut',    artist:'The Stray Cats', album:'Built for Speed', src:'stray.mp3',    cover:'cover5.jpg', dur:'3:12' },
 ];
 
 const MX={ idx:0, playing:false, shuffle:false, repeat:false, vol:0.7, audio:null };
@@ -557,7 +530,7 @@ function buildPlaylist(){
   pl.innerHTML=TRACKS.map((t,i)=>`
     <div class="playlist-item ${i===MX.idx?'playing':''}" onclick="musicSelectTrack(${i})">
       <div class="pl-num">${i+1}</div>
-      <img class="pl-cover" src="${t.cover}" onerror="this.src='music/cover1.jpg'"/>
+      <img class="pl-cover" src="${t.cover}" onerror="this.src='cover1.jpg'"/>
       <div class="pl-info"><div class="pl-title">${t.title}</div><div class="pl-artist">${t.artist}</div></div>
       <div class="pl-dur">${t.dur}</div>
     </div>`).join('');
@@ -652,7 +625,6 @@ function paintMove(e){
 function paintUp(){ PDrawing=false; PSnap=null; }
 function floodFill(sx,sy,fc){
   const canvas=document.getElementById('paint-canvas'); if(!canvas) return;
-  const d=PC.getImageData(0,0,canvas.width,canvas.height).data;
   const id=PC.getImageData(0,0,canvas.width,canvas.height);
   const data=id.data;
   const i=(Math.floor(sy)*canvas.width+Math.floor(sx))*4;
@@ -729,20 +701,20 @@ function catMatrix(){
 ══════════════════════════════════════════════════ */
 const FS={
   home:[
-    { img:'files/resume.png',    name:'resume_cat.pdf',    isImg:false },
-    { img:'files/photo1.jpg',    name:'selfie_01.jpg',     isImg:true  },
-    { img:null,                  name:'Projects/',         isImg:false, isDir:true },
-    { img:'files/nyan.gif',      name:'nyan_cat.gif',      isImg:true  },
-    { img:null,                  name:'secrets.txt',       isImg:false },
-    { img:'files/box.png',       name:'box_collection/',   isImg:false, isDir:true },
+    { img:'resume.png',    name:'resume_cat.pdf',    isImg:false },
+    { img:'photo1.jpg',    name:'selfie_01.jpg',     isImg:true  },
+    { img:null,            name:'Projects/',         isImg:false, isDir:true },
+    { img:'nyan.gif',      name:'nyan_cat.gif',      isImg:true  },
+    { img:null,            name:'secrets.txt',       isImg:false },
+    { img:'box.png',       name:'box_collection/',   isImg:false, isDir:true },
   ],
   pictures:[
-    { img:'files/cat_selfie.jpg', name:'selfie_01.jpg', isImg:true },
-    { img:'files/cat_nap.jpg',    name:'nap_2024.jpg',  isImg:true },
-    { img:'files/cat_laser.jpg',  name:'laser_chase.jpg',isImg:true },
-    { img:'files/cat_sun.jpg',    name:'sunbeam.jpg',   isImg:true },
-    { img:'files/cat_box.jpg',    name:'in_a_box.jpg',  isImg:true },
-    { img:'files/cat_bird.jpg',   name:'birdwatch.jpg', isImg:true },
+    { img:'cat_selfie.jpg', name:'selfie_01.jpg', isImg:true },
+    { img:'cat_nap.jpg',    name:'nap_2024.jpg',  isImg:true },
+    { img:'cat_laser.jpg',  name:'laser_chase.jpg',isImg:true },
+    { img:'cat_sun.jpg',    name:'sunbeam.jpg',   isImg:true },
+    { img:'cat_box.jpg',    name:'in_a_box.jpg',  isImg:true },
+    { img:'cat_bird.jpg',   name:'birdwatch.jpg', isImg:true },
   ],
   music:[
     { img:null, name:'nyan_cat.mp3',    isImg:false, icon:'🎵' },
@@ -781,7 +753,7 @@ function filesNav(sec, el){
 }
 
 /* ══════════════════════════════════════════════════
-   CALC-CAT  — bug fixed
+   CALC-CAT
 ══════════════════════════════════════════════════ */
 let cDisp='0', cExpr='', cOp='', cPrev='', cFresh=false;
 const cSay={'+':'Adding fish...','−':'Removing fish...','×':'Multiplying paws!','÷':'Dividing treats...','=':'Purrfect!','C':'Clean slate!'};
@@ -1016,9 +988,9 @@ function chatEmoji(){
 function initNotifications(){ renderNotifs(); }
 
 /* ══════════════════════════════════════════════════
-   ABOUT ME — static creator card, no dynamic data needed
+   ABOUT ME
 ══════════════════════════════════════════════════ */
-function initAboutMe(){ /* nothing to init — all info is hardcoded in index.html */ }
+function initAboutMe(){ /* all info is hardcoded in index.html */ }
 
 /* ══════════════════════════════════════════════════
    SHUTDOWN
