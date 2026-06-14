@@ -497,43 +497,124 @@
 </div>
 </template>
 
-<!-- ABOUT ME -->
+<!-- ═══════════════════════════════════════════════════
+     ABOUT ME — CatOS Creator Card
+     Fill in YOUR details in the comments below!
+     Search for "FILL:" to find every spot.
+════════════════════════════════════════════════════ -->
 <template id="tpl-aboutme">
 <div class="app-inner aboutme-wrap">
+
+  <!-- ── HERO SECTION ───────────────────────────── -->
   <div class="aboutme-hero">
     <div class="aboutme-avatar-ring">
+      <!-- FILL: swap owner.jpg with your photo file, e.g. src="myphoto.jpg" -->
       <img src="owner.jpg" class="aboutme-avatar" onerror="this.src='https://placecats.com/160/160'"/>
       <div class="aboutme-status-dot"></div>
     </div>
-    <div class="aboutme-name" id="aboutme-name">Your Name</div>
-    <div class="aboutme-handle" id="aboutme-handle">@yourhandle · CatOS Admin</div>
+
+    <!-- FILL: your full name -->
+    <div class="aboutme-name">Your Name Here</div>
+
+    <!-- FILL: your main title / role / vibe -->
+    <div class="aboutme-handle">Creator of CatOS · Developer · Cat Enthusiast</div>
+
+    <!-- FILL: edit or add tags that describe you -->
     <div class="aboutme-tags">
       <span class="aboutme-tag">🐱 Cat Person</span>
       <span class="aboutme-tag">💻 Developer</span>
-      <span class="aboutme-tag">🎨 Creator</span>
+      <span class="aboutme-tag">🎨 Designer</span>
+      <!-- add more tags like: <span class="aboutme-tag">📍 Your City</span> -->
     </div>
   </div>
+
+  <!-- ── BODY ───────────────────────────────────── -->
   <div class="aboutme-body">
+
+    <!-- ── BIO ────────────────────────────────── -->
     <div class="aboutme-section">
-      <div class="aboutme-section-title">👤 About</div>
-      <div class="aboutme-bio" id="aboutme-bio">Welcome to my CatOS! Edit your info in the fields below.</div>
-    </div>
-    <div class="aboutme-section">
-      <div class="aboutme-section-title">📊 Stats</div>
-      <div class="aboutme-stats">
-        <div class="aboutme-stat"><div class="stat-val">∞</div><div class="stat-lbl">Cats Loved</div></div>
-        <div class="aboutme-stat"><div class="stat-val">9</div><div class="stat-lbl">Lives Left</div></div>
-        <div class="aboutme-stat"><div class="stat-val">100%</div><div class="stat-lbl">Vibe Check</div></div>
-        <div class="aboutme-stat"><div class="stat-val">☀️</div><div class="stat-lbl">Mood</div></div>
+      <div class="aboutme-section-title">👤 About Me</div>
+      <!-- FILL: your bio / description -->
+      <div class="aboutme-bio">
+        Hey! I built CatOS — a cat-themed desktop OS running in your browser, just for fun.
+        I love coding, cats, and making weird little things on the internet. 🐾
+        <!-- FILL: write whatever you want here, it supports plain text -->
       </div>
     </div>
+
+    <!-- ── LINKS ──────────────────────────────── -->
     <div class="aboutme-section">
-      <div class="aboutme-section-title">✏️ Edit Your Info</div>
-      <div class="aboutme-edit-row"><label>Name</label><input id="edit-name" type="text" placeholder="Your name..." class="aboutme-input"/></div>
-      <div class="aboutme-edit-row"><label>Handle</label><input id="edit-handle" type="text" placeholder="@yourhandle" class="aboutme-input"/></div>
-      <div class="aboutme-edit-row"><label>Bio</label><textarea id="edit-bio" placeholder="Tell the world about yourself..." class="aboutme-input aboutme-textarea"></textarea></div>
-      <button class="clay-btn accent" onclick="saveAboutMe()" style="margin-top:8px">💾 Save Profile</button>
+      <div class="aboutme-section-title">🔗 Find Me Online</div>
+      <div class="aboutme-links">
+
+        <!-- FILL: replace # with your personal Instagram URL
+             e.g. href="https://instagram.com/yourhandle" -->
+        <a class="aboutme-link" href="#" target="_blank" rel="noopener">
+          <span class="aboutme-link-icon">📸</span>
+          <div class="aboutme-link-text">
+            <div class="aboutme-link-label">Instagram</div>
+            <!-- FILL: your @handle -->
+            <div class="aboutme-link-sub">@yourhandle</div>
+          </div>
+          <span class="aboutme-link-arrow">↗</span>
+        </a>
+
+        <!-- FILL: replace # with your Instagram Creator / professional account URL
+             (can be same as above or a separate creator account) -->
+        <a class="aboutme-link" href="#" target="_blank" rel="noopener">
+          <span class="aboutme-link-icon">✨</span>
+          <div class="aboutme-link-text">
+            <div class="aboutme-link-label">Creator Account</div>
+            <!-- FILL: your creator @handle -->
+            <div class="aboutme-link-sub">@yourcreatorhandle</div>
+          </div>
+          <span class="aboutme-link-arrow">↗</span>
+        </a>
+
+        <!-- FILL: replace the mailto: address with your Gmail -->
+        <a class="aboutme-link" href="mailto:youremail@gmail.com">
+          <span class="aboutme-link-icon">📧</span>
+          <div class="aboutme-link-text">
+            <div class="aboutme-link-label">Gmail</div>
+            <!-- FILL: your email address -->
+            <div class="aboutme-link-sub">youremail@gmail.com</div>
+          </div>
+          <span class="aboutme-link-arrow">↗</span>
+        </a>
+
+        <!-- OPTIONAL: add more links below this line using the same pattern -->
+        <!-- Example — GitHub:
+        <a class="aboutme-link" href="https://github.com/yourusername" target="_blank" rel="noopener">
+          <span class="aboutme-link-icon">🐙</span>
+          <div class="aboutme-link-text">
+            <div class="aboutme-link-label">GitHub</div>
+            <div class="aboutme-link-sub">@yourusername</div>
+          </div>
+          <span class="aboutme-link-arrow">↗</span>
+        </a>
+        -->
+
+      </div>
     </div>
+
+    <!-- ── FUN STATS ──────────────────────────── -->
+    <div class="aboutme-section">
+      <div class="aboutme-section-title">📊 Dev Stats</div>
+      <div class="aboutme-stats">
+        <!-- FILL: change the values to real or fun numbers about you -->
+        <div class="aboutme-stat"><div class="stat-val">1</div><div class="stat-lbl">CatOS Built</div></div>
+        <div class="aboutme-stat"><div class="stat-val">∞</div><div class="stat-lbl">Cats Loved</div></div>
+        <div class="aboutme-stat"><div class="stat-val">9</div><div class="stat-lbl">Lives Left</div></div>
+        <div class="aboutme-stat"><div class="stat-val">☀️</div><div class="stat-lbl">Vibe</div></div>
+      </div>
+    </div>
+
+    <!-- ── MADE WITH ──────────────────────────── -->
+    <div class="aboutme-madeby">
+      <!-- FILL: change to your name -->
+      Made with 🐾 &amp; ❤️ by <strong>Your Name</strong>
+    </div>
+
   </div>
 </div>
 </template>
