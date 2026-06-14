@@ -48,7 +48,6 @@ function onDesktopReady(){
   SND.play('meow');
   setTimeout(()=>SND.purr(true), 1500);
   setTimeout(()=>SND.purr(false), 4000);
-  // Show About Me window on boot
   setTimeout(()=>openApp('aboutme'), 900);
 }
 
@@ -58,9 +57,10 @@ function startClock(){
     const n=new Date();
     const h=String(n.getHours()).padStart(2,'0');
     const m=String(n.getMinutes()).padStart(2,'0');
-    document.getElementById('taskbar-clock').textContent=`${h}:${m}`;
+    const s=String(n.getSeconds()).padStart(2,'0');
+    document.getElementById('taskbar-clock').textContent=`${h}:${m}:${s}`;
   };
-  tick(); setInterval(tick,15000);
+  tick(); setInterval(tick, 1000);
 }
 
 /* ── WALLPAPER ───────────────────────────────── */
@@ -75,8 +75,7 @@ const WP_PRESETS = [
 
 function loadWallpaper(){
   const saved = LS.get('catos-wallpaper', null);
-  if(saved){ applyWallpaper(saved); }
-  else { applyWallpaper('wp1.jpg'); }
+  applyWallpaper(saved || 'wp1.jpg');
 }
 function applyWallpaper(src){
   const desk = document.getElementById('desktop');
@@ -104,7 +103,13 @@ function buildWpPresets(){
   WP_PRESETS.forEach(wp=>{
     const d=document.createElement('div'); d.className='wp-preset-thumb';
     d.innerHTML=`<img src="${wp.src}" onerror="this.parentElement.style.background='var(--c-surface2)'"/><span>${wp.name}</span>`;
-    d.onclick=()=>{ applyWallpaper(wp.src); document.querySelectorAll('.wp-preset-thumb').forEach(t=>t.classList.remove('selected')); d.classList.add('selected'); toast('🖼️ Wallpaper changed!'); closeWpPicker(); };
+    d.onclick=()=>{
+      applyWallpaper(wp.src);
+      document.querySelectorAll('.wp-preset-thumb').forEach(t=>t.classList.remove('selected'));
+      d.classList.add('selected');
+      toast('🖼️ Wallpaper changed!');
+      closeWpPicker();
+    };
     grid.appendChild(d);
   });
 }
@@ -176,7 +181,8 @@ document.getElementById('start-grid').querySelectorAll('.start-item').forEach(it
   item.addEventListener('click', ()=>{ openApp(item.dataset.app); closeStartMenu(); SND.play('click'); });
 });
 document.addEventListener('click', e=>{
-  const sm=document.getElementById('start-menu'), logo=document.querySelector('.taskbar-logo');
+  const sm=document.getElementById('start-menu');
+  const logo=document.querySelector('.dock-item');
   if(!sm.contains(e.target) && e.target!==logo && !(logo&&logo.contains(e.target))) sm.classList.add('hidden');
 });
 function filterStartApps(q){
@@ -223,7 +229,7 @@ function openApp(id){
   win.style.zIndex=++zTop;
   win.innerHTML=`
     <div class="win-titlebar" onmousedown="startDrag(event,'${id}')">
-      <img class="win-icon" src="${meta.icon}" onerror="this.outerHTML='🐱'"/>
+      <img class="win-icon" src="${meta.icon}" onerror="this.style.display='none'"/>
       <span class="win-title">${meta.title}</span>
       <div class="win-controls">
         <div class="win-ctrl-btn wc-close" onclick="closeWin('${id}')"></div>
@@ -271,7 +277,7 @@ function maximizeWin(id){
   const ow=openWins[id];
   if(!ow.maxed){
     ow.savedPos={ l:win.style.left, t:win.style.top, w:win.style.width, h:win.style.height };
-    win.style.left='0'; win.style.top='0'; win.style.width='100vw'; win.style.height=(window.innerHeight-50)+'px'; ow.maxed=true;
+    win.style.left='0'; win.style.top='38px'; win.style.width='100vw'; win.style.height=(window.innerHeight-100)+'px'; ow.maxed=true;
   } else {
     const s=ow.savedPos; win.style.left=s.l; win.style.top=s.t; win.style.width=s.w; win.style.height=s.h; ow.maxed=false;
   }
@@ -322,9 +328,12 @@ function startResize(e,id){
 
 /* ── APP INIT ─────────────────────────────────── */
 function initApp(id){
-  const map={ memes:initMemes, browser:initBrowser, notepad:initNotepad, music:initMusic, paint:initPaint,
-    terminal:initTerminal, files:initFiles, calculator:()=>{}, game:()=>{}, settings:initSettings,
-    calendar:initCalendar, chat:initChat, notifications:initNotifications, aboutme:initAboutMe };
+  const map={
+    memes:initMemes, browser:initBrowser, notepad:initNotepad, music:initMusic,
+    paint:initPaint, terminal:initTerminal, files:initFiles, calculator:()=>{},
+    game:()=>{}, settings:initSettings, calendar:initCalendar, chat:initChat,
+    notifications:initNotifications, aboutme:initAboutMe
+  };
   if(map[id]) map[id]();
 }
 
@@ -475,8 +484,11 @@ function browserNav(url){
   } else {
     content.innerHTML = fn ? fn() : `<div class="br-page"><h1>😿 404 — Page Not Found</h1><p>The cat knocked this page off the table.</p><span class="br-link" onclick="browserNav('cat://newtab')">← Home</span></div>`;
   }
-  const titles={'cat://newtab':'New Tab','cat://news':'CatNews','cat://social':'PawBook','cat://wiki':'WikiPurrdia',
-    'cat://shop':'PawMart','cat://games':'CatArcade','cat://weather':'PurrCast','cat://music':'MeowTunes','cat://mail':'PurrMail'};
+  const titles={
+    'cat://newtab':'New Tab','cat://news':'CatNews','cat://social':'PawBook',
+    'cat://wiki':'WikiPurrdia','cat://shop':'PawMart','cat://games':'CatArcade',
+    'cat://weather':'PurrCast','cat://music':'MeowTunes','cat://mail':'PurrMail'
+  };
   const tt=document.getElementById('btab-title-0');
   if(tt) tt.textContent=titles[url]||(searchMatch?`Search: ${searchMatch[1]}`:url);
   if(browserHist[browserHist.length-1]!==url){ browserHist.push(url); browserFwdStk.length=0; }
@@ -510,11 +522,11 @@ function notepadSize(s){ const a=document.getElementById('notepad-area'); if(a) 
    MEOWTUNES — REAL AUDIO
 ══════════════════════════════════════════════════ */
 const TRACKS=[
-  { title:'Nyan Cat Theme',     artist:'Daniwell',      album:'Nyan Cat OST',    src:'nyan.mp3',     cover:'cover1.jpg', dur:'3:37' },
-  { title:'Meow (Cat Song)',    artist:'Jingle Punks',  album:'Cat Beats',       src:'meow.mp3',     cover:'cover2.jpg', dur:'2:15' },
-  { title:'Keyboard Cat',       artist:'Charlie Schmidt',album:'Internet Gold',   src:'keyboard.mp3', cover:'cover3.jpg', dur:'0:54' },
-  { title:'Cat Vibes Lo-fi',    artist:'LoFi Cat',      album:'Chill Paws',      src:'lofi.mp3',     cover:'cover4.jpg', dur:'3:50' },
-  { title:'Stray Cat Strut',    artist:'The Stray Cats', album:'Built for Speed', src:'stray.mp3',    cover:'cover5.jpg', dur:'3:12' },
+  { title:'Nyan Cat Theme',     artist:'Daniwell',       album:'Nyan Cat OST',    src:'nyan.mp3',     cover:'cover1.jpg', dur:'3:37' },
+  { title:'Meow (Cat Song)',    artist:'Jingle Punks',   album:'Cat Beats',       src:'meow.mp3',     cover:'cover2.jpg', dur:'2:15' },
+  { title:'Keyboard Cat',       artist:'Charlie Schmidt', album:'Internet Gold',   src:'keyboard.mp3', cover:'cover3.jpg', dur:'0:54' },
+  { title:'Cat Vibes Lo-fi',    artist:'LoFi Cat',       album:'Chill Paws',      src:'lofi.mp3',     cover:'cover4.jpg', dur:'3:50' },
+  { title:'Stray Cat Strut',    artist:'The Stray Cats',  album:'Built for Speed', src:'stray.mp3',    cover:'cover5.jpg', dur:'3:12' },
 ];
 
 const MX={ idx:0, playing:false, shuffle:false, repeat:false, vol:0.7, audio:null };
@@ -537,7 +549,7 @@ function buildPlaylist(){
 }
 function loadTrack(i){
   MX.idx=i; const t=TRACKS[i];
-  const art=document.getElementById('music-art'); if(art){ art.src=t.cover; art.onerror=()=>art.src='cat-music.jpg'; }
+  const art=document.getElementById('music-art'); if(art){ art.src=t.cover; art.onerror=()=>art.src='cat-icon.png'; }
   const ti=document.getElementById('music-title');   if(ti) ti.textContent=t.title;
   const ar=document.getElementById('music-artist');  if(ar) ar.textContent=t.artist;
   const al=document.getElementById('music-album');   if(al) al.textContent=t.album;
@@ -642,10 +654,29 @@ function floodFill(sx,sy,fc){
   }
   PC.putImageData(id,0,0);
 }
-function setPaintTool(t,btn){ PT=t; document.querySelectorAll('.paint-tool-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); }
-function paintStamp(){ if(!PC) return; const canvas=document.getElementById('paint-canvas'); const emojis=['🐱','😺','😸','🐾','🙀','😼']; PC.font='40px serif'; PC.fillText(emojis[Math.floor(Math.random()*emojis.length)], Math.random()*(canvas.width-60)+10, Math.random()*(canvas.height-60)+50); }
-function paintClear(){ if(!PC) return; const c=document.getElementById('paint-canvas'); PC.fillStyle='#fff'; PC.fillRect(0,0,c.width,c.height); toast('Canvas cleared!'); }
-function paintSaveImg(){ const c=document.getElementById('paint-canvas'); if(!c) return; const a=document.createElement('a'); a.download='catpainting.png'; a.href=c.toDataURL(); a.click(); toast('💾 Saved!'); }
+function setPaintTool(t,btn){
+  PT=t;
+  document.querySelectorAll('.paint-tool-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function paintStamp(){
+  if(!PC) return;
+  const canvas=document.getElementById('paint-canvas');
+  const emojis=['🐱','😺','😸','🐾','🙀','😼'];
+  PC.font='40px serif';
+  PC.fillText(emojis[Math.floor(Math.random()*emojis.length)], Math.random()*(canvas.width-60)+10, Math.random()*(canvas.height-60)+50);
+}
+function paintClear(){
+  if(!PC) return;
+  const c=document.getElementById('paint-canvas');
+  PC.fillStyle='#fff'; PC.fillRect(0,0,c.width,c.height);
+  toast('Canvas cleared!');
+}
+function paintSaveImg(){
+  const c=document.getElementById('paint-canvas'); if(!c) return;
+  const a=document.createElement('a'); a.download='catpainting.png'; a.href=c.toDataURL(); a.click();
+  toast('💾 Saved!');
+}
 
 /* ══════════════════════════════════════════════════
    CATSHELL TERMINAL
@@ -661,10 +692,23 @@ const TCMDS={
   fortune:()=>'🐾 '+['In ancient Egypt, you were a god. Act accordingly.','The internet belongs to cats.','Every cardboard box is a potential home.','The human is staff.','Knock it off the table. You will feel better.','Sleep is not laziness. It is professional napping.'][Math.floor(Math.random()*6)],
   clear:()=>{ document.getElementById('terminal-output').innerHTML=''; return ''; },
   matrix:()=>{ catMatrix(); return 'Entering cat matrix...'; },
-  joke:()=>{ const j=[['Why do cats make bad storytellers?','Only one tail!'],['What do cats eat for breakfast?','Mice Krispies!'],['Why did the cat sit on the computer?','To keep an eye on the mouse!']]; const [q,a]=j[Math.floor(Math.random()*j.length)]; return `Q: ${q}\nA: ${a}`; },
+  joke:()=>{
+    const j=[
+      ['Why do cats make bad storytellers?','Only one tail!'],
+      ['What do cats eat for breakfast?','Mice Krispies!'],
+      ['Why did the cat sit on the computer?','To keep an eye on the mouse!'],
+      ['What do you call a cat that gets everything it wants?','Purrr-suasive!'],
+      ['Why don\'t cats play poker in the jungle?','Too many cheetahs!'],
+    ];
+    const [q,a]=j[Math.floor(Math.random()*j.length)];
+    return `Q: ${q}\nA: ${a}`;
+  },
   uname:()=>'CatOS 2.0.0 (Whiskers) #1 SMP MEOW x86_paw',
   uptime:()=>{ const s=Math.floor(performance.now()/1000); return `Up: ${Math.floor(s/3600)}h ${Math.floor((s%3600)/60)}m ${s%60}s`; },
   echo:(args)=>args.join(' '),
+  pwd:()=>'/home/meow',
+  neofetch:()=>`        /\\_____/\\       meow@catos\n       /  o   o  \\      ----------\n      ( ==  ^  == )     OS: CatOS 2.0 Whiskers\n       )         (      Kernel: PurrLinux 6.9\n      (  (  )  )  )     Shell: catsh 2.0\n     (__(__)____)       Memory: 9 lives / 16 GB\n                        Uptime: ${Math.floor(performance.now()/60000)}m`,
+  ls_la:()=>'total 48\ndrwxr-xr-x  meow meow  paw-tures/\ndrwxr-xr-x  meow meow  meow-sic/\n-rw-r--r--  meow meow  fish_list.txt\n-rw-r--r--  meow meow  nap_schedule.cal',
 };
 function initTerminal(){ tPrint('CatShell v2.0 🐱 — type "help"','info'); tPrint(''); }
 function tPrint(text,cls=''){
@@ -680,11 +724,11 @@ function termKey(e){
     tPrint('meow@catos:~$ '+val);
     const [cmd,...args]=val.toLowerCase().split(' ');
     const fn=TCMDS[cmd];
-    const res=fn?fn(args):`Command not found: ${cmd}`;
+    const res=fn?fn(args):`bash: ${cmd}: command not found`;
     if(res) tPrint(res, fn?'':'err');
     input.value='';
-  } else if(e.key==='ArrowUp'){ tHI=Math.min(tHI+1,termHist.length-1); input.value=termHist[tHI]||''; }
-  else if(e.key==='ArrowDown'){ tHI=Math.max(tHI-1,-1); input.value=tHI>=0?termHist[tHI]:''; }
+  } else if(e.key==='ArrowUp'){ tHI=Math.min(tHI+1,termHist.length-1); input.value=termHist[tHI]||''; e.preventDefault(); }
+  else if(e.key==='ArrowDown'){ tHI=Math.max(tHI-1,-1); input.value=tHI>=0?termHist[tHI]:''; e.preventDefault(); }
 }
 function catMatrix(){
   const out=document.getElementById('terminal-output'); if(!out) return;
@@ -701,20 +745,20 @@ function catMatrix(){
 ══════════════════════════════════════════════════ */
 const FS={
   home:[
-    { img:'resume.png',    name:'resume_cat.pdf',    isImg:false },
-    { img:'photo1.jpg',    name:'selfie_01.jpg',     isImg:true  },
-    { img:null,            name:'Projects/',         isImg:false, isDir:true },
-    { img:'nyan.gif',      name:'nyan_cat.gif',      isImg:true  },
-    { img:null,            name:'secrets.txt',       isImg:false },
-    { img:'box.png',       name:'box_collection/',   isImg:false, isDir:true },
+    { img:'notepad.png',  name:'resume_cat.pdf',    isImg:false },
+    { img:'owner.jpg',    name:'selfie_01.jpg',      isImg:true  },
+    { img:null,           name:'Projects/',          isImg:false, isDir:true },
+    { img:'nyan.gif',     name:'nyan_cat.gif',       isImg:true  },
+    { img:null,           name:'secrets.txt',        isImg:false },
+    { img:null,           name:'box_collection/',    isImg:false, isDir:true },
   ],
   pictures:[
-    { img:'cat_selfie.jpg', name:'selfie_01.jpg', isImg:true },
-    { img:'cat_nap.jpg',    name:'nap_2024.jpg',  isImg:true },
-    { img:'cat_laser.jpg',  name:'laser_chase.jpg',isImg:true },
-    { img:'cat_sun.jpg',    name:'sunbeam.jpg',   isImg:true },
-    { img:'cat_box.jpg',    name:'in_a_box.jpg',  isImg:true },
-    { img:'cat_bird.jpg',   name:'birdwatch.jpg', isImg:true },
+    { img:'owner.jpg',    name:'selfie_01.jpg',  isImg:true },
+    { img:'cat1.jpg',     name:'nap_2024.jpg',   isImg:true },
+    { img:'cat2.jpg',     name:'laser_chase.jpg',isImg:true },
+    { img:'cat3.jpg',     name:'sunbeam.jpg',    isImg:true },
+    { img:'nyan.gif',     name:'nyan_cat.gif',   isImg:true },
+    { img:'owner.jpg',    name:'birdwatch.jpg',  isImg:true },
   ],
   music:[
     { img:null, name:'nyan_cat.mp3',    isImg:false, icon:'🎵' },
@@ -724,17 +768,17 @@ const FS={
     { img:null, name:'stray_cat.mp3',   isImg:false, icon:'🎵' },
   ],
   documents:[
-    { img:null, name:'nap_schedule.docx', icon:'📄' },
-    { img:null, name:'fish_inventory.xlsx',icon:'📊' },
-    { img:null, name:'human_training.pdf', icon:'📄' },
-    { img:null, name:'yarn_budget.txt',    icon:'📝' },
-    { img:null, name:'demands_list.md',    icon:'📋' },
+    { img:null, name:'nap_schedule.docx',  icon:'📄' },
+    { img:null, name:'fish_inventory.xlsx', icon:'📊' },
+    { img:null, name:'human_training.pdf',  icon:'📄' },
+    { img:null, name:'yarn_budget.txt',     icon:'📝' },
+    { img:null, name:'demands_list.md',     icon:'📋' },
   ],
   trash:[
-    { img:null, name:'monday.exe',     icon:'🗑️' },
-    { img:null, name:'bath_time.app',  icon:'🗑️' },
-    { img:null, name:'diet_plan.pdf',  icon:'🗑️' },
-    { img:null, name:'vet_appt.cal',   icon:'🗑️' },
+    { img:null, name:'monday.exe',    icon:'🗑️' },
+    { img:null, name:'bath_time.app', icon:'🗑️' },
+    { img:null, name:'diet_plan.pdf', icon:'🗑️' },
+    { img:null, name:'vet_appt.cal',  icon:'🗑️' },
   ],
 };
 function initFiles(){ filesNav('home', document.querySelector('.files-nav-item')); }
@@ -747,7 +791,10 @@ function filesNav(sec, el){
   if(path) path.textContent=labels[sec]||sec;
   grid.innerHTML=(FS[sec]||[]).map(f=>`
     <div class="file-item" ondblclick="toast('Opening ${f.name}...')">
-      ${f.isImg?`<img src="${f.img}" onerror="this.outerHTML='<div class=\\'file-icon\\'>📄</div>'"/>`:`<div class="file-icon">${f.isDir?'📁':(f.icon||'📄')}</div>`}
+      ${f.isImg
+        ? `<img src="${f.img}" onerror="this.outerHTML='<div class=\\'file-icon\\'>📄</div>'"/>`
+        : `<div class="file-icon">${f.isDir?'📁':(f.icon||'📄')}</div>`
+      }
       <small>${f.name}</small>
     </div>`).join('');
 }
@@ -774,7 +821,8 @@ function calcEq(chain=false){
   if(!cOp) return;
   const a=parseFloat(cPrev), b=parseFloat(cDisp);
   let res;
-  if(cOp==='+') res=a+b; else if(cOp==='−') res=a-b;
+  if(cOp==='+') res=a+b;
+  else if(cOp==='−') res=a-b;
   else if(cOp==='×') res=a*b;
   else if(cOp==='÷'){ res=b===0?'Error: ÷0':a/b; }
   else res=b;
@@ -809,30 +857,54 @@ function gameStart(){
   canvas.onmousemove=e=>{ const r=canvas.getBoundingClientRect(); GS.cat.x=Math.max(30,Math.min(W-30,e.clientX-r.left)); };
   const kd=e=>{ if(GS) GS.keys[e.key]=true; };
   const ku=e=>{ if(GS) GS.keys[e.key]=false; };
-  document.addEventListener('keydown',kd); document.addEventListener('keyup',ku);
+  document.addEventListener('keydown',kd);
+  document.addEventListener('keyup',ku);
   function loop(){
     if(!GS||!GS.running) return;
     ctx.fillStyle='#0d0820'; ctx.fillRect(0,0,W,H);
-    for(let i=0;i<40;i++){ ctx.fillStyle='rgba(255,255,255,'+(0.1+Math.sin(i)*0.1)+')'; ctx.fillRect((i*79+3)%W,(i*53+7)%H,1.5,1.5); }
+    // Stars
+    for(let i=0;i<40;i++){
+      ctx.fillStyle='rgba(255,255,255,'+(0.1+Math.sin(i)*0.1)+')';
+      ctx.fillRect((i*79+3)%W,(i*53+7)%H,1.5,1.5);
+    }
+    // Input
     if(GS.keys['ArrowLeft']||GS.keys['a']) GS.cat.x=Math.max(30,GS.cat.x-GS.cat.spd);
     if(GS.keys['ArrowRight']||GS.keys['d']) GS.cat.x=Math.min(W-30,GS.cat.x+GS.cat.spd);
+    // Spawn yarns
     GS.spawn++; GS.fishT++;
     const spawnRate=Math.max(28,90-GS.level*8);
-    if(GS.spawn>=spawnRate){ GS.yarns.push({x:Math.random()*(W-40)+20,y:-20,r:13,vy:1.8+GS.level*0.35+Math.random()*1.2,color:['#c084fc','#e040fb','#fb923c','#fbbf24','#69f0ae','#60a5fa'][Math.floor(Math.random()*6)]}); GS.spawn=0; }
+    if(GS.spawn>=spawnRate){
+      GS.yarns.push({
+        x:Math.random()*(W-40)+20, y:-20, r:13,
+        vy:1.8+GS.level*0.35+Math.random()*1.2,
+        color:['#c084fc','#e040fb','#fb923c','#fbbf24','#69f0ae','#60a5fa'][Math.floor(Math.random()*6)]
+      });
+      GS.spawn=0;
+    }
+    // Spawn fish bonus
     if(GS.fishT>=180){ GS.fish.push({x:Math.random()*(W-40)+20,y:-20,vy:1.4+Math.random()}); GS.fishT=0; }
+    // Draw & update yarns
     GS.yarns=GS.yarns.filter(y=>{
       y.y+=y.vy;
       ctx.beginPath(); ctx.arc(y.x,y.y,y.r,0,Math.PI*2); ctx.fillStyle=y.color; ctx.fill();
       ctx.font='18px serif'; ctx.fillText('🧶',y.x-9,y.y+7);
-      if(Math.abs(y.x-GS.cat.x)<42&&y.y>H-58&&y.y<H-28){ GS.score+=10*GS.level; if(GS.score%80===0){GS.level++;GS.cat.spd=Math.min(14,GS.cat.spd+0.5);} updateGameHUD(); return false; }
+      if(Math.abs(y.x-GS.cat.x)<42&&y.y>H-58&&y.y<H-28){
+        GS.score+=10*GS.level;
+        if(GS.score>0 && GS.score%(100*GS.level)===0){ GS.level++; GS.cat.spd=Math.min(14,GS.cat.spd+0.5); }
+        updateGameHUD(); return false;
+      }
       if(y.y>H+20){ GS.lives--; updateGameHUD(); return false; }
       return true;
     });
+    // Draw & update fish
     GS.fish=GS.fish.filter(f=>{
       f.y+=f.vy; ctx.font='22px serif'; ctx.fillText('🐟',f.x-11,f.y+7);
-      if(Math.abs(f.x-GS.cat.x)<42&&f.y>H-58&&f.y<H-28){ GS.score+=50; toast('🐟 +50 Bonus!'); SND.play('click'); updateGameHUD(); return false; }
+      if(Math.abs(f.x-GS.cat.x)<42&&f.y>H-58&&f.y<H-28){
+        GS.score+=50; toast('🐟 +50 Bonus!'); SND.play('click'); updateGameHUD(); return false;
+      }
       return f.y<=H+20;
     });
+    // Draw cat
     ctx.font='48px serif'; ctx.fillText('🐱',GS.cat.x-24,H-12);
     if(GS.lives<=0){ gameOver(ctx,W,H); return; }
     GAF=requestAnimationFrame(loop);
@@ -853,7 +925,8 @@ function gameOver(ctx,W,H){
   ctx.fillText('😿 GAME OVER', W/2, H/2-26);
   ctx.fillStyle='#fff'; ctx.font='18px Nunito,sans-serif';
   ctx.fillText('Score: '+GS.score, W/2, H/2+10);
-  ctx.fillText('Click Restart to play again', W/2, H/2+38); ctx.textAlign='left';
+  ctx.fillText('Click Restart to play again', W/2, H/2+38);
+  ctx.textAlign='left';
   toast('😿 Game Over! Score: '+GS.score);
 }
 function gameStop(){ if(GAF){ cancelAnimationFrame(GAF); GAF=null; } if(GS) GS.running=false; GS=null; }
@@ -870,7 +943,8 @@ function settingsTab(tab, el){
     panel.innerHTML=`<h3>🎨 Appearance</h3>
       <div class="setting-row"><label>Change Wallpaper</label><button class="clay-btn sm" onclick="openWallpaperPicker()">Open Picker</button></div>
       <div class="setting-row"><label>Icon Size</label><input type="range" min="60" max="100" value="76" oninput="document.querySelectorAll('.desk-icon').forEach(d=>d.style.width=this.value+'px')"/></div>
-      <div class="setting-row"><label>Window Shadow</label><input type="checkbox" checked/></div>`;
+      <div class="setting-row"><label>Window Shadow</label><input type="checkbox" checked/></div>
+      <div class="setting-row"><label>Accent Color</label><input type="color" value="#7c4dff" oninput="document.documentElement.style.setProperty('--c-accent',this.value)"/></div>`;
   } else if(tab==='sound'){
     panel.innerHTML=`<h3>🔊 Sound</h3>
       <div class="setting-row"><label>Master Volume</label><input type="range" min="0" max="1" step="0.05" value="${LS.get('snd-vol',0.5)}" oninput="LS.set('snd-vol',parseFloat(this.value))"/></div>
@@ -880,10 +954,17 @@ function settingsTab(tab, el){
   } else if(tab==='cat'){
     const saved=LS.get('catos-profile',{name:'Whiskers',breed:'Domestic Shorthair'});
     panel.innerHTML=`<h3>🐱 Cat Profile</h3>
-      <div class="setting-row"><label>Cat Name</label><input type="text" value="${saved.name}" style="background:var(--c-surface2);border:none;border-radius:8px;padding:5px 10px;font-family:var(--font);font-weight:700;color:var(--c-text)" onchange="LS.set('catos-profile',{name:this.value,breed:'${saved.breed}'})"/></div>
+      <div class="setting-row"><label>Cat Name</label>
+        <input type="text" value="${saved.name}" style="background:var(--c-surface2);border:none;border-radius:8px;padding:5px 10px;font-family:var(--font);font-weight:700;color:var(--c-text);outline:none;"
+        onchange="const p=LS.get('catos-profile',{});p.name=this.value;LS.set('catos-profile',p)"/></div>
       <div class="setting-row"><label>Breed</label>
         <select onchange="const p=LS.get('catos-profile',{});p.breed=this.value;LS.set('catos-profile',p)">
-          <option>Domestic Shorthair</option><option>Siamese</option><option>Persian</option><option>Maine Coon</option><option>Bengal</option><option>Unknown (Chaotic)</option>
+          <option ${saved.breed==='Domestic Shorthair'?'selected':''}>Domestic Shorthair</option>
+          <option ${saved.breed==='Siamese'?'selected':''}>Siamese</option>
+          <option ${saved.breed==='Persian'?'selected':''}>Persian</option>
+          <option ${saved.breed==='Maine Coon'?'selected':''}>Maine Coon</option>
+          <option ${saved.breed==='Bengal'?'selected':''}>Bengal</option>
+          <option ${saved.breed==='Unknown (Chaotic)'?'selected':''}>Unknown (Chaotic)</option>
         </select></div>
       <div class="setting-row"><label>Mischief Level</label><input type="range" min="1" max="11" value="11"/></div>
       <div class="setting-row"><label>Treat Addiction</label><input type="range" min="0" max="100" value="100"/></div>`;
@@ -893,6 +974,7 @@ function settingsTab(tab, el){
       <h2>CatOS 2.0</h2>
       <p><b>Powered by Paws™</b><br>The world's most feline operating system.<br><br>
       Kernel: PurrLinux 6.9-meow<br>Desktop: CatDE 2.0 (Clay Edition)<br>Memory: 9 lives / 16 GB<br>Storage: Infinite boxes<br><br>
+      Built with ❤️ by ajmaleee__<br><br>
       🐾 In cats we trust 🐾</p>
     </div>`;
   }
@@ -901,29 +983,52 @@ function settingsTab(tab, el){
 /* ══════════════════════════════════════════════════
    CALENDAR
 ══════════════════════════════════════════════════ */
-const CAT_EVENTS={1:['🐟 Fish Day','🛌 Nap Championships'],5:['🧶 World Yarn Day'],8:['🌞 Sunbeam Day'],13:['😹 Cat Day'],17:['🐾 Paw Prints Day'],20:['😻 Love Your Cat'],25:['🎁 Treat Tuesday'],28:['🏆 CatOS Release']};
+const CAT_EVENTS={
+  1:['🐟 Fish Day','🛌 Nap Championships'],
+  5:['🧶 World Yarn Day'],
+  8:['🌞 Sunbeam Day'],
+  13:['😹 Cat Day'],
+  17:['🐾 Paw Prints Day'],
+  20:['😻 Love Your Cat'],
+  25:['🎁 Treat Tuesday'],
+  28:['🏆 CatOS Release']
+};
 let calD=new Date();
 function initCalendar(){ renderCalendar(); }
 function calPrev(){ calD.setMonth(calD.getMonth()-1); renderCalendar(); }
 function calNext(){ calD.setMonth(calD.getMonth()+1); renderCalendar(); }
 function renderCalendar(){
-  const title=document.getElementById('cal-title'), grid=document.getElementById('cal-grid'); if(!title||!grid) return;
+  const title=document.getElementById('cal-title'), grid=document.getElementById('cal-grid');
+  if(!title||!grid) return;
   const now=new Date(), y=calD.getFullYear(), m=calD.getMonth();
   title.textContent=calD.toLocaleString('default',{month:'long',year:'numeric'});
   const first=new Date(y,m,1).getDay(), days=new Date(y,m+1,0).getDate();
+  const prevDays=new Date(y,m,0).getDate();
   grid.innerHTML='';
-  for(let i=0;i<first;i++){ const d=document.createElement('div'); d.className='cal-day other-month'; d.textContent=new Date(y,m,0).getDate()-first+i+1; grid.appendChild(d); }
+  for(let i=0;i<first;i++){
+    const d=document.createElement('div'); d.className='cal-day other-month';
+    d.textContent=prevDays-first+i+1; grid.appendChild(d);
+  }
   for(let i=1;i<=days;i++){
     const d=document.createElement('div');
-    d.className='cal-day'+(i===now.getDate()&&m===now.getMonth()&&y===now.getFullYear()?' today':'')+(CAT_EVENTS[i]?' has-event':'');
+    const isToday=i===now.getDate()&&m===now.getMonth()&&y===now.getFullYear();
+    d.className='cal-day'+(isToday?' today':'')+(CAT_EVENTS[i]?' has-event':'');
     d.textContent=i; d.onclick=()=>showCalEvents(i); grid.appendChild(d);
+  }
+  // Fill remaining cells
+  const total=first+days; const remaining=(7-total%7)%7;
+  for(let i=1;i<=remaining;i++){
+    const d=document.createElement('div'); d.className='cal-day other-month';
+    d.textContent=i; grid.appendChild(d);
   }
   showCalEvents(now.getDate());
 }
 function showCalEvents(day){
   const el=document.getElementById('cal-ev-list'); if(!el) return;
   const ev=CAT_EVENTS[day];
-  el.innerHTML=ev?ev.map(e=>`<div class="cal-ev-item">${e}</div>`).join(''):'<div style="padding:6px;color:var(--c-text3);font-size:0.8rem">No events — a purrfect nap day.</div>';
+  el.innerHTML=ev
+    ? ev.map(e=>`<div class="cal-ev-item">${e}</div>`).join('')
+    : '<div style="padding:6px;color:var(--c-text3);font-size:0.8rem">No events — a purrfect nap day.</div>';
 }
 
 /* ══════════════════════════════════════════════════
@@ -950,8 +1055,8 @@ const CONTACTS={
 const REPLIES={
   whiskers:['Meow meow! 🐱','*purrs* Yes yes','*stares judgingly*','I was napping, what do you want?','MEOW!','*knocks your message off the table*'],
   mittens:['THE LASER IS BACK!!','Wait... was that a bird?','*chirps at window*','ZOOMIES TIME!!'],
-  chairman:['TREATS. NOW.','My demands are non-negotiable.','Do not test me.'],
-  nyancat:['nyan nyan nyan 🌈','NYAN!','🌈🌈🌈'],
+  chairman:['TREATS. NOW.','My demands are non-negotiable.','Do not test me.','*knocks over vase*'],
+  nyancat:['nyan nyan nyan 🌈','NYAN!','🌈🌈🌈','nyan nyan nyan nyan'],
 };
 let curChat='whiskers';
 function initChat(){ chatSelect('whiskers', document.querySelector('.chat-contact')); }
@@ -959,27 +1064,40 @@ function chatSelect(id, el){
   curChat=id; const c=CONTACTS[id];
   document.querySelectorAll('.chat-contact').forEach(x=>x.classList.remove('active'));
   if(el) el.classList.add('active');
-  const av=document.getElementById('chat-hdr-av'); if(av){ av.src=c.av; av.onerror=()=>av.src='https://placecats.com/36/36'; }
+  const av=document.getElementById('chat-hdr-av');
+  if(av){ av.src=c.av; av.onerror=()=>av.src='https://placecats.com/36/36'; }
   const nm=document.getElementById('chat-hdr-name'); if(nm) nm.textContent=c.name;
   const st=document.getElementById('chat-hdr-status'); if(st) st.textContent=c.status;
   renderMsgs(id);
 }
 function renderMsgs(id){
   const c=CONTACTS[id], msgs=document.getElementById('chat-msgs'); if(!msgs) return;
-  msgs.innerHTML=c.msgs.map(m=>`<div class="chat-msg ${m.me?'me':'them'}"><div class="chat-msg-who">${m.me?'You 🐾':c.name}</div>${m.text}</div>`).join('');
+  msgs.innerHTML=c.msgs.map(m=>`
+    <div class="chat-msg ${m.me?'me':'them'}">
+      <div class="chat-msg-who">${m.me?'You 🐾':c.name}</div>
+      ${m.text}
+    </div>`).join('');
   msgs.scrollTop=msgs.scrollHeight;
 }
 function chatSend(){
-  const input=document.getElementById('chat-input'); if(!input||!input.value.trim()) return;
+  const input=document.getElementById('chat-input');
+  if(!input||!input.value.trim()) return;
   const c=CONTACTS[curChat];
-  c.msgs.push({me:true,text:input.value}); input.value=''; renderMsgs(curChat); SND.play('click');
+  c.msgs.push({me:true,text:input.value});
+  input.value='';
+  renderMsgs(curChat);
+  SND.play('click');
   setTimeout(()=>{
-    const reps=REPLIES[curChat]; c.msgs.push({me:false,text:reps[Math.floor(Math.random()*reps.length)]}); renderMsgs(curChat);
+    const reps=REPLIES[curChat];
+    c.msgs.push({me:false,text:reps[Math.floor(Math.random()*reps.length)]});
+    renderMsgs(curChat);
+    SND.play('notif');
   }, 900+Math.random()*900);
 }
 function chatEmoji(){
-  const emojis=['😺','😸','😹','😻','🙀','😼','🐱','🐾','🧶','🐟'];
-  const input=document.getElementById('chat-input'); if(input){ input.value+=emojis[Math.floor(Math.random()*emojis.length)]; input.focus(); }
+  const emojis=['😺','😸','😹','😻','🙀','😼','🐱','🐾','🧶','🐟','🌈','💜'];
+  const input=document.getElementById('chat-input');
+  if(input){ input.value+=emojis[Math.floor(Math.random()*emojis.length)]; input.focus(); }
 }
 
 /* ══════════════════════════════════════════════════
@@ -990,13 +1108,21 @@ function initNotifications(){ renderNotifs(); }
 /* ══════════════════════════════════════════════════
    ABOUT ME
 ══════════════════════════════════════════════════ */
-function initAboutMe(){ /* all info is hardcoded in index.html */ }
+function initAboutMe(){ /* all static HTML in index.html */ }
 
 /* ══════════════════════════════════════════════════
    SHUTDOWN
 ══════════════════════════════════════════════════ */
 function shutDown(){
+  // Close all windows
+  Object.keys(openWins).forEach(id=>closeWin(id));
   const ov=document.createElement('div'); ov.id='shutdown-overlay';
-  ov.innerHTML=`<img src="owner.jpg" class="shut-photo" onerror="this.style.display='none'"/><h1>CatOS Napping...</h1><p>All systems entering nap mode.</p><p style="font-size:2rem;margin:8px 0">😴💤🐾</p><button class="clay-btn accent" onclick="location.reload()">🐱 Wake Up</button>`;
+  ov.innerHTML=`
+    <img src="owner.jpg" class="shut-photo" onerror="this.style.display='none'"/>
+    <h1>CatOS Napping...</h1>
+    <p>All systems entering nap mode.</p>
+    <p style="font-size:2rem;margin:8px 0">😴💤🐾</p>
+    <button class="clay-btn accent" onclick="location.reload()">🐱 Wake Up</button>`;
   document.body.appendChild(ov);
+  SND.purr(false);
 }
