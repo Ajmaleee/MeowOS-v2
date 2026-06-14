@@ -32,9 +32,6 @@
 <!-- ═══════════════════ DESKTOP ═══════════════════ -->
 <div id="desktop" class="hidden">
 
-  <!-- Custom cursor overlays -->
-  <div id="cursor-cat" class="cursor-overlay"></div>
-
   <!-- CLOCK BAR (top right) -->
   <div id="top-bar">
     <div id="top-bar-left">
@@ -56,53 +53,53 @@
       </div>
       <div class="dock-separator"></div>
       <div class="dock-item" onclick="openApp('memes')" title="Meme Gallery" data-app="memes">
-        <div class="dock-icon-wrap"><img src="icons/gallery.png" onerror="this.outerHTML='🖼️'"/></div>
+        <div class="dock-icon-wrap"><img src="gallery.png" onerror="this.outerHTML='🖼️'"/></div>
         <div class="dock-label">Memes</div>
         <div class="dock-dot hidden"></div>
       </div>
       <div class="dock-item" onclick="openApp('browser')" title="PurrFox" data-app="browser">
-        <div class="dock-icon-wrap"><img src="icons/browser.png" onerror="this.outerHTML='🌐'"/></div>
+        <div class="dock-icon-wrap"><img src="browser.png" onerror="this.outerHTML='🌐'"/></div>
         <div class="dock-label">PurrFox</div>
         <div class="dock-dot hidden"></div>
       </div>
       <div class="dock-item" onclick="openApp('notepad')" title="Pawpad" data-app="notepad">
-        <div class="dock-icon-wrap"><img src="icons/notepad.png" onerror="this.outerHTML='📝'"/></div>
+        <div class="dock-icon-wrap"><img src="notepad.png" onerror="this.outerHTML='📝'"/></div>
         <div class="dock-label">Pawpad</div>
         <div class="dock-dot hidden"></div>
       </div>
       <div class="dock-item" onclick="openApp('music')" title="MeowTunes" data-app="music">
-        <div class="dock-icon-wrap"><img src="icons/music.png" onerror="this.outerHTML='🎵'"/></div>
+        <div class="dock-icon-wrap"><img src="music.png" onerror="this.outerHTML='🎵'"/></div>
         <div class="dock-label">MeowTunes</div>
         <div class="dock-dot hidden"></div>
       </div>
       <div class="dock-item" onclick="openApp('paint')" title="CatPaint" data-app="paint">
-        <div class="dock-icon-wrap"><img src="icons/paint.png" onerror="this.outerHTML='🎨'"/></div>
+        <div class="dock-icon-wrap"><img src="paint.png" onerror="this.outerHTML='🎨'"/></div>
         <div class="dock-label">CatPaint</div>
         <div class="dock-dot hidden"></div>
       </div>
       <div class="dock-item" onclick="openApp('terminal')" title="CatShell" data-app="terminal">
-        <div class="dock-icon-wrap"><img src="icons/terminal.png" onerror="this.outerHTML='💻'"/></div>
+        <div class="dock-icon-wrap"><img src="terminal.png" onerror="this.outerHTML='💻'"/></div>
         <div class="dock-label">Terminal</div>
         <div class="dock-dot hidden"></div>
       </div>
       <div class="dock-item" onclick="openApp('files')" title="Fur Files" data-app="files">
-        <div class="dock-icon-wrap"><img src="icons/files.png" onerror="this.outerHTML='📁'"/></div>
+        <div class="dock-icon-wrap"><img src="files.png" onerror="this.outerHTML='📁'"/></div>
         <div class="dock-label">Files</div>
         <div class="dock-dot hidden"></div>
       </div>
       <div class="dock-separator"></div>
       <div class="dock-item" onclick="openApp('calculator')" title="Calc-Cat" data-app="calculator">
-        <div class="dock-icon-wrap"><img src="icons/calc.png" onerror="this.outerHTML='🔢'"/></div>
+        <div class="dock-icon-wrap"><img src="calc.png" onerror="this.outerHTML='🔢'"/></div>
         <div class="dock-label">Calc</div>
         <div class="dock-dot hidden"></div>
       </div>
       <div class="dock-item" onclick="openApp('game')" title="Catch Yarn" data-app="game">
-        <div class="dock-icon-wrap"><img src="icons/game.png" onerror="this.outerHTML='🎮'"/></div>
+        <div class="dock-icon-wrap"><img src="game.png" onerror="this.outerHTML='🎮'"/></div>
         <div class="dock-label">Game</div>
         <div class="dock-dot hidden"></div>
       </div>
       <div class="dock-item" onclick="openApp('chat')" title="MeowChat" data-app="chat">
-        <div class="dock-icon-wrap"><img src="icons/chat.png" onerror="this.outerHTML='💬'"/></div>
+        <div class="dock-icon-wrap"><img src="chat.png" onerror="this.outerHTML='💬'"/></div>
         <div class="dock-label">MeowChat</div>
         <div class="dock-dot hidden"></div>
       </div>
@@ -124,43 +121,43 @@
       </div>
     </div>
     <div class="start-search-wrap">
-      <img src="icons/search.png" width="14" onerror="this.outerHTML='🔍'"/>
+      <img src="search.png" width="14" onerror="this.outerHTML='🔍'"/>
       <input id="start-search" type="text" placeholder="Search apps..." oninput="filterStartApps(this.value)"/>
     </div>
     <div class="start-grid" id="start-grid">
-      <div class="start-item" data-app="memes"><img src="icons/gallery.png" onerror="this.outerHTML='🖼️'"/><small>Meme Gallery</small></div>
-      <div class="start-item" data-app="browser"><img src="icons/browser.png" onerror="this.outerHTML='🌐'"/><small>PurrFox</small></div>
-      <div class="start-item" data-app="notepad"><img src="icons/notepad.png" onerror="this.outerHTML='📝'"/><small>Pawpad</small></div>
-      <div class="start-item" data-app="music"><img src="icons/music.png" onerror="this.outerHTML='🎵'"/><small>MeowTunes</small></div>
-      <div class="start-item" data-app="paint"><img src="icons/paint.png" onerror="this.outerHTML='🎨'"/><small>CatPaint</small></div>
-      <div class="start-item" data-app="terminal"><img src="icons/terminal.png" onerror="this.outerHTML='💻'"/><small>CatShell</small></div>
-      <div class="start-item" data-app="files"><img src="icons/files.png" onerror="this.outerHTML='📁'"/><small>Fur Files</small></div>
-      <div class="start-item" data-app="calculator"><img src="icons/calc.png" onerror="this.outerHTML='🔢'"/><small>Calc-Cat</small></div>
-      <div class="start-item" data-app="game"><img src="icons/game.png" onerror="this.outerHTML='🎮'"/><small>Catch Yarn</small></div>
-      <div class="start-item" data-app="calendar"><img src="icons/calendar.png" onerror="this.outerHTML='📅'"/><small>PurrPlanner</small></div>
-      <div class="start-item" data-app="chat"><img src="icons/chat.png" onerror="this.outerHTML='💬'"/><small>MeowChat</small></div>
-      <div class="start-item" data-app="settings"><img src="icons/settings.png" onerror="this.outerHTML='⚙️'"/><small>Settings</small></div>
+      <div class="start-item" data-app="memes"><img src="gallery.png" onerror="this.outerHTML='🖼️'"/><small>Meme Gallery</small></div>
+      <div class="start-item" data-app="browser"><img src="browser.png" onerror="this.outerHTML='🌐'"/><small>PurrFox</small></div>
+      <div class="start-item" data-app="notepad"><img src="notepad.png" onerror="this.outerHTML='📝'"/><small>Pawpad</small></div>
+      <div class="start-item" data-app="music"><img src="music.png" onerror="this.outerHTML='🎵'"/><small>MeowTunes</small></div>
+      <div class="start-item" data-app="paint"><img src="paint.png" onerror="this.outerHTML='🎨'"/><small>CatPaint</small></div>
+      <div class="start-item" data-app="terminal"><img src="terminal.png" onerror="this.outerHTML='💻'"/><small>CatShell</small></div>
+      <div class="start-item" data-app="files"><img src="files.png" onerror="this.outerHTML='📁'"/><small>Fur Files</small></div>
+      <div class="start-item" data-app="calculator"><img src="calc.png" onerror="this.outerHTML='🔢'"/><small>Calc-Cat</small></div>
+      <div class="start-item" data-app="game"><img src="game.png" onerror="this.outerHTML='🎮'"/><small>Catch Yarn</small></div>
+      <div class="start-item" data-app="calendar"><img src="calendar.png" onerror="this.outerHTML='📅'"/><small>PurrPlanner</small></div>
+      <div class="start-item" data-app="chat"><img src="chat.png" onerror="this.outerHTML='💬'"/><small>MeowChat</small></div>
+      <div class="start-item" data-app="settings"><img src="settings.png" onerror="this.outerHTML='⚙️'"/><small>Settings</small></div>
     </div>
     <div class="start-footer">
-      <button class="clay-btn sm" onclick="shutDown()"><img src="icons/power.png" width="14" onerror="this.outerHTML='🔴'"/> Nap Mode</button>
+      <button class="clay-btn sm" onclick="shutDown()"><img src="power.png" width="14" onerror="this.outerHTML='🔴'"/> Nap Mode</button>
       <button class="clay-btn sm" onclick="closeStartMenu()">✕ Close</button>
     </div>
   </div>
 
   <!-- DESKTOP ICONS -->
   <div id="desktop-icons">
-    <div class="desk-icon" ondblclick="openApp('memes')"><img src="icons/gallery.png" onerror="this.outerHTML='🖼️'"/><small>Meme Gallery</small></div>
-    <div class="desk-icon" ondblclick="openApp('browser')"><img src="icons/browser.png" onerror="this.outerHTML='🌐'"/><small>PurrFox</small></div>
-    <div class="desk-icon" ondblclick="openApp('notepad')"><img src="icons/notepad.png" onerror="this.outerHTML='📝'"/><small>Pawpad</small></div>
-    <div class="desk-icon" ondblclick="openApp('music')"><img src="icons/music.png" onerror="this.outerHTML='🎵'"/><small>MeowTunes</small></div>
-    <div class="desk-icon" ondblclick="openApp('paint')"><img src="icons/paint.png" onerror="this.outerHTML='🎨'"/><small>CatPaint</small></div>
-    <div class="desk-icon" ondblclick="openApp('terminal')"><img src="icons/terminal.png" onerror="this.outerHTML='💻'"/><small>CatShell</small></div>
-    <div class="desk-icon" ondblclick="openApp('files')"><img src="icons/files.png" onerror="this.outerHTML='📁'"/><small>Fur Files</small></div>
-    <div class="desk-icon" ondblclick="openApp('calculator')"><img src="icons/calc.png" onerror="this.outerHTML='🔢'"/><small>Calc-Cat</small></div>
-    <div class="desk-icon" ondblclick="openApp('game')"><img src="icons/game.png" onerror="this.outerHTML='🎮'"/><small>Catch Yarn</small></div>
-    <div class="desk-icon" ondblclick="openApp('calendar')"><img src="icons/calendar.png" onerror="this.outerHTML='📅'"/><small>PurrPlanner</small></div>
-    <div class="desk-icon" ondblclick="openApp('chat')"><img src="icons/chat.png" onerror="this.outerHTML='💬'"/><small>MeowChat</small></div>
-    <div class="desk-icon" ondblclick="openApp('settings')"><img src="icons/settings.png" onerror="this.outerHTML='⚙️'"/><small>Settings</small></div>
+    <div class="desk-icon" ondblclick="openApp('memes')"><img src="gallery.png" onerror="this.outerHTML='🖼️'"/><small>Meme Gallery</small></div>
+    <div class="desk-icon" ondblclick="openApp('browser')"><img src="browser.png" onerror="this.outerHTML='🌐'"/><small>PurrFox</small></div>
+    <div class="desk-icon" ondblclick="openApp('notepad')"><img src="notepad.png" onerror="this.outerHTML='📝'"/><small>Pawpad</small></div>
+    <div class="desk-icon" ondblclick="openApp('music')"><img src="music.png" onerror="this.outerHTML='🎵'"/><small>MeowTunes</small></div>
+    <div class="desk-icon" ondblclick="openApp('paint')"><img src="paint.png" onerror="this.outerHTML='🎨'"/><small>CatPaint</small></div>
+    <div class="desk-icon" ondblclick="openApp('terminal')"><img src="terminal.png" onerror="this.outerHTML='💻'"/><small>CatShell</small></div>
+    <div class="desk-icon" ondblclick="openApp('files')"><img src="files.png" onerror="this.outerHTML='📁'"/><small>Fur Files</small></div>
+    <div class="desk-icon" ondblclick="openApp('calculator')"><img src="calc.png" onerror="this.outerHTML='🔢'"/><small>Calc-Cat</small></div>
+    <div class="desk-icon" ondblclick="openApp('game')"><img src="game.png" onerror="this.outerHTML='🎮'"/><small>Catch Yarn</small></div>
+    <div class="desk-icon" ondblclick="openApp('calendar')"><img src="calendar.png" onerror="this.outerHTML='📅'"/><small>PurrPlanner</small></div>
+    <div class="desk-icon" ondblclick="openApp('chat')"><img src="chat.png" onerror="this.outerHTML='💬'"/><small>MeowChat</small></div>
+    <div class="desk-icon" ondblclick="openApp('settings')"><img src="settings.png" onerror="this.outerHTML='⚙️'"/><small>Settings</small></div>
   </div>
 
   <!-- WINDOW CONTAINER -->
@@ -168,9 +165,9 @@
 
   <!-- CONTEXT MENU -->
   <div id="context-menu" class="hidden clay-card">
-    <div class="ctx-item" onclick="openWallpaperPicker()"><img src="icons/paint.png" width="14" onerror="this.outerHTML='🖼️'"/> Change Wallpaper</div>
-    <div class="ctx-item" onclick="openApp('settings');hideCtx()"><img src="icons/settings.png" width="14" onerror="this.outerHTML='⚙️'"/> Settings</div>
-    <div class="ctx-item" onclick="openApp('memes');hideCtx()"><img src="icons/gallery.png" width="14" onerror="this.outerHTML='😹'"/> Open Memes</div>
+    <div class="ctx-item" onclick="openWallpaperPicker()"><img src="paint.png" width="14" onerror="this.outerHTML='🖼️'"/> Change Wallpaper</div>
+    <div class="ctx-item" onclick="openApp('settings');hideCtx()"><img src="settings.png" width="14" onerror="this.outerHTML='⚙️'"/> Settings</div>
+    <div class="ctx-item" onclick="openApp('memes');hideCtx()"><img src="gallery.png" width="14" onerror="this.outerHTML='😹'"/> Open Memes</div>
     <div class="ctx-item ctx-sep"></div>
     <div class="ctx-item" onclick="hideCtx()">✕ Close</div>
   </div>
@@ -182,7 +179,7 @@
       <div class="wp-presets" id="wp-presets"></div>
       <div class="wp-upload-row">
         <label class="clay-btn sm wp-upload-label">
-          <img src="icons/files.png" width="14" onerror="this.outerHTML='📁'"/> Upload your own
+          <img src="files.png" width="14" onerror="this.outerHTML='📁'"/> Upload your own
           <input type="file" id="wp-upload-input" accept="image/*,.gif" style="display:none" onchange="handleWpUpload(event)"/>
         </label>
         <button class="clay-btn sm" onclick="closeWpPicker()">✕ Close</button>
@@ -193,12 +190,12 @@
   <!-- TOAST -->
   <div id="toaster"></div>
   <!-- SOUND -->
-  <audio id="snd-click" src="sounds/click.mp3" preload="auto"></audio>
-  <audio id="snd-open"  src="sounds/open.mp3"  preload="auto"></audio>
-  <audio id="snd-close" src="sounds/close.mp3" preload="auto"></audio>
-  <audio id="snd-notif" src="sounds/notif.mp3" preload="auto"></audio>
-  <audio id="snd-meow"  src="sounds/meow.mp3"  preload="auto"></audio>
-  <audio id="snd-purr"  src="sounds/purr.mp3"  preload="auto" loop></audio>
+  <audio id="snd-click" src="click.mp3" preload="auto"></audio>
+  <audio id="snd-open"  src="open.mp3"  preload="auto"></audio>
+  <audio id="snd-close" src="close.mp3" preload="auto"></audio>
+  <audio id="snd-notif" src="notif.mp3" preload="auto"></audio>
+  <audio id="snd-meow"  src="meow.mp3"  preload="auto"></audio>
+  <audio id="snd-purr"  src="purr.mp3"  preload="auto" loop></audio>
 </div>
 
 <!-- ═══════════════ APP TEMPLATES ═══════════════ -->
@@ -228,7 +225,7 @@
   <div class="browser-chrome">
     <div class="browser-tabs" id="browser-tabs">
       <div class="browser-tab active" id="btab-0">
-        <img src="icons/browser.png" width="12" onerror="this.outerHTML='🐱'"/>
+        <img src="browser.png" width="12" onerror="this.outerHTML='🐱'"/>
         <span id="btab-title-0">New Tab</span>
         <span class="btab-close" onclick="closeBrowserTab(0)">×</span>
       </div>
@@ -239,7 +236,7 @@
       <button class="br-nav-btn" onclick="browserFwd()"  title="Forward">▶</button>
       <button class="br-nav-btn" onclick="browserRefresh()" title="Refresh">↺</button>
       <div class="browser-url-wrap">
-        <img src="icons/lock.png" width="12" class="url-lock" onerror="this.outerHTML='🔒'"/>
+        <img src="lock.png" width="12" class="url-lock" onerror="this.outerHTML='🔒'"/>
         <input id="browser-url" type="text" value="cat://newtab" spellcheck="false"
           onkeydown="if(event.key==='Enter')browserNav(this.value)"/>
       </div>
@@ -277,7 +274,7 @@
 <template id="tpl-music">
 <div class="app-inner music-wrap">
   <div class="music-header">
-    <img id="music-art" src="music/cover1.jpg" onerror="this.src='cat-music.jpg'" class="music-art"/>
+    <img id="music-art" src="cover1.jpg" onerror="this.src='cat-music.jpg'" class="music-art"/>
     <div class="music-info">
       <div class="music-title" id="music-title">Purring in the Rain</div>
       <div class="music-artist" id="music-artist">DJ Whiskers</div>
@@ -300,9 +297,9 @@
     <button class="mc-btn" onclick="musicRepeat()" id="mc-rep" title="Repeat">↻</button>
   </div>
   <div class="music-vol-row">
-    <img src="icons/vol-low.png" width="16" onerror="this.outerHTML='🔈'"/>
+    <img src="vol-low.png" width="16" onerror="this.outerHTML='🔈'"/>
     <input type="range" min="0" max="1" step="0.01" value="0.7" id="music-vol" oninput="musicVol(this.value)" class="clay-range"/>
-    <img src="icons/vol-high.png" width="16" onerror="this.outerHTML='🔊'"/>
+    <img src="vol-high.png" width="16" onerror="this.outerHTML='🔊'"/>
   </div>
   <audio id="music-audio" onended="musicEnded()" ontimeupdate="musicTick()" oncanplay="musicCanPlay()"></audio>
   <div class="music-playlist" id="music-playlist"></div>
@@ -349,15 +346,15 @@
   <div class="files-sidebar">
     <div class="files-section-hd">Locations</div>
     <div class="files-nav-item active" onclick="filesNav('home',this)">
-      <img src="icons/home.png" width="14" onerror="this.outerHTML='🏠'"/> Home</div>
+      <img src="home.png" width="14" onerror="this.outerHTML='🏠'"/> Home</div>
     <div class="files-nav-item" onclick="filesNav('pictures',this)">
-      <img src="icons/gallery.png" width="14" onerror="this.outerHTML='🖼️'"/> Paw-tures</div>
+      <img src="gallery.png" width="14" onerror="this.outerHTML='🖼️'"/> Paw-tures</div>
     <div class="files-nav-item" onclick="filesNav('music',this)">
-      <img src="icons/music.png" width="14" onerror="this.outerHTML='🎵'"/> Meow-sic</div>
+      <img src="music.png" width="14" onerror="this.outerHTML='🎵'"/> Meow-sic</div>
     <div class="files-nav-item" onclick="filesNav('documents',this)">
-      <img src="icons/notepad.png" width="14" onerror="this.outerHTML='📄'"/> Docu-meows</div>
+      <img src="notepad.png" width="14" onerror="this.outerHTML='📄'"/> Docu-meows</div>
     <div class="files-nav-item" onclick="filesNav('trash',this)">
-      <img src="icons/trash.png" width="14" onerror="this.outerHTML='🗑️'"/> Litter Box</div>
+      <img src="trash.png" width="14" onerror="this.outerHTML='🗑️'"/> Litter Box</div>
   </div>
   <div class="files-main">
     <div class="files-path-bar" id="files-path">Home</div>
@@ -497,93 +494,57 @@
 </div>
 </template>
 
-<!-- ═══════════════════════════════════════════════════
-     ABOUT ME — CatOS Creator Card
-     Fill in YOUR details in the comments below!
-     Search for "FILL:" to find every spot.
-════════════════════════════════════════════════════ -->
+<!-- ABOUT ME -->
 <template id="tpl-aboutme">
 <div class="app-inner aboutme-wrap">
-
-  <!-- ── HERO SECTION ───────────────────────────── -->
   <div class="aboutme-hero">
     <div class="aboutme-avatar-ring">
-      <!-- FILL: swap owner.jpg with your photo file, e.g. src="myphoto.jpg" -->
       <img src="owner.jpg" class="aboutme-avatar" onerror="this.src='https://placecats.com/160/160'"/>
       <div class="aboutme-status-dot"></div>
     </div>
-
-    <!-- FILL: your full name -->
     <div class="aboutme-name">Ajmal Ali A</div>
-
-    <!-- FILL: your main title / role / vibe -->
     <div class="aboutme-handle">Creator of CatOS · Developer · Cat </div>
-
-    <!-- FILL: edit or add tags that describe you -->
     <div class="aboutme-tags">
       <span class="aboutme-tag">🐱 Cat Person</span>
       <span class="aboutme-tag">💻 Developer</span>
       <span class="aboutme-tag">🎨 Designer</span>
-      <!-- add more tags like: <span class="aboutme-tag">📍 Your City</span> -->
     </div>
   </div>
-
-  <!-- ── BODY ───────────────────────────────────── -->
   <div class="aboutme-body">
-
-    <!-- ── BIO ────────────────────────────────── -->
     <div class="aboutme-section">
       <div class="aboutme-section-title">👤 About Me</div>
-      <!-- FILL: your bio / description -->
       <div class="aboutme-bio">
         Meow! I built CatOS — a cat-themed desktop OS running in your browser, just for fun.
         I love coding, cats, and making weird little things on the internet. 🐾
-        <!-- FILL: write whatever you want here, it supports plain text -->
       </div>
     </div>
-
-    <!-- ── LINKS ──────────────────────────────── -->
     <div class="aboutme-section">
       <div class="aboutme-section-title">🔗 Find Me Online</div>
       <div class="aboutme-links">
-
-        <!-- FILL: replace # with your personal Instagram URL
-             e.g. href="https://instagram.com/yourhandle" -->
         <a class="aboutme-link" href="https://www.instagram.com/ajmaleee__/" target="_blank" rel="noopener">
           <span class="aboutme-link-icon">📸</span>
           <div class="aboutme-link-text">
             <div class="aboutme-link-label">Instagram</div>
-            <!-- FILL: your @handle -->
             <div class="aboutme-link-sub">@ajmaleee__</div>
           </div>
           <span class="aboutme-link-arrow">↗</span>
         </a>
-
-        <!-- FILL: replace # with your Instagram Creator / professional account URL
-             (can be same as above or a separate creator account) -->
         <a class="aboutme-link" href="https://www.instagram.com/gpio_goblin/" target="_blank" rel="noopener">
           <span class="aboutme-link-icon">✨</span>
           <div class="aboutme-link-text">
             <div class="aboutme-link-label">Creator Account</div>
-            <!-- FILL: your creator @handle -->
-            <div class="aboutme-link-sub">@ajmaleee__</div>
+            <div class="aboutme-link-sub">@gpio_goblin</div>
           </div>
           <span class="aboutme-link-arrow">↗</span>
         </a>
-
-        <!-- FILL: replace the mailto: address with your Gmail -->
         <a class="aboutme-link" href="mailto:ajmalsworkshop@gmail.com">
           <span class="aboutme-link-icon">📧</span>
           <div class="aboutme-link-text">
             <div class="aboutme-link-label">Gmail</div>
-            <!-- FILL: your email address -->
             <div class="aboutme-link-sub">ajmalsworkshop@gmail.com</div>
           </div>
           <span class="aboutme-link-arrow">↗</span>
         </a>
-
-        <!-- OPTIONAL: add more links below this line using the same pattern -->
-         Example — GitHub:
         <a class="aboutme-link" href="https://github.com/ajmaleee" target="_blank" rel="noopener">
           <span class="aboutme-link-icon">🐙</span>
           <div class="aboutme-link-text">
@@ -592,29 +553,20 @@
           </div>
           <span class="aboutme-link-arrow">↗</span>
         </a>
-        
-
       </div>
     </div>
-
-    <!-- ── FUN STATS ──────────────────────────── -->
     <div class="aboutme-section">
       <div class="aboutme-section-title">📊 Dev Stats</div>
       <div class="aboutme-stats">
-        <!-- FILL: change the values to real or fun numbers about you -->
         <div class="aboutme-stat"><div class="stat-val">v2.1</div><div class="stat-lbl">CatOS Built</div></div>
         <div class="aboutme-stat"><div class="stat-val">∞</div><div class="stat-lbl">Cats Loved</div></div>
         <div class="aboutme-stat"><div class="stat-val">9</div><div class="stat-lbl">Lives Left</div></div>
         <div class="aboutme-stat"><div class="stat-val">student</div><div class="stat-lbl">status</div></div>
       </div>
     </div>
-
-    <!-- ── MADE WITH ──────────────────────────── -->
     <div class="aboutme-madeby">
-      <!-- FILL: change to your name -->
       Made with 🐾 &amp; ❤️ by <strong>ajmaleee__</strong>
     </div>
-
   </div>
 </div>
 </template>
