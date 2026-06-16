@@ -1,4 +1,4 @@
-# MeowOS v2.1
+# MeowOS v2.3
 
 A cat-themed operating system that runs entirely inside your browser.
 
