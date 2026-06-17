@@ -934,7 +934,20 @@ function gameStop(){ if(GAF){ cancelAnimationFrame(GAF); GAF=null; } if(GS) GS.r
 /* ══════════════════════════════════════════════════
    SETTINGS
 ══════════════════════════════════════════════════ */
-function initSettings(){ settingsTab('appearance', document.querySelector('.s-nav')); }
+function setIconSize(size){
+  size = parseInt(size);
+  LS.set('catos-iconsize', size);
+  document.querySelectorAll('.desk-icon').forEach(d => {
+    d.style.width = (size + 36) + 'px';
+    const img = d.querySelector('img');
+    if(img) img.style.width = size + 'px';
+  });
+}
+
+function initSettings(){
+  setIconSize(LS.get('catos-iconsize', 40));
+  settingsTab('appearance', document.querySelector('.s-nav'));
+}
 function settingsTab(tab, el){
   document.querySelectorAll('.s-nav').forEach(n=>n.classList.remove('active'));
   if(el) el.classList.add('active');
@@ -942,7 +955,7 @@ function settingsTab(tab, el){
   if(tab==='appearance'){
     panel.innerHTML=`<h3>🎨 Appearance</h3>
       <div class="setting-row"><label>Change Wallpaper</label><button class="clay-btn sm" onclick="openWallpaperPicker()">Open Picker</button></div>
-      <div class="setting-row"><label>Icon Size</label><input type="range" min="60" max="100" value="76" oninput="document.querySelectorAll('.desk-icon').forEach(d=>d.style.width=this.value+'px')"/></div>
+      <div class="setting-row"><label>Icon Size</label><input type="range" min="28" max="64" value="${LS.get('catos-iconsize',40)}" oninput="setIconSize(this.value)"/></div>
       <div class="setting-row"><label>Window Shadow</label><input type="checkbox" checked/></div>
       <div class="setting-row"><label>Accent Color</label><input type="color" value="#7c4dff" oninput="document.documentElement.style.setProperty('--c-accent',this.value)"/></div>`;
   } else if(tab==='sound'){
