@@ -27,6 +27,7 @@
   --radius:     18px;
   --radius-sm:  12px;
   --radius-xs:  8px;
+  --app-icon-squircle: 28%;
   --tb-h:       0px;
   --font:       'Nunito', sans-serif;
 }
@@ -209,7 +210,7 @@ html, body {
 .dock-item:hover { transform: translateY(-14px) scale(1.18); }
 .dock-item:hover .dock-label { opacity: 1; transform: translateY(-4px); }
 .dock-icon-wrap {
-  width: 52px; height: 52px; border-radius: 14px; overflow: hidden;
+  width: 52px; height: 52px; border-radius: var(--app-icon-squircle); overflow: hidden;
   background: var(--c-raised);
   box-shadow:
     3px 3px 9px var(--c-clay-shadow-dark),
@@ -218,7 +219,7 @@ html, body {
   display: flex; align-items: center; justify-content: center;
   transition: box-shadow 0.15s;
 }
-.dock-icon-wrap img { width: 36px; height: 36px; object-fit: contain; }
+.dock-icon-wrap img { width: 36px; height: 36px; object-fit: contain; border-radius: var(--app-icon-squircle); }
 .dock-item:hover .dock-icon-wrap {
   box-shadow: 4px 4px 14px var(--c-clay-shadow-dark), -3px -3px 10px var(--c-clay-shadow-light);
 }
@@ -271,7 +272,7 @@ html, body {
 }
 .start-item:hover { box-shadow: 4px 4px 10px var(--c-clay-shadow-dark), -3px -3px 7px var(--c-clay-shadow-light); }
 .start-item:active { box-shadow: inset 2px 2px 5px var(--c-clay-shadow-dark); }
-.start-item img { width: 28px; height: 28px; object-fit: contain; }
+.start-item img { width: 28px; height: 28px; object-fit: contain; border-radius: var(--app-icon-squircle); }
 .start-item small { font-size: 0.62rem; font-weight: 700; color: var(--c-text2); text-align: center; line-height: 1.2; }
 .start-footer { display: flex; gap: 8px; padding-top: 12px; border-top: 2px solid var(--c-surface2); }
 .start-footer .clay-btn { flex: 1; justify-content: center; }
@@ -290,7 +291,7 @@ html, body {
 }
 .desk-icon:hover { background: rgba(124,77,255,0.12); }
 .desk-icon:active { background: rgba(124,77,255,0.22); }
-.desk-icon img { width: 40px; height: 40px; object-fit: contain;
+.desk-icon img { width: 40px; height: 40px; object-fit: contain; border-radius: var(--app-icon-squircle);
   filter: drop-shadow(2px 3px 4px rgba(100,60,200,0.3)); }
 .desk-icon small { font-size: 0.66rem; font-weight: 700; color: #fff;
   text-shadow: 0 1px 4px rgba(0,0,0,0.7); line-height: 1.2; }
