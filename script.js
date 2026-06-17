@@ -44,11 +44,66 @@ function onDesktopReady(){
   loadWallpaper();
   buildWpPresets();
   startNotifSchedule();
-  toast('🐾 Welcome to CatOS 2.0!');
+  toast('Welcome to CatOS 2.0.');
   SND.play('meow');
   setTimeout(()=>SND.purr(true), 1500);
   setTimeout(()=>SND.purr(false), 4000);
-  setTimeout(()=>openApp('aboutme'), 900);
+  setTimeout(showShipwrightWelcome, 900);
+}
+
+
+
+/* ── SHIPWRIGHT WELCOME TOUR ─────────────────── */
+const FEATURE_TOUR = [
+  { app:'memes', label:'Meme Gallery', note:'First stop: the Meme Gallery. It shows the built-in cat meme collection and caption tools.' },
+  { app:'browser', label:'PurrFox', note:'Next stop: PurrFox. This window demonstrates the browser-style controls and page area.' },
+  { app:'paint', label:'CatPaint', note:'CatPaint is for quick sketches with playful colors and a soft workspace.' },
+  { app:'files', label:'Fur Files', note:'Fur Files gives the desktop a file-manager feel with tidy cards and folders.' },
+  { app:'settings', label:'Settings', note:'Final stop: Settings. This is where sound, wallpaper, and desktop preferences live.' },
+];
+let featureTourTimer = null;
+
+function showShipwrightWelcome(){
+  const overlay = document.getElementById('shipwright-welcome');
+  if(!overlay) return;
+  overlay.classList.remove('hidden');
+  requestAnimationFrame(()=>overlay.classList.add('show'));
+}
+function closeShipwrightWelcome(completed){
+  const overlay = document.getElementById('shipwright-welcome');
+  if(!overlay) return;
+  if(featureTourTimer){ clearTimeout(featureTourTimer); featureTourTimer=null; }
+  overlay.classList.remove('show');
+  setTimeout(()=>overlay.classList.add('hidden'), 360);
+  if(!completed) toast('Tour skipped. You can still explore from the dock.');
+}
+function setTourStep(idx){
+  const checks = [...document.querySelectorAll('.shipwright-check')];
+  checks.forEach((el,i)=>{
+    el.classList.toggle('active', i===idx);
+    el.classList.toggle('done', i<idx);
+  });
+  const note = document.getElementById('shipwright-tour-note');
+  if(note && FEATURE_TOUR[idx]) note.textContent = FEATURE_TOUR[idx].note;
+}
+function startFeatureTour(){
+  const primary = document.querySelector('.shipwright-primary');
+  if(primary) primary.textContent = 'Tour running...';
+  runFeatureTourStep(0);
+}
+function runFeatureTourStep(idx){
+  if(idx >= FEATURE_TOUR.length){
+    document.querySelectorAll('.shipwright-check').forEach(el=>{ el.classList.remove('active'); el.classList.add('done'); });
+    const note = document.getElementById('shipwright-tour-note');
+    if(note) note.textContent = 'Tour complete. The main MeowOS features are ready for you.';
+    featureTourTimer = setTimeout(()=>closeShipwrightWelcome(true), 1000);
+    return;
+  }
+  const step = FEATURE_TOUR[idx];
+  setTourStep(idx);
+  openApp(step.app);
+  toast(`Tour: ${step.label}`);
+  featureTourTimer = setTimeout(()=>runFeatureTourStep(idx+1), 1700);
 }
 
 /* ── CLOCK ───────────────────────────────────── */
