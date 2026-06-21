@@ -103,6 +103,11 @@
         <div class="dock-label">MeowChat</div>
         <div class="dock-dot hidden"></div>
       </div>
+      <div class="dock-item" onclick="openApp('reels')" title="PawGram" data-app="reels">
+        <div class="dock-icon-wrap"><img src="reels.png" onerror="this.outerHTML='🎬'"/></div>
+        <div class="dock-label">PawGram</div>
+        <div class="dock-dot hidden"></div>
+      </div>
       <div class="dock-item" onclick="openApp('aboutme')" title="About Me" data-app="aboutme">
         <div class="dock-icon-wrap"><img src="owner.jpg" onerror="this.src='https://placecats.com/44/44'" style="border-radius:50%;object-fit:cover;width:100%;height:100%"/></div>
         <div class="dock-label">About Me</div>
@@ -136,6 +141,7 @@
       <div class="start-item" data-app="game"><img src="game.png" onerror="this.outerHTML='🎮'"/><small>Catch Yarn</small></div>
       <div class="start-item" data-app="calendar"><img src="calendar.png" onerror="this.outerHTML='📅'"/><small>PurrPlanner</small></div>
       <div class="start-item" data-app="chat"><img src="chat.png" onerror="this.outerHTML='💬'"/><small>MeowChat</small></div>
+      <div class="start-item" data-app="reels"><img src="reels.png" onerror="this.outerHTML='🎬'"/><small>PawGram</small></div>
       <div class="start-item" data-app="settings"><img src="settings.png" onerror="this.outerHTML='⚙️'"/><small>Settings</small></div>
     </div>
     <div class="start-footer">
@@ -157,6 +163,7 @@
     <div class="desk-icon" ondblclick="openApp('game')"><img src="game.png" onerror="this.outerHTML='🎮'"/><small>Catch Yarn</small></div>
     <div class="desk-icon" ondblclick="openApp('calendar')"><img src="calendar.png" onerror="this.outerHTML='📅'"/><small>PurrPlanner</small></div>
     <div class="desk-icon" ondblclick="openApp('chat')"><img src="chat.png" onerror="this.outerHTML='💬'"/><small>MeowChat</small></div>
+    <div class="desk-icon" ondblclick="openApp('reels')"><img src="reels.png" onerror="this.outerHTML='🎬'"/><small>PawGram</small></div>
     <div class="desk-icon" ondblclick="openApp('settings')"><img src="settings.png" onerror="this.outerHTML='⚙️'"/><small>Settings</small></div>
   </div>
 
@@ -478,6 +485,37 @@
       <input id="chat-input" type="text" placeholder="Meow something..."
         onkeydown="if(event.key==='Enter')chatSend()"/>
       <button class="clay-btn sm accent" onclick="chatSend()">Send</button>
+    </div>
+  </div>
+</div>
+</template>
+
+<!-- PAWGRAM REELS -->
+<template id="tpl-reels">
+<div class="app-inner ig-wrap">
+  <div class="ig-topbar">
+    <div class="ig-topbar-spacer"></div>
+    <div class="ig-topbar-title">Reels</div>
+    <div class="ig-topbar-cam" onclick="igToast()">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"></path><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+    </div>
+  </div>
+  <div class="ig-feed" id="ig-feed"></div>
+  <div class="ig-navbar">
+    <div class="ig-nav-item" data-tab="home" onclick="igNavTab('home',this)">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 3l9 8h-3v9h-5v-6H11v6H6v-9H3l9-8z"></path></svg>
+    </div>
+    <div class="ig-nav-item" data-tab="search" onclick="igNavTab('search',this)">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    </div>
+    <div class="ig-nav-item active" data-tab="reels" onclick="igNavTab('reels',this)">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="3"></rect><path d="M7 3l3 5M14 3l3 5"></path></svg>
+    </div>
+    <div class="ig-nav-item" data-tab="shop" onclick="igNavTab('shop',this)">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2l-2 5v13a1 1 0 001 1h14a1 1 0 001-1V7l-2-5"></path><path d="M4 7h16"></path><path d="M9 11a3 3 0 006 0"></path></svg>
+    </div>
+    <div class="ig-nav-item" data-tab="profile" onclick="igNavTab('profile',this)">
+      <img id="ig-nav-avatar" src="owner.jpg" onerror="this.src='https://placecats.com/30/30'"/>
     </div>
   </div>
 </div>
