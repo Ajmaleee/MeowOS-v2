@@ -211,6 +211,7 @@ const APP_META={
   chat:         { title:'MeowChat',        icon:'chat.png',     w:640, h:460 },
   aboutme:      { title:'About Me',        icon:'owner.jpg',    w:420, h:560 },
   notifications:{ title:'Notifications',   icon:'bell.png',     w:380, h:420 },
+  reels:        { title:'PawGram',         icon:'reels.png',    w:380, h:720 },
 };
 
 function openApp(id){
@@ -332,7 +333,7 @@ function initApp(id){
     memes:initMemes, browser:initBrowser, notepad:initNotepad, music:initMusic,
     paint:initPaint, terminal:initTerminal, files:initFiles, calculator:()=>{},
     game:()=>{}, settings:initSettings, calendar:initCalendar, chat:initChat,
-    notifications:initNotifications, aboutme:initAboutMe
+    notifications:initNotifications, aboutme:initAboutMe, reels:initReels
   };
   if(map[id]) map[id]();
 }
@@ -1122,6 +1123,216 @@ function initNotifications(){ renderNotifs(); }
    ABOUT ME
 ══════════════════════════════════════════════════ */
 function initAboutMe(){ /* all static HTML in index.html */ }
+
+/* ══════════════════════════════════════════════════
+   PAWGRAM — doomscrolling cat reels
+   (exact Instagram Reels layout, cat content)
+══════════════════════════════════════════════════ */
+const REELS_DATA = [
+  { file:'reel-01.mp4', user:'@whiskers.wilson',     verified:true,  avatar:'cat1.jpg',
+    caption:'POV: you opened the treat bag at 3am 🐾😹 he heard it from two floors away',
+    audio:'original audio · whiskers.wilson', likes:128400, comments:842,  shares:3100 },
+  { file:'reel-02.mp4', user:'@chairman.meow',       verified:true,  avatar:'cat3.jpg',
+    caption:'The humans THINK they own this couch. They are, in fact, incorrect. 👑',
+    audio:'Royalty - Meow Beats',              likes:947000, comments:5200, shares:18900 },
+  { file:'reel-03.mp4', user:'@mittens_official',    verified:false, avatar:'cat2.jpg',
+    caption:'Day 47 of intense surveillance on the red dot. It always escapes. Always.',
+    audio:'original audio · mittens_official',  likes:64200,  comments:391,  shares:980 },
+  { file:'reel-04.mp4', user:'@nyancat.daily',       verified:true,  avatar:'nyan.gif',
+    caption:'nyan nyan nyan nyan nyan nyan nyan 🌈 (this is the whole caption)',
+    audio:'Nyan Theme - 8bit Classics',         likes:2400000,comments:88000,shares:512000 },
+  { file:'reel-05.mp4', user:'@purrlosophy',         verified:false, avatar:'cat1.jpg',
+    caption:'To nap, or to nap harder — that is the only question that has ever mattered',
+    audio:'Lo-fi Purr Beats to Sleep/Judge to', likes:39800,  comments:204,  shares:610 },
+  { file:'reel-06.mp4', user:'@feline.fiasco',       verified:false, avatar:'cat2.jpg',
+    caption:'I was framed. The vase fell on its own. I have nothing further to add. 🏺💥',
+    audio:'original audio · feline.fiasco',     likes:201500, comments:6700, shares:9400 },
+  { file:'reel-07.mp4', user:'@catnip.chronicles',   verified:true,  avatar:'cat3.jpg',
+    caption:'This is what peak performance looks like. 14 hours. No notes. 😴',
+    audio:'Dreamy Sunbeam - Soft Purr Sounds',  likes:55300,  comments:312,  shares:740 },
+  { file:'reel-08.mp4', user:'@void.cat.energy',     verified:false, avatar:'cat1.jpg',
+    caption:'Box acquired. Box is now mine. I do not make the rules, the box does.',
+    audio:'original audio · void.cat.energy',   likes:712900, comments:14200,shares:43000 },
+  { file:'reel-09.mp4', user:'@sir.fluffington',     verified:true,  avatar:'cat2.jpg',
+    caption:'Caught in 4K stealing my own reflection\'s spot in the mirror. Unrepentant.',
+    audio:'Bougie - Catnip Sound Co.',           likes:88700,  comments:1100, shares:2300 },
+  { file:'reel-10.mp4', user:'@clawdia.official',    verified:false, avatar:'cat3.jpg',
+    caption:'3am zoomie championships. No referees. No rules. Just vibes and chaos. 🏃',
+    audio:'original audio · clawdia.official',  likes:166000, comments:3900, shares:7800 },
+  { file:'reel-11.mp4', user:'@biscuit.maker',       verified:false, avatar:'cat1.jpg',
+    caption:'Kneading the blanket like it owes him rent. He will not stop. Ever.',
+    audio:'Soft Kneads - Cozy Cat Lo-fi',        likes:47600,  comments:560,  shares:1200 },
+  { file:'reel-12.mp4', user:'@litterbox.legend',    verified:true,  avatar:'cat2.jpg',
+    caption:'Tell me you\'re a cat without telling me you\'re a cat. Challenge: impossible.',
+    audio:'original audio · litterbox.legend',  likes:332000, comments:9800, shares:21000 },
+  { file:'reel-13.mp4', user:'@pawsitive.vibes',     verified:false, avatar:'cat3.jpg',
+    caption:'Bro found the one sunbeam in the entire apartment and defended it with his life',
+    audio:'Golden Hour - Sunny Cat Mix',         likes:91200,  comments:1450, shares:3300 },
+  { file:'reel-14.mp4', user:'@meowtain.dew',        verified:false, avatar:'cat1.jpg',
+    caption:'When the vacuum turns on and your whole personality changes instantly 😾',
+    audio:'original audio · meowtain.dew',      likes:218700, comments:4300, shares:8900 },
+];
+
+function igFormatCount(n){
+  if(n>=1000000) return (n/1000000).toFixed(1).replace(/\.0$/,'')+'M';
+  if(n>=1000)    return (n/1000).toFixed(1).replace(/\.0$/,'')+'K';
+  return ''+n;
+}
+
+function igFallbackUrl(i){
+  const w=480, h=854;
+  return i%2===0
+    ? `https://cataas.com/cat/gif?width=${w}&height=${h}&_=${i}`
+    : `https://cataas.com/cat?width=${w}&height=${h}&_=${i}`;
+}
+
+function igIsVideoFile(file){
+  return /\.(mp4|webm|mov|m4v)$/i.test(file||'');
+}
+
+/* Builds the actual <img>/<video> element for a reel.
+   Tries your uploaded repo file first; if it 404s (not uploaded yet),
+   falls back to a live cataas.com cat, then a static placeholder. */
+function igBuildMediaEl(r, i){
+  let el;
+  if(igIsVideoFile(r.file)){
+    el = document.createElement('video');
+    el.autoplay = true; el.muted = true; el.loop = true; el.playsInline = true;
+    el.src = r.file;
+    el.onerror = ()=>{
+      const img = document.createElement('img');
+      img.className = 'ig-media';
+      img.src = igFallbackUrl(i);
+      img.onerror = ()=>{ img.onerror=null; img.src = `https://placecats.com/${480+i%3}/854`; };
+      el.replaceWith(img);
+    };
+  } else {
+    el = document.createElement('img');
+    el.src = r.file;
+    el.onerror = ()=>{
+      el.onerror = null;
+      el.src = igFallbackUrl(i);
+      el.onerror = ()=>{ el.onerror=null; el.src = `https://placecats.com/${480+i%3}/854`; };
+    };
+  }
+  el.className = 'ig-media';
+  return el;
+}
+
+function igReelHTML(r, i){
+  return `
+  <div class="ig-reel" data-idx="${i}">
+    <div class="ig-media-wrap">
+      <div class="ig-media-slot" id="ig-media-slot-${i}"></div>
+      <div class="ig-gradient"></div>
+      <div class="ig-heartpop" id="ig-heartpop-${i}">❤️</div>
+    </div>
+    <div class="ig-actions">
+      <div class="ig-act-btn${r.liked?' liked':''}" id="ig-like-${i}" onclick="igToggleLike(${i})">
+        <svg class="ig-heart-icon" viewBox="0 0 24 24" width="28" height="28"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.4 2 4.8 5.6 4.1 8 3.6 10.3 4.8 12 7c1.7-2.2 4-3.4 6.4-2.9 3.6.7 5.2 4.3 3.6 7.6C19.5 16.4 12 21 12 21z"/></svg>
+        <span class="ig-act-count" id="ig-like-count-${i}">${igFormatCount(r.likes)}</span>
+      </div>
+      <div class="ig-act-btn" onclick="igToast('💬 Comments are closed (cats don\\'t read)')">
+        <svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-1.2 4.3 8.5 8.5 0 0 1-7.3 4.2 8.4 8.4 0 0 1-4.3-1.2L3 21l2.2-5.3a8.4 8.4 0 0 1-1.2-4.3 8.5 8.5 0 0 1 4.2-7.3A8.4 8.4 0 0 1 12.5 3h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg>
+        <span class="ig-act-count">${igFormatCount(r.comments)}</span>
+      </div>
+      <div class="ig-act-btn" onclick="igShare(${i})">
+        <svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        <span class="ig-act-count">${igFormatCount(r.shares)}</span>
+      </div>
+      <div class="ig-act-btn${r.saved?' saved':''}" id="ig-save-${i}" onclick="igToggleSave(${i})">
+        <svg class="ig-save-icon" viewBox="0 0 24 24" width="25" height="25"><path d="M6 2h12a1 1 0 0 1 1 1v19l-7-4.5L5 22V3a1 1 0 0 1 1-1z"/></svg>
+      </div>
+      <div class="ig-act-btn" onclick="igToast('🐾 More options: bury it like a litter box')">
+        <svg viewBox="0 0 24 24" width="21" height="21" fill="#fff"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
+      </div>
+      <div class="ig-audio-disc" onclick="igToast('🎵 ${r.audio.replace(/'/g,"\\'")}')">
+        <img src="${r.avatar}" onerror="this.src='https://placecats.com/40/40'"/>
+      </div>
+    </div>
+    <div class="ig-info">
+      <div class="ig-info-row">
+        <img class="ig-avatar" src="${r.avatar}" onerror="this.src='https://placecats.com/32/32'"/>
+        <span class="ig-username">${r.user}</span>
+        ${r.verified?'<svg class="ig-verified" viewBox="0 0 24 24" width="14" height="14"><path fill="#3897f0" d="M12 2l2.2 2 2.9-.9 1.1 2.8 2.9.9-.4 3 2.3 1.9-2.3 1.9.4 3-2.9.9-1.1 2.8-2.9-.9L12 22l-2.2-2-2.9.9-1.1-2.8-2.9-.9.4-3L1 12l2.3-1.9-.4-3 2.9-.9L7 3.4l2.9.9z"/><path d="M8.5 12.3l2.3 2.2 4.3-4.6" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>':''}
+        <button class="ig-follow-btn${r.following?' following':''}" id="ig-follow-${i}" onclick="igToggleFollow(${i})">${r.following?'Following':'Follow'}</button>
+      </div>
+      <div class="ig-caption" id="ig-cap-${i}" onclick="this.classList.toggle('ig-cap-expanded')">${r.caption}</div>
+      <div class="ig-audio-row">
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="#fff"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        <span class="ig-audio-text">${r.audio}</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+let igInited = false;
+function initReels(){
+  const feed = document.getElementById('ig-feed');
+  if(!feed) return;
+  feed.innerHTML = REELS_DATA.map((r,i)=>igReelHTML(r,i)).join('');
+  REELS_DATA.forEach((r,i)=>{
+    const slot = document.getElementById('ig-media-slot-'+i);
+    if(slot) slot.appendChild(igBuildMediaEl(r,i));
+  });
+  let lastTap = 0;
+  feed.querySelectorAll('.ig-media-wrap').forEach((el,i)=>{
+    el.addEventListener('click', ()=>{
+      const now = Date.now();
+      if(now - lastTap < 350) igDoubleTapLike(i);
+      lastTap = now;
+    });
+  });
+}
+
+function igToggleLike(i){
+  const r = REELS_DATA[i];
+  r.liked = !r.liked;
+  document.getElementById('ig-like-'+i).classList.toggle('liked', r.liked);
+  document.getElementById('ig-like-count-'+i).textContent = igFormatCount(r.likes + (r.liked?1:0));
+}
+function igDoubleTapLike(i){
+  const r = REELS_DATA[i];
+  if(!r.liked){
+    r.liked = true;
+    document.getElementById('ig-like-'+i).classList.add('liked');
+    document.getElementById('ig-like-count-'+i).textContent = igFormatCount(r.likes + 1);
+  }
+  const pop = document.getElementById('ig-heartpop-'+i);
+  if(pop){
+    pop.classList.remove('pop');
+    void pop.offsetWidth; // restart animation
+    pop.classList.add('pop');
+  }
+}
+function igToggleSave(i){
+  const r = REELS_DATA[i];
+  r.saved = !r.saved;
+  document.getElementById('ig-save-'+i).classList.toggle('saved', r.saved);
+  igToast(r.saved ? '📌 Saved to your secret stash' : 'Removed from stash');
+}
+function igToggleFollow(i){
+  const r = REELS_DATA[i];
+  r.following = !r.following;
+  const btn = document.getElementById('ig-follow-'+i);
+  btn.textContent = r.following ? 'Following' : 'Follow';
+  btn.classList.toggle('following', r.following);
+  if(r.following) igToast('✅ Now following '+r.user);
+}
+function igShare(i){
+  igToast('🐾 Shared to the litter box (everyone\'s inbox)');
+}
+function igNavTab(tab, el){
+  document.querySelectorAll('.ig-nav-item').forEach(n=>n.classList.remove('active'));
+  el.classList.add('active');
+  if(tab !== 'reels'){
+    igToast('🐾 '+tab.charAt(0).toUpperCase()+tab.slice(1)+' is napping right now');
+    setTimeout(()=>{
+      document.querySelectorAll('.ig-nav-item').forEach(n=>n.classList.toggle('active', n.dataset.tab==='reels'));
+    }, 1100);
+  }
+}
+function igToast(msg){ toast(msg || '🐾 Pawgram says meow'); }
 
 /* ══════════════════════════════════════════════════
    SHUTDOWN
