@@ -67,13 +67,33 @@ function startClock(){
 const WP_PRESETS = [
   { name:'Purple Dream', src:'wp1.jpg' },
   { name:'Night Forest', src:'wp2.jpg' },
-  { name:'Candy Sky',    src:'wp3.jpg' },
+  { name:'Candy Sky',    src:'wp3.jpg', customizable:true },
   { name:'Cat Cafe',     src:'wp4.jpg' },
   { name:'Space Meow',   src:'wp5.jpg' },
   { name:'Pastel Paws',  src:'wp6.jpg' },
 ];
 
+/* Candy Sky (wp3) cat dress-up options.
+   Each entry is a FULL wallpaper image (the same wp3 scene with that
+   accessory combo already baked into the picture). Drop the matching
+   files into the project root using these exact filenames:
+     wp3.jpg                              — classic / no accessories
+     wp3-sunglasses.jpg                   — sunglasses only
+     wp3-hat.jpg                          — hat only
+     wp3-sunglasses-hat.jpg                — sunglasses + hat
+     wp3-sunglasses-hat-ceiling.jpg         — sunglasses + hat + ceiling cat
+     wp3-sunglasses-hat-multiceiling.jpg    — sunglasses + hat + many ceiling cats */
+const WP3_VARIANTS = [
+  { id:'classic',                     label:'Classic',          emoji:'🐱',     src:'wp3.jpg' },
+  { id:'sunglasses',                   label:'Sunglasses',       emoji:'😎',     src:'wp3-sunglasses.jpg' },
+  { id:'hat',                          label:'Hat Only',         emoji:'🎩',     src:'wp3-hat.jpg' },
+  { id:'sunglasses-hat',                label:'Sunglasses + Hat', emoji:'😎🎩',   src:'wp3-sunglasses-hat.jpg' },
+  { id:'sunglasses-hat-ceiling',         label:'+ Ceiling Cat',    emoji:'😎🎩🕳️',  src:'wp3-sunglasses-hat-ceiling.jpg' },
+  { id:'sunglasses-hat-multiceiling',    label:'+ Many Ceilings',  emoji:'😎🎩🐾',  src:'wp3-sunglasses-hat-multiceiling.jpg' },
+];
+
 function loadWallpaper(){
+  // wp1 ("Purple Dream") is always the default until the user picks something else.
   const saved = LS.get('catos-wallpaper', null);
   applyWallpaper(saved || 'wp1.jpg');
 }
@@ -100,10 +120,18 @@ function applyWallpaper(src){
 function buildWpPresets(){
   const grid = document.getElementById('wp-presets');
   if(!grid) return;
+  grid.innerHTML = '';
+  const currentSrc = LS.get('catos-wallpaper', 'wp1.jpg') || 'wp1.jpg';
   WP_PRESETS.forEach(wp=>{
-    const d=document.createElement('div'); d.className='wp-preset-thumb';
-    d.innerHTML=`<img src="${wp.src}" onerror="this.parentElement.style.background='var(--c-surface2)'"/><span>${wp.name}</span>`;
+    const d=document.createElement('div');
+    d.className='wp-preset-thumb'+(wp.customizable?' wp-special':'');
+    const isActive = currentSrc===wp.src || (wp.customizable && currentSrc.startsWith('wp3'));
+    if(isActive) d.classList.add('selected');
+    d.innerHTML=`<img src="${wp.src}" onerror="this.parentElement.style.background='var(--c-surface2)'"/>
+      <span>${wp.name}</span>
+      ${wp.customizable?'<div class="wp-special-badge">✨ Dress up</div>':''}`;
     d.onclick=()=>{
+      if(wp.customizable){ openWp3Customizer(); return; }
       applyWallpaper(wp.src);
       document.querySelectorAll('.wp-preset-thumb').forEach(t=>t.classList.remove('selected'));
       d.classList.add('selected');
@@ -113,14 +141,58 @@ function buildWpPresets(){
     grid.appendChild(d);
   });
 }
+
+/* ── WP3 CANDY-SKY CAT CUSTOMIZER ─────────────── */
+function openWp3Customizer(){
+  document.getElementById('wp-presets')?.classList.add('hidden');
+  document.getElementById('wp-upload-row')?.classList.add('hidden');
+  const panel=document.getElementById('wp3-customize-panel');
+  if(!panel) return;
+  panel.classList.remove('hidden');
+
+  const vgrid=document.getElementById('wp3-variant-grid');
+  if(vgrid && !vgrid.dataset.built){
+    vgrid.innerHTML = WP3_VARIANTS.map(v=>`
+      <div class="wp3-variant-card" data-id="${v.id}" onclick="selectWp3Variant('${v.id}')">
+        <img src="${v.src}" onerror="this.parentElement.style.background='var(--c-surface2)'"/>
+        <div class="wp3-variant-emoji">${v.emoji}</div>
+        <span>${v.label}</span>
+      </div>`).join('');
+    vgrid.dataset.built='1';
+  }
+  const savedVariant = LS.get('catos-wp3-variant','classic');
+  vgrid?.querySelectorAll('.wp3-variant-card').forEach(c=>c.classList.toggle('selected', c.dataset.id===savedVariant));
+}
+function wp3BackToPresets(){
+  document.getElementById('wp3-customize-panel')?.classList.add('hidden');
+  document.getElementById('wp-presets')?.classList.remove('hidden');
+  document.getElementById('wp-upload-row')?.classList.remove('hidden');
+}
+function selectWp3Variant(id){
+  const v=WP3_VARIANTS.find(x=>x.id===id); if(!v) return;
+  applyWallpaper(v.src);
+  LS.set('catos-wp3-variant', id);
+  document.querySelectorAll('.wp3-variant-card').forEach(c=>c.classList.toggle('selected', c.dataset.id===id));
+  toast(`${v.emoji} ${v.label} applied!`);
+  SND.play('click');
+  closeWpPicker();
+}
+
 function handleWpUpload(e){
   const file=e.target.files[0]; if(!file) return;
   const reader=new FileReader();
   reader.onload=ev=>{ applyWallpaper(ev.target.result); toast('🖼️ Custom wallpaper set!'); closeWpPicker(); };
   reader.readAsDataURL(file);
 }
-function openWallpaperPicker(){ document.getElementById('wp-picker').classList.remove('hidden'); hideCtx(); }
-function closeWpPicker(){ document.getElementById('wp-picker').classList.add('hidden'); }
+function openWallpaperPicker(){
+  buildWpPresets();
+  document.getElementById('wp-picker').classList.remove('hidden');
+  hideCtx();
+}
+function closeWpPicker(){
+  document.getElementById('wp-picker').classList.add('hidden');
+  wp3BackToPresets();
+}
 
 /* ── TOAST ───────────────────────────────────── */
 const notifs = [];
