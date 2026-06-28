@@ -296,7 +296,7 @@ const WP3_VARIANTS = [
 function loadWallpaper(){
   // wp1 ("Purple Dream") is always the default until the user picks something else.
   const saved = LS.get('catos-wallpaper', null);
-  applyWallpaper(saved || 'wp1.jpg');
+  applyWallpaper(saved || 'wp3.jpg');
 }
 function applyWallpaper(src){
   const desk = document.getElementById('desktop');
@@ -322,7 +322,7 @@ function buildWpPresets(){
   const grid = document.getElementById('wp-presets');
   if(!grid) return;
   grid.innerHTML = '';
-  const currentSrc = LS.get('catos-wallpaper', 'wp1.jpg') || 'wp1.jpg';
+  const currentSrc = LS.get('catos-wallpaper', 'wp3.jpg') || 'wp3.jpg';
   WP_PRESETS.forEach(wp=>{
     const d=document.createElement('div');
     d.className='wp-preset-thumb'+(wp.customizable?' wp-special':'');
