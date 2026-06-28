@@ -29,6 +29,8 @@
   --radius-xs:  8px;
   --tb-h:       0px;
   --font:       'Nunito', sans-serif;
+  /* True squircle (superellipse, n=4) — used for app-icon tiles */
+  --squircle: polygon(100.00% 50.00%, 99.90% 64.76%, 99.62% 70.84%, 99.14% 75.44%, 98.47% 79.24%, 97.60% 82.50%, 96.53% 85.36%, 95.25% 87.87%, 93.76% 90.09%, 92.04% 92.04%, 90.09% 93.76%, 87.87% 95.25%, 85.36% 96.53%, 82.50% 97.60%, 79.24% 98.47%, 75.44% 99.14%, 70.84% 99.62%, 64.76% 99.90%, 50.00% 100.00%, 35.24% 99.90%, 29.16% 99.62%, 24.56% 99.14%, 20.76% 98.47%, 17.50% 97.60%, 14.64% 96.53%, 12.13% 95.25%, 9.91% 93.76%, 7.96% 92.04%, 6.24% 90.09%, 4.75% 87.87%, 3.47% 85.36%, 2.40% 82.50%, 1.53% 79.24%, 0.86% 75.44%, 0.38% 70.84%, 0.10% 64.76%, 0.00% 50.00%, 0.10% 35.24%, 0.38% 29.16%, 0.86% 24.56%, 1.53% 20.76%, 2.40% 17.50%, 3.47% 14.64%, 4.75% 12.13%, 6.24% 9.91%, 7.96% 7.96%, 9.91% 6.24%, 12.13% 4.75%, 14.64% 3.47%, 17.50% 2.40%, 20.76% 1.53%, 24.56% 0.86%, 29.16% 0.38%, 35.24% 0.10%, 50.00% 0.00%, 64.76% 0.10%, 70.84% 0.38%, 75.44% 0.86%, 79.24% 1.53%, 82.50% 2.40%, 85.36% 3.47%, 87.87% 4.75%, 90.09% 6.24%, 92.04% 7.96%, 93.76% 9.91%, 95.25% 12.13%, 96.53% 14.64%, 97.60% 17.50%, 98.47% 20.76%, 99.14% 24.56%, 99.62% 29.16%, 99.90% 35.24%);
 }
 
 html, body {
@@ -209,8 +211,9 @@ html, body {
 .dock-item:hover { transform: translateY(-14px) scale(1.18); }
 .dock-item:hover .dock-label { opacity: 1; transform: translateY(-4px); }
 .dock-icon-wrap {
-  width: 52px; height: 52px; border-radius: 14px; overflow: hidden;
+  width: 52px; height: 52px; overflow: hidden;
   background: var(--c-raised);
+  clip-path: var(--squircle);
   box-shadow:
     3px 3px 9px var(--c-clay-shadow-dark),
     -2px -2px 6px var(--c-clay-shadow-light),
@@ -271,7 +274,12 @@ html, body {
 }
 .start-item:hover { box-shadow: 4px 4px 10px var(--c-clay-shadow-dark), -3px -3px 7px var(--c-clay-shadow-light); }
 .start-item:active { box-shadow: inset 2px 2px 5px var(--c-clay-shadow-dark); }
-.start-item img { width: 28px; height: 28px; object-fit: contain; }
+.start-icon-wrap {
+  width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;
+  background: var(--c-surface2); clip-path: var(--squircle);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+}
+.start-item img { width: 24px; height: 24px; object-fit: contain; }
 .start-item small { font-size: 0.62rem; font-weight: 700; color: var(--c-text2); text-align: center; line-height: 1.2; }
 .start-footer { display: flex; gap: 8px; padding-top: 12px; border-top: 2px solid var(--c-surface2); }
 .start-footer .clay-btn { flex: 1; justify-content: center; }
@@ -1040,3 +1048,122 @@ html, body {
 .ig-nav-item.active { color: #fff; }
 .ig-nav-item img { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; border: 1.4px solid #a8a8a8; }
 .ig-nav-item.active img { border-color: #fff; }
+
+/* ═══════════════════════════════════════════════════
+   SHIPWRIGHT ONBOARDING — ask / tour / checklist
+═══════════════════════════════════════════════════ */
+.sw-overlay {
+  position: fixed; inset: 0; z-index: 9500;
+  background: rgba(45,27,105,0.35);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  animation: swFadeIn 0.35s ease;
+}
+@keyframes swFadeIn { from { opacity: 0; } to { opacity: 1; } }
+.sw-skip-btn {
+  position: absolute; top: 18px; right: 18px; z-index: 10;
+  font-family: var(--font); font-weight: 800; font-size: 0.74rem;
+  color: var(--c-text2); background: var(--c-raised); border: none;
+  border-radius: 99px; padding: 6px 14px; cursor: pointer;
+  box-shadow: 3px 3px 7px var(--c-clay-shadow-dark), -2px -2px 5px var(--c-clay-shadow-light);
+  transition: box-shadow 0.12s, transform 0.1s;
+}
+.sw-skip-btn:hover { box-shadow: 4px 4px 10px var(--c-clay-shadow-dark), -3px -3px 7px var(--c-clay-shadow-light); }
+.sw-skip-btn:active { transform: scale(0.96); }
+.sw-card {
+  padding: 36px 34px; max-width: 420px; width: 90%;
+  text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px;
+  animation: swCardIn 0.4s cubic-bezier(0,0,0.2,1.2);
+}
+@keyframes swCardIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.sw-emoji { font-size: 2.6rem; }
+.sw-card h2 { font-size: 1.3rem; font-weight: 900; color: var(--c-text); }
+.sw-card p { font-size: 0.86rem; color: var(--c-text2); line-height: 1.5; }
+.sw-btn-row { display: flex; flex-direction: column; gap: 9px; width: 100%; margin-top: 6px; }
+.sw-btn-row .clay-btn { justify-content: center; width: 100%; padding: 11px; font-size: 0.84rem; }
+.sw-path-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; margin: 8px 0 4px; }
+.sw-path-opt {
+  cursor: pointer; padding: 18px 10px; border-radius: var(--radius-sm);
+  background: var(--c-raised); display: flex; flex-direction: column; align-items: center; gap: 6px;
+  box-shadow: 3px 3px 8px var(--c-clay-shadow-dark), -2px -2px 6px var(--c-clay-shadow-light);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.sw-path-opt:hover {
+  transform: translateY(-3px);
+  box-shadow: 5px 5px 12px var(--c-clay-shadow-dark), -3px -3px 8px var(--c-clay-shadow-light);
+}
+.sw-path-icon { font-size: 1.8rem; }
+.sw-path-title { font-size: 0.84rem; font-weight: 800; color: var(--c-text); }
+.sw-path-sub { font-size: 0.66rem; font-weight: 600; color: var(--c-text3); line-height: 1.3; }
+
+/* ── GUIDED TOUR ─────────────────────────────── */
+#tour-overlay { position: fixed; inset: 0; z-index: 9400; pointer-events: none; }
+.tour-spot {
+  position: fixed; border-radius: 18px; pointer-events: none;
+  box-shadow: 0 0 0 9999px rgba(20,10,45,0.6);
+  outline: 3px solid var(--c-accent); outline-offset: 2px;
+  transition:
+    left 0.4s cubic-bezier(0.4,0,0.2,1), top 0.4s cubic-bezier(0.4,0,0.2,1),
+    width 0.4s cubic-bezier(0.4,0,0.2,1), height 0.4s cubic-bezier(0.4,0,0.2,1);
+}
+.tour-tip {
+  position: fixed; pointer-events: auto; padding: 16px 18px;
+  transition: left 0.4s cubic-bezier(0.4,0,0.2,1), top 0.4s cubic-bezier(0.4,0,0.2,1);
+  animation: swCardIn 0.3s ease;
+}
+.tour-tip-step { font-size: 0.66rem; font-weight: 800; color: var(--c-text3); margin-bottom: 4px; letter-spacing: 0.5px; }
+.tour-tip-title { font-size: 0.95rem; font-weight: 900; color: var(--c-text); margin-bottom: 5px; }
+.tour-tip-text { font-size: 0.78rem; color: var(--c-text2); line-height: 1.45; margin-bottom: 12px; }
+.tour-tip-actions { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.tour-tip-nav { display: flex; gap: 6px; }
+
+/* ── MANUAL CHECKLIST (floating, non-blocking) ── */
+.cl-panel {
+  position: fixed; top: 50px; right: 16px; z-index: 9300;
+  width: 290px; max-height: 76vh; padding: 14px;
+  display: flex; flex-direction: column;
+  animation: swCardIn 0.3s cubic-bezier(0,0,0.2,1.2);
+}
+.cl-panel-hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 0.84rem; font-weight: 900; color: var(--c-text); margin-bottom: 8px;
+}
+.cl-panel-hdr-btns { display: flex; gap: 5px; }
+.cl-icon-btn {
+  width: 22px; height: 22px; border: none; border-radius: 7px; cursor: pointer;
+  background: var(--c-raised); color: var(--c-text2); font-weight: 800; font-size: 0.74rem;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 2px 2px 5px var(--c-clay-shadow-dark), -1px -1px 3px var(--c-clay-shadow-light);
+}
+.cl-icon-btn:hover { color: var(--c-accent); }
+.cl-fab {
+  position: fixed; bottom: 90px; right: 16px; z-index: 9300;
+  animation: swCardIn 0.25s ease;
+}
+.checklist-progress-track {
+  height: 8px; background: var(--c-surface2); border-radius: 99px; overflow: hidden; margin-bottom: 6px;
+  box-shadow: inset 2px 2px 5px var(--c-clay-shadow-dark), inset -1px -1px 3px var(--c-clay-shadow-light);
+  flex-shrink: 0;
+}
+.checklist-progress-fill { height: 100%; width: 0%; background: var(--c-accent); border-radius: 99px; transition: width 0.3s ease; }
+.checklist-progress-label { font-size: 0.7rem; font-weight: 700; color: var(--c-text3); margin-bottom: 10px; flex-shrink: 0; }
+.checklist-list { overflow-y: auto; display: flex; flex-direction: column; gap: 7px; padding-right: 2px; flex: 1; }
+.checklist-item {
+  display: flex; align-items: center; gap: 9px; padding: 8px 9px;
+  background: var(--c-raised); border-radius: var(--radius-sm);
+  box-shadow: 2px 2px 6px var(--c-clay-shadow-dark), -1px -1px 4px var(--c-clay-shadow-light);
+}
+.checklist-check {
+  width: 21px; height: 21px; flex-shrink: 0; border-radius: 7px; cursor: pointer;
+  background: var(--c-surface2); display: flex; align-items: center; justify-content: center;
+  font-size: 0.76rem; font-weight: 900; color: #fff;
+  box-shadow: inset 2px 2px 4px var(--c-clay-shadow-dark);
+}
+.checklist-item.checked .checklist-check { background: var(--c-accent); }
+.checklist-label { flex: 1; font-size: 0.76rem; font-weight: 700; color: var(--c-text); line-height: 1.3; }
+.checklist-item.checked .checklist-label { color: var(--c-text3); text-decoration: line-through; }
+.checklist-footer { display: flex; justify-content: space-between; gap: 8px; margin-top: 12px; padding-top: 10px; border-top: 2px solid var(--c-surface2); flex-shrink: 0; }
+.checklist-footer .clay-btn { flex: 1; justify-content: center; }
