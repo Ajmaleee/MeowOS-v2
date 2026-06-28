@@ -95,7 +95,8 @@ AI's used and the purpose -
 
 -claude: main coding helper,used free plan,most fixes
 -codex : used once,learned my lesson,never using again
--bolt.new : helped me add new features, and improve ui 
+-bolt.new : used it to organise files to folders,as i use github web,i cant upload folders so i uploaded the file in root and asked bolt to organise,but it did organise,but the assests stopped loading entirly
+
 
 ---
 
