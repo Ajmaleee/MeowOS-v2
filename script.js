@@ -266,12 +266,12 @@ function startClock(){
 
 /* ── WALLPAPER ───────────────────────────────── */
 const WP_PRESETS = [
-  { name:'Purple Dream', src:'wp1.jpg' },
-  { name:'Night Forest', src:'wp2.jpg' },
-  { name:'Candy Sky',    src:'wp3.jpg', customizable:true },
-  { name:'Cat Cafe',     src:'wp4.jpg' },
-  { name:'Space Meow',   src:'wp5.jpg' },
-  { name:'Pastel Paws',  src:'wp6.jpg' },
+  { name:'Purple Dream', src:'assets/images/wp1.jpg' },
+  { name:'Night Forest', src:'assets/images/wp2.jpg' },
+  { name:'Candy Sky',    src:'assets/images/wp3.jpg', customizable:true },
+  { name:'Cat Cafe',     src:'assets/images/wp4.jpg' },
+  { name:'Space Meow',   src:'assets/images/wp5.jpg' },
+  { name:'Pastel Paws',  src:'assets/images/wp6.jpg' },
 ];
 
 /* Candy Sky (wp3) cat dress-up options.
@@ -285,18 +285,18 @@ const WP_PRESETS = [
      wp3-sunglasses-hat-ceiling.jpg         — sunglasses + hat + ceiling cat
      wp3-sunglasses-hat-multiceiling.jpg    — sunglasses + hat + many ceiling cats */
 const WP3_VARIANTS = [
-  { id:'classic',                     label:'Classic',          emoji:'🐱',     src:'wp3.jpg' },
-  { id:'sunglasses',                   label:'Sunglasses',       emoji:'😎',     src:'wp3-sunglasses.jpg' },
-  { id:'hat',                          label:'Hat Only',         emoji:'🎩',     src:'wp3-hat.jpg' },
-  { id:'sunglasses-hat',                label:'Sunglasses + Hat', emoji:'😎🎩',   src:'wp3-sunglasses-hat.jpg' },
-  { id:'sunglasses-hat-ceiling',         label:'+ Ceiling Cat',    emoji:'😎🎩🕳️',  src:'wp3-sunglasses-hat-ceiling.jpg' },
-  { id:'sunglasses-hat-multiceiling',    label:'+ Many Ceilings',  emoji:'😎🎩🐾',  src:'wp3-sunglasses-hat-multiceiling.jpg' },
+  { id:'classic',                     label:'Classic',          emoji:'🐱',     src:'assets/images/wp3.jpg' },
+  { id:'sunglasses',                   label:'Sunglasses',       emoji:'😎',     src:'assets/images/wp3-sunglasses.jpg' },
+  { id:'hat',                          label:'Hat Only',         emoji:'🎩',     src:'assets/images/wp3-hat.jpg' },
+  { id:'sunglasses-hat',                label:'Sunglasses + Hat', emoji:'😎🎩',   src:'assets/images/wp3-sunglasses-hat.jpg' },
+  { id:'sunglasses-hat-ceiling',         label:'+ Ceiling Cat',    emoji:'😎🎩🕳️',  src:'assets/images/wp3-sunglasses-hat-ceiling.jpg' },
+  { id:'sunglasses-hat-multiceiling',    label:'+ Many Ceilings',  emoji:'😎🎩🐾',  src:'assets/images/wp3-sunglasses-hat-multiceiling.jpg' },
 ];
 
 function loadWallpaper(){
   // wp1 ("Purple Dream") is always the default until the user picks something else.
   const saved = LS.get('catos-wallpaper', null);
-  applyWallpaper(saved || 'wp3.jpg');
+  applyWallpaper(saved || 'assets/images/wp3.jpg');
 }
 function applyWallpaper(src){
   const desk = document.getElementById('desktop');
@@ -322,7 +322,7 @@ function buildWpPresets(){
   const grid = document.getElementById('wp-presets');
   if(!grid) return;
   grid.innerHTML = '';
-  const currentSrc = LS.get('catos-wallpaper', 'wp3.jpg') || 'wp3.jpg';
+  const currentSrc = LS.get('catos-wallpaper', 'assets/images/wp3.jpg') || 'assets/images/wp3.jpg';
   WP_PRESETS.forEach(wp=>{
     const d=document.createElement('div');
     d.className='wp-preset-thumb'+(wp.customizable?' wp-special':'');
@@ -470,21 +470,21 @@ let zTop=200;
 const openWins={};
 
 const APP_META={
-  memes:        { title:'Meme Gallery',    icon:'gallery.png',  w:640, h:520 },
-  browser:      { title:'PurrFox',         icon:'browser.png',  w:740, h:540 },
-  notepad:      { title:'Pawpad',          icon:'notepad.png',  w:560, h:430 },
-  music:        { title:'MeowTunes',       icon:'music.png',    w:420, h:580 },
-  paint:        { title:'CatPaint',        icon:'paint.png',    w:760, h:540 },
-  terminal:     { title:'CatShell',        icon:'terminal.png', w:600, h:420 },
-  files:        { title:'Fur Files',       icon:'files.png',    w:600, h:440 },
-  calculator:   { title:'Calc-Cat',        icon:'calc.png',     w:300, h:500 },
-  game:         { title:'Catch Yarn',      icon:'game.png',     w:640, h:500 },
-  settings:     { title:'Settings',        icon:'settings.png', w:540, h:440 },
-  calendar:     { title:'PurrPlanner',     icon:'calendar.png', w:500, h:480 },
-  chat:         { title:'MeowChat',        icon:'chat.png',     w:640, h:460 },
-  aboutme:      { title:'About Me',        icon:'owner.jpg',    w:420, h:560 },
-  notifications:{ title:'Notifications',   icon:'bell.png',     w:380, h:420 },
-  reels:        { title:'PawGram',         icon:'reels.png',    w:380, h:720 },
+  memes:        { title:'Meme Gallery',    icon:'assets/icons/gallery.png',  w:640, h:520 },
+  browser:      { title:'PurrFox',         icon:'assets/icons/browser.png',  w:740, h:540 },
+  notepad:      { title:'Pawpad',          icon:'assets/icons/notepad.png',  w:560, h:430 },
+  music:        { title:'MeowTunes',       icon:'assets/icons/music.png',    w:420, h:580 },
+  paint:        { title:'CatPaint',        icon:'assets/icons/paint.png',    w:760, h:540 },
+  terminal:     { title:'CatShell',        icon:'assets/icons/terminal.png', w:600, h:420 },
+  files:        { title:'Fur Files',       icon:'assets/icons/files.png',    w:600, h:440 },
+  calculator:   { title:'Calc-Cat',        icon:'assets/icons/calc.png',     w:300, h:500 },
+  game:         { title:'Catch Yarn',      icon:'assets/icons/game.png',     w:640, h:500 },
+  settings:     { title:'Settings',        icon:'assets/icons/settings.png', w:540, h:440 },
+  calendar:     { title:'PurrPlanner',     icon:'assets/icons/calendar.png', w:500, h:480 },
+  chat:         { title:'MeowChat',        icon:'assets/icons/chat.png',     w:640, h:460 },
+  aboutme:      { title:'About Me',        icon:'assets/images/owner.jpg',    w:420, h:560 },
+  notifications:{ title:'Notifications',   icon:'assets/icons/bell.png',     w:380, h:420 },
+  reels:        { title:'PawGram',         icon:'assets/icons/reels.png',    w:380, h:720 },
 };
 
 function openApp(id){
@@ -615,18 +615,18 @@ function initApp(id){
    MEMES APP
 ══════════════════════════════════════════════════ */
 const MEMES=[
-  { img:'meme1.jpg', top:'ONE DOES NOT SIMPLY',   bot:'IGNORE A CAT',            sub:'When the cat stares into your soul at 3am' },
-  { img:'meme2.jpg', top:'I CAN HAS',             bot:'CHEEZBURGER?',            sub:'The original. The legend. The classic.' },
-  { img:'meme3.jpg', top:'NOT SURE IF HUNGRY',    bot:'OR JUST BORED',           sub:'Cats eating for emotional reasons' },
-  { img:'meme4.jpg', top:'THIS IS FINE',          bot:'*everything is on fire*', sub:'Cat comfort level: maximum denial' },
-  { img:'meme5.jpg', top:'NOBODY:',               bot:'CAT AT 3AM: ZOOMIES',     sub:'Midnight energy is a feline superpower' },
-  { img:'meme6.jpg', top:'GRUMPY CAT SAYS',       bot:'NO. JUST NO.',            sub:'Every Monday. Forever.' },
-  { img:'meme7.jpg', top:'IN ANCIENT EGYPT',      bot:'I WAS WORSHIPPED',        sub:'Cats have not forgotten this' },
-  { img:'meme8.jpg', top:'YOU HAD ME AT',         bot:'"PSPSPSPSPS"',            sub:'Cats and the sacred summoning call' },
-  { img:'meme9.jpg', top:'SURPRISE MOTHERFLUFFER',bot:'🐾🐾🐾',                  sub:'When you open the treat cabinet' },
-  { img:'meme10.jpg',top:'HOVER CAT',             bot:'IS WATCHING YOU',         sub:'Always watching. Always judging.' },
-  { img:'meme11.jpg',top:'I SLEEP',               bot:'NOT YOUR PROBLEM',        sub:'Cat work ethic: aspirational' },
-  { img:'meme12.jpg',top:'NYAN NYAN NYAN',        bot:'NYAN NYAN NYAN NYAN',     sub:'2011 forever' },
+  { img:'assets/images/meme1.jpg', top:'ONE DOES NOT SIMPLY',   bot:'IGNORE A CAT',            sub:'When the cat stares into your soul at 3am' },
+  { img:'assets/images/meme2.jpg', top:'I CAN HAS',             bot:'CHEEZBURGER?',            sub:'The original. The legend. The classic.' },
+  { img:'assets/images/meme3.jpg', top:'NOT SURE IF HUNGRY',    bot:'OR JUST BORED',           sub:'Cats eating for emotional reasons' },
+  { img:'assets/images/meme4.jpg', top:'THIS IS FINE',          bot:'*everything is on fire*', sub:'Cat comfort level: maximum denial' },
+  { img:'assets/images/meme5.jpg', top:'NOBODY:',               bot:'CAT AT 3AM: ZOOMIES',     sub:'Midnight energy is a feline superpower' },
+  { img:'assets/images/meme6.jpg', top:'GRUMPY CAT SAYS',       bot:'NO. JUST NO.',            sub:'Every Monday. Forever.' },
+  { img:'assets/images/meme7.jpg', top:'IN ANCIENT EGYPT',      bot:'I WAS WORSHIPPED',        sub:'Cats have not forgotten this' },
+  { img:'assets/images/meme8.jpg', top:'YOU HAD ME AT',         bot:'"PSPSPSPSPS"',            sub:'Cats and the sacred summoning call' },
+  { img:'assets/images/meme9.jpg', top:'SURPRISE MOTHERFLUFFER',bot:'🐾🐾🐾',                  sub:'When you open the treat cabinet' },
+  { img:'assets/images/meme10.jpg',top:'HOVER CAT',             bot:'IS WATCHING YOU',         sub:'Always watching. Always judging.' },
+  { img:'assets/images/meme11.jpg',top:'I SLEEP',               bot:'NOT YOUR PROBLEM',        sub:'Cat work ethic: aspirational' },
+  { img:'assets/images/meme12.jpg',top:'NYAN NYAN NYAN',        bot:'NYAN NYAN NYAN NYAN',     sub:'2011 forever' },
 ];
 let memeIdx=0;
 
@@ -664,14 +664,14 @@ const BPAGES={
       <button onclick="browserNav('cat://search/'+document.getElementById('br-search-in').value)">Search</button>
     </div>
     <div class="br-shortcuts">
-      <div class="br-shortcut" onclick="browserNav('cat://news')"><img src="news.png" onerror="this.outerHTML='📰'"/>News</div>
-      <div class="br-shortcut" onclick="browserNav('cat://social')"><img src="chat.png" onerror="this.outerHTML='💬'"/>PawBook</div>
-      <div class="br-shortcut" onclick="browserNav('cat://wiki')"><img src="notepad.png" onerror="this.outerHTML='📚'"/>WikiPurrdia</div>
-      <div class="br-shortcut" onclick="browserNav('cat://shop')"><img src="shop.png" onerror="this.outerHTML='🛍️'"/>PawMart</div>
-      <div class="br-shortcut" onclick="browserNav('cat://games')"><img src="game.png" onerror="this.outerHTML='🎮'"/>Games</div>
-      <div class="br-shortcut" onclick="browserNav('cat://weather')"><img src="weather.png" onerror="this.outerHTML='🌤️'"/>Weather</div>
-      <div class="br-shortcut" onclick="browserNav('cat://music')"><img src="music.png" onerror="this.outerHTML='🎵'"/>MeowTunes</div>
-      <div class="br-shortcut" onclick="browserNav('cat://mail')"><img src="mail.png" onerror="this.outerHTML='📧'"/>PurrMail</div>
+      <div class="br-shortcut" onclick="browserNav('cat://news')"><img src="assets/icons/news.png" onerror="this.outerHTML='📰'"/>News</div>
+      <div class="br-shortcut" onclick="browserNav('cat://social')"><img src="assets/icons/chat.png" onerror="this.outerHTML='💬'"/>PawBook</div>
+      <div class="br-shortcut" onclick="browserNav('cat://wiki')"><img src="assets/icons/notepad.png" onerror="this.outerHTML='📚'"/>WikiPurrdia</div>
+      <div class="br-shortcut" onclick="browserNav('cat://shop')"><img src="assets/icons/shop.png" onerror="this.outerHTML='🛍️'"/>PawMart</div>
+      <div class="br-shortcut" onclick="browserNav('cat://games')"><img src="assets/icons/game.png" onerror="this.outerHTML='🎮'"/>Games</div>
+      <div class="br-shortcut" onclick="browserNav('cat://weather')"><img src="assets/icons/weather.png" onerror="this.outerHTML='🌤️'"/>Weather</div>
+      <div class="br-shortcut" onclick="browserNav('cat://music')"><img src="assets/icons/music.png" onerror="this.outerHTML='🎵'"/>MeowTunes</div>
+      <div class="br-shortcut" onclick="browserNav('cat://mail')"><img src="assets/icons/mail.png" onerror="this.outerHTML='📧'"/>PurrMail</div>
     </div>
   </div>`,
   'cat://news': ()=>`<div class="br-page">
@@ -796,11 +796,11 @@ function notepadSize(s){ const a=document.getElementById('notepad-area'); if(a) 
    MEOWTUNES — REAL AUDIO
 ══════════════════════════════════════════════════ */
 const TRACKS=[
-  { title:'Nyan Cat Theme',     artist:'Daniwell',       album:'Nyan Cat OST',    src:'nyan.mp3',     cover:'cover1.jpg', dur:'3:37' },
-  { title:'Meow (Cat Song)',    artist:'Jingle Punks',   album:'Cat Beats',       src:'meow.mp3',     cover:'cover2.jpg', dur:'2:15' },
-  { title:'Keyboard Cat',       artist:'Charlie Schmidt', album:'Internet Gold',   src:'keyboard.mp3', cover:'cover3.jpg', dur:'0:54' },
-  { title:'Cat Vibes Lo-fi',    artist:'LoFi Cat',       album:'Chill Paws',      src:'lofi.mp3',     cover:'cover4.jpg', dur:'3:50' },
-  { title:'Stray Cat Strut',    artist:'The Stray Cats',  album:'Built for Speed', src:'stray.mp3',    cover:'cover5.jpg', dur:'3:12' },
+  { title:'Nyan Cat Theme',     artist:'Daniwell',       album:'Nyan Cat OST',    src:'assets/audio/nyan.mp3',     cover:'assets/images/cover1.jpg', dur:'3:37' },
+  { title:'Meow (Cat Song)',    artist:'Jingle Punks',   album:'Cat Beats',       src:'assets/audio/meow.mp3',     cover:'assets/images/cover2.jpg', dur:'2:15' },
+  { title:'Keyboard Cat',       artist:'Charlie Schmidt', album:'Internet Gold',   src:'assets/audio/keyboard.mp3', cover:'assets/images/cover3.jpg', dur:'0:54' },
+  { title:'Cat Vibes Lo-fi',    artist:'LoFi Cat',       album:'Chill Paws',      src:'assets/audio/lofi.mp3',     cover:'assets/images/cover4.jpg', dur:'3:50' },
+  { title:'Stray Cat Strut',    artist:'The Stray Cats',  album:'Built for Speed', src:'assets/audio/stray.mp3',    cover:'assets/images/cover5.jpg', dur:'3:12' },
 ];
 
 const MX={ idx:0, playing:false, shuffle:false, repeat:false, vol:0.7, audio:null };
@@ -816,14 +816,14 @@ function buildPlaylist(){
   pl.innerHTML=TRACKS.map((t,i)=>`
     <div class="playlist-item ${i===MX.idx?'playing':''}" onclick="musicSelectTrack(${i})">
       <div class="pl-num">${i+1}</div>
-      <img class="pl-cover" src="${t.cover}" onerror="this.src='cover1.jpg'"/>
+      <img class="pl-cover" src="${t.cover}" onerror="this.src='assets/images/cover1.jpg'"/>
       <div class="pl-info"><div class="pl-title">${t.title}</div><div class="pl-artist">${t.artist}</div></div>
       <div class="pl-dur">${t.dur}</div>
     </div>`).join('');
 }
 function loadTrack(i){
   MX.idx=i; const t=TRACKS[i];
-  const art=document.getElementById('music-art'); if(art){ art.src=t.cover; art.onerror=()=>art.src='cat-icon.png'; }
+  const art=document.getElementById('music-art'); if(art){ art.src=t.cover; art.onerror=()=>art.src='assets/icons/cat-icon.png'; }
   const ti=document.getElementById('music-title');   if(ti) ti.textContent=t.title;
   const ar=document.getElementById('music-artist');  if(ar) ar.textContent=t.artist;
   const al=document.getElementById('music-album');   if(al) al.textContent=t.album;
@@ -1019,20 +1019,20 @@ function catMatrix(){
 ══════════════════════════════════════════════════ */
 const FS={
   home:[
-    { img:'notepad.png',  name:'resume_cat.pdf',    isImg:false },
-    { img:'owner.jpg',    name:'selfie_01.jpg',      isImg:true  },
+    { img:'assets/icons/notepad.png',  name:'resume_cat.pdf',    isImg:false },
+    { img:'assets/images/owner.jpg',    name:'selfie_01.jpg',      isImg:true  },
     { img:null,           name:'Projects/',          isImg:false, isDir:true },
-    { img:'nyan.gif',     name:'nyan_cat.gif',       isImg:true  },
+    { img:'assets/images/nyan.gif',     name:'nyan_cat.gif',       isImg:true  },
     { img:null,           name:'secrets.txt',        isImg:false },
     { img:null,           name:'box_collection/',    isImg:false, isDir:true },
   ],
   pictures:[
-    { img:'owner.jpg',    name:'selfie_01.jpg',  isImg:true },
-    { img:'cat1.jpg',     name:'nap_2024.jpg',   isImg:true },
-    { img:'cat2.jpg',     name:'laser_chase.jpg',isImg:true },
-    { img:'cat3.jpg',     name:'sunbeam.jpg',    isImg:true },
-    { img:'nyan.gif',     name:'nyan_cat.gif',   isImg:true },
-    { img:'owner.jpg',    name:'birdwatch.jpg',  isImg:true },
+    { img:'assets/images/owner.jpg',    name:'selfie_01.jpg',  isImg:true },
+    { img:'assets/images/cat1.jpg',     name:'nap_2024.jpg',   isImg:true },
+    { img:'assets/images/cat2.jpg',     name:'laser_chase.jpg',isImg:true },
+    { img:'assets/images/cat3.jpg',     name:'sunbeam.jpg',    isImg:true },
+    { img:'assets/images/nyan.gif',     name:'nyan_cat.gif',   isImg:true },
+    { img:'assets/images/owner.jpg',    name:'birdwatch.jpg',  isImg:true },
   ],
   music:[
     { img:null, name:'nyan_cat.mp3',    isImg:false, icon:'🎵' },
@@ -1257,7 +1257,7 @@ function settingsTab(tab, el){
       <div class="setting-row"><label>Treat Addiction</label><input type="range" min="0" max="100" value="100"/></div>`;
   } else if(tab==='about'){
     panel.innerHTML=`<div class="about-section">
-      <img src="owner.jpg" class="about-img" onerror="this.style.display='none'"/>
+      <img src="assets/images/owner.jpg" class="about-img" onerror="this.style.display='none'"/>
       <h2>CatOS 2.0</h2>
       <p><b>Powered by Paws™</b><br>The world's most feline operating system.<br><br>
       Kernel: PurrLinux 6.9-meow<br>Desktop: CatDE 2.0 (Clay Edition)<br>Memory: 9 lives / 16 GB<br>Storage: Infinite boxes<br><br>
@@ -1323,19 +1323,19 @@ function showCalEvents(day){
    MEOWCHAT
 ══════════════════════════════════════════════════ */
 const CONTACTS={
-  whiskers:{name:'Whiskers',av:'cat1.jpg',status:'🟢 Online',msgs:[
+  whiskers:{name:'Whiskers',av:'assets/images/cat1.jpg',status:'🟢 Online',msgs:[
     {me:false,text:'Meow! How are you doing today?'},
     {me:false,text:'I found the best sunbeam. You should come see it.'},
   ]},
-  mittens:{name:'Mittens',av:'cat2.jpg',status:'🟢 Online',msgs:[
+  mittens:{name:'Mittens',av:'assets/images/cat2.jpg',status:'🟢 Online',msgs:[
     {me:false,text:'Did you see that laser dot?! IT WAS THERE AND THEN IT WASNT.'},
     {me:false,text:'I have been thinking about it for 3 hours now.'},
   ]},
-  chairman:{name:'Chairman Meow',av:'cat3.jpg',status:'🔴 Demanding',msgs:[
+  chairman:{name:'Chairman Meow',av:'assets/images/cat3.jpg',status:'🔴 Demanding',msgs:[
     {me:false,text:'I demand treats. NOW. The time for delay is OVER.'},
     {me:false,text:'The humans have been warned. Treats or the vase gets it.'},
   ]},
-  nyancat:{name:'Nyan Cat',av:'nyan.gif',status:'🟢 Nyaning',msgs:[
+  nyancat:{name:'Nyan Cat',av:'assets/images/nyan.gif',status:'🟢 Nyaning',msgs:[
     {me:false,text:'nyan nyan nyan nyan nyan nyan nyan nyan'},
     {me:false,text:'🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈'},
   ]},
@@ -1403,46 +1403,46 @@ function initAboutMe(){ /* all static HTML in index.html */ }
    (exact Instagram Reels layout, cat content)
 ══════════════════════════════════════════════════ */
 const REELS_DATA = [
-  { file:'reel-01.mp4', user:'@whiskers.wilson',     verified:true,  avatar:'cat1.jpg',
+  { file:'assets/video/reel-01.mp4', user:'@whiskers.wilson',     verified:true,  avatar:'assets/images/cat1.jpg',
     caption:'POV: you opened the treat bag at 3am 🐾😹 he heard it from two floors away',
     audio:'original audio · whiskers.wilson', likes:128400, comments:842,  shares:3100 },
-  { file:'reel-02.mp4', user:'@chairman.meow',       verified:true,  avatar:'cat3.jpg',
+  { file:'assets/video/reel-02.mp4', user:'@chairman.meow',       verified:true,  avatar:'assets/images/cat3.jpg',
     caption:'The humans THINK they own this couch. They are, in fact, incorrect. 👑',
     audio:'Royalty - Meow Beats',              likes:947000, comments:5200, shares:18900 },
-  { file:'reel-03.mp4', user:'@mittens_official',    verified:false, avatar:'cat2.jpg',
+  { file:'assets/video/reel-03.mp4', user:'@mittens_official',    verified:false, avatar:'assets/images/cat2.jpg',
     caption:'Day 47 of intense surveillance on the red dot. It always escapes. Always.',
     audio:'original audio · mittens_official',  likes:64200,  comments:391,  shares:980 },
-  { file:'reel-04.mp4', user:'@nyancat.daily',       verified:true,  avatar:'nyan.gif',
+  { file:'assets/video/reel-04.mp4', user:'@nyancat.daily',       verified:true,  avatar:'assets/images/nyan.gif',
     caption:'nyan nyan nyan nyan nyan nyan nyan 🌈 (this is the whole caption)',
     audio:'Nyan Theme - 8bit Classics',         likes:2400000,comments:88000,shares:512000 },
-  { file:'reel-05.mp4', user:'@purrlosophy',         verified:false, avatar:'cat1.jpg',
+  { file:'assets/video/reel-05.mp4', user:'@purrlosophy',         verified:false, avatar:'assets/images/cat1.jpg',
     caption:'To nap, or to nap harder — that is the only question that has ever mattered',
     audio:'Lo-fi Purr Beats to Sleep/Judge to', likes:39800,  comments:204,  shares:610 },
-  { file:'reel-06.mp4', user:'@feline.fiasco',       verified:false, avatar:'cat2.jpg',
+  { file:'assets/video/reel-06.mp4', user:'@feline.fiasco',       verified:false, avatar:'assets/images/cat2.jpg',
     caption:'I was framed. The vase fell on its own. I have nothing further to add. 🏺💥',
     audio:'original audio · feline.fiasco',     likes:201500, comments:6700, shares:9400 },
-  { file:'reel-07.mp4', user:'@catnip.chronicles',   verified:true,  avatar:'cat3.jpg',
+  { file:'assets/video/reel-07.mp4', user:'@catnip.chronicles',   verified:true,  avatar:'assets/images/cat3.jpg',
     caption:'This is what peak performance looks like. 14 hours. No notes. 😴',
     audio:'Dreamy Sunbeam - Soft Purr Sounds',  likes:55300,  comments:312,  shares:740 },
-  { file:'reel-08.mp4', user:'@void.cat.energy',     verified:false, avatar:'cat1.jpg',
+  { file:'assets/video/reel-08.mp4', user:'@void.cat.energy',     verified:false, avatar:'assets/images/cat1.jpg',
     caption:'Box acquired. Box is now mine. I do not make the rules, the box does.',
     audio:'original audio · void.cat.energy',   likes:712900, comments:14200,shares:43000 },
-  { file:'reel-09.mp4', user:'@sir.fluffington',     verified:true,  avatar:'cat2.jpg',
+  { file:'assets/video/reel-09.mp4', user:'@sir.fluffington',     verified:true,  avatar:'assets/images/cat2.jpg',
     caption:'Caught in 4K stealing my own reflection\'s spot in the mirror. Unrepentant.',
     audio:'Bougie - Catnip Sound Co.',           likes:88700,  comments:1100, shares:2300 },
-  { file:'reel-10.mp4', user:'@clawdia.official',    verified:false, avatar:'cat3.jpg',
+  { file:'assets/video/reel-10.mp4', user:'@clawdia.official',    verified:false, avatar:'assets/images/cat3.jpg',
     caption:'3am zoomie championships. No referees. No rules. Just vibes and chaos. 🏃',
     audio:'original audio · clawdia.official',  likes:166000, comments:3900, shares:7800 },
-  { file:'reel-11.mp4', user:'@biscuit.maker',       verified:false, avatar:'cat1.jpg',
+  { file:'assets/video/reel-11.mp4', user:'@biscuit.maker',       verified:false, avatar:'assets/images/cat1.jpg',
     caption:'Kneading the blanket like it owes him rent. He will not stop. Ever.',
     audio:'Soft Kneads - Cozy Cat Lo-fi',        likes:47600,  comments:560,  shares:1200 },
-  { file:'reel-12.mp4', user:'@litterbox.legend',    verified:true,  avatar:'cat2.jpg',
+  { file:'assets/video/reel-12.mp4', user:'@litterbox.legend',    verified:true,  avatar:'assets/images/cat2.jpg',
     caption:'Tell me you\'re a cat without telling me you\'re a cat. Challenge: impossible.',
     audio:'original audio · litterbox.legend',  likes:332000, comments:9800, shares:21000 },
-  { file:'reel-13.mp4', user:'@pawsitive.vibes',     verified:false, avatar:'cat3.jpg',
+  { file:'assets/video/reel-13.mp4', user:'@pawsitive.vibes',     verified:false, avatar:'assets/images/cat3.jpg',
     caption:'Bro found the one sunbeam in the entire apartment and defended it with his life',
     audio:'Golden Hour - Sunny Cat Mix',         likes:91200,  comments:1450, shares:3300 },
-  { file:'reel-14.mp4', user:'@meowtain.dew',        verified:false, avatar:'cat1.jpg',
+  { file:'assets/video/reel-14.mp4', user:'@meowtain.dew',        verified:false, avatar:'assets/images/cat1.jpg',
     caption:'When the vacuum turns on and your whole personality changes instantly 😾',
     audio:'original audio · meowtain.dew',      likes:218700, comments:4300, shares:8900 },
 ];
@@ -1616,7 +1616,7 @@ function shutDown(){
   Object.keys(openWins).forEach(id=>closeWin(id));
   const ov=document.createElement('div'); ov.id='shutdown-overlay';
   ov.innerHTML=`
-    <img src="owner.jpg" class="shut-photo" onerror="this.style.display='none'"/>
+    <img src="assets/images/owner.jpg" class="shut-photo" onerror="this.style.display='none'"/>
     <h1>CatOS Napping...</h1>
     <p>All systems entering nap mode.</p>
     <p style="font-size:2rem;margin:8px 0">😴💤🐾</p>

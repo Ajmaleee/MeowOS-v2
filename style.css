@@ -113,7 +113,7 @@ html, body {
 }
 .welcome-bg-blur {
   position: absolute; inset: 0;
-  background: url('welcome-bg.jpg') center/cover no-repeat;
+  background: url('assets/images/welcome-bg.jpg') center/cover no-repeat;
   filter: blur(14px) brightness(0.7);
 }
 .welcome-card {
@@ -159,7 +159,7 @@ html, body {
 /* ═══════════════════ DESKTOP ═════════════════════ */
 #desktop {
   position: fixed; inset: 0;
-  background: var(--c-bg) url('wallpaper.jpg') center/cover no-repeat;
+  background: var(--c-bg) url('assets/images/wallpaper.jpg') center/cover no-repeat;
   overflow: hidden;
 }
 #desktop.hidden { display: none; }
