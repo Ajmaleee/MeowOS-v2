@@ -277,7 +277,7 @@ const WP_PRESETS = [
 /* Candy Sky (wp3) cat dress-up options.
    Each entry is a FULL wallpaper image (the same wp3 scene with that
    accessory combo already baked into the picture). Drop the matching
-   files into the project root using these exact filenames:
+   files into assets/images/ using these exact filenames:
      wp3.jpg                              — classic / no accessories
      wp3-sunglasses.jpg                   — sunglasses only
      wp3-hat.jpg                          — hat only
@@ -326,7 +326,7 @@ function buildWpPresets(){
   WP_PRESETS.forEach(wp=>{
     const d=document.createElement('div');
     d.className='wp-preset-thumb'+(wp.customizable?' wp-special':'');
-    const isActive = currentSrc===wp.src || (wp.customizable && currentSrc.startsWith('wp3'));
+    const isActive = currentSrc===wp.src || (wp.customizable && currentSrc.includes('wp3'));
     if(isActive) d.classList.add('selected');
     d.innerHTML=`<img src="${wp.src}" onerror="this.parentElement.style.background='var(--c-surface2)'"/>
       <span>${wp.name}</span>

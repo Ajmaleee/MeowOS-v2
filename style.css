@@ -38,9 +38,7 @@ html, body {
   font-family: var(--font);
   background: var(--c-bg);
   color: var(--c-text);
-  /* No custom cursor — browser default */
   cursor: default;
-  /* Disable text selection globally */
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -61,10 +59,7 @@ html, body {
   cursor: text;
 }
 
-/* Prevent blue highlight flash on double-click / tap */
-* {
-  -webkit-tap-highlight-color: transparent;
-}
+* { -webkit-tap-highlight-color: transparent; }
 
 /* ── CLAY CARD / BTN ──────────────────────────── */
 .clay-card {
