@@ -44,11 +44,212 @@ function onDesktopReady(){
   loadWallpaper();
   buildWpPresets();
   startNotifSchedule();
-  toast('🐾 Welcome to CatOS 2.0!');
   SND.play('meow');
   setTimeout(()=>SND.purr(true), 1500);
   setTimeout(()=>SND.purr(false), 4000);
-  setTimeout(()=>openApp('aboutme'), 900);
+
+  if(!LS.get('catos-onboarded', false)){
+    setTimeout(()=>swShow(), 450);
+  } else {
+    swWelcomed = true;
+    toast('🐾 Welcome to CatOS 2.0!');
+    setTimeout(()=>openApp('aboutme'), 900);
+  }
+}
+
+/* ══════════════════════════════════════════════════
+   SHIPWRIGHT ONBOARDING — ask / tour / checklist
+══════════════════════════════════════════════════ */
+let swWelcomed = false;
+
+function swMarkOnboarded(){ LS.set('catos-onboarded', true); }
+
+function swShow(){
+  document.getElementById('sw-overlay').classList.remove('hidden');
+  document.getElementById('sw-step-ask').classList.remove('hidden');
+  document.getElementById('sw-step-path').classList.add('hidden');
+}
+function swHide(){
+  document.getElementById('sw-overlay').classList.add('hidden');
+}
+function swWelcomeToast(){
+  if(swWelcomed) return;
+  swWelcomed = true;
+  toast('🐾 Welcome to CatOS 2.0! Happy shipwrighting ⚓');
+  setTimeout(()=>{ if(!openWins['aboutme']) openApp('aboutme'); }, 500);
+}
+function swSkip(){
+  swMarkOnboarded();
+  swHide();
+  swWelcomeToast();
+}
+function swChoose(isShipwright){
+  if(!isShipwright){
+    swMarkOnboarded();
+    swHide();
+    swWelcomeToast();
+    return;
+  }
+  document.getElementById('sw-step-ask').classList.add('hidden');
+  document.getElementById('sw-step-path').classList.remove('hidden');
+}
+function swStartTour(){
+  swMarkOnboarded();
+  swHide();
+  tourStart();
+}
+function swOpenChecklist(){
+  swMarkOnboarded();
+  swHide();
+  checklistOpen();
+}
+/* Re-open the path picker later (e.g. from Settings > About) */
+function swRelaunch(){
+  document.getElementById('sw-overlay').classList.remove('hidden');
+  document.getElementById('sw-step-ask').classList.add('hidden');
+  document.getElementById('sw-step-path').classList.add('hidden');
+  document.getElementById('sw-step-tourdone').classList.add('hidden');
+  document.getElementById('sw-step-path').classList.remove('hidden');
+}
+
+/* Shown right after the tour finishes (or is skipped) — offers the checklist */
+function swShowTourDone(){
+  document.getElementById('sw-overlay').classList.remove('hidden');
+  document.getElementById('sw-step-ask').classList.add('hidden');
+  document.getElementById('sw-step-path').classList.add('hidden');
+  document.getElementById('sw-step-tourdone').classList.remove('hidden');
+}
+function swOpenChecklistFromTour(){
+  swHide();
+  checklistOpen();
+}
+
+/* ── GUIDED TOUR ──────────────────────────────── */
+const TOUR_STEPS = [
+  { sel:'#dock',                                title:'🐾 The Dock',     text:'Quick access to every app. Click an icon to open it — click again to minimize.' },
+  { sel:'#top-bar',                              title:'🔔 Top Bar',      text:'Notifications and Settings live here, alongside a live clock.' },
+  { sel:'.dock-item:first-child .dock-icon-wrap',title:'☰ Start Menu',    text:'Click the MeowOS logo to open the Start Menu and search every app.' },
+  { sel:'#desktop-icons',                        title:'🖥️ Desktop Icons',text:'Double-click any icon here to launch the same apps as the dock.' },
+  { sel:'.dock-item[data-app="aboutme"]',        title:'👤 About Me',     text:'Curious who built this? This opens the creator profile and links.' },
+  { sel:'#dock',                                 title:'⚓ That\'s it!',   text:'Explore freely from here — right-click the desktop to try the wallpaper customizer. Happy shipwrighting!' },
+];
+let tourIdx = 0;
+
+function tourStart(){
+  tourIdx = 0;
+  document.getElementById('tour-overlay').classList.remove('hidden');
+  tourRender();
+}
+function tourRender(){
+  const step = TOUR_STEPS[tourIdx];
+  const el = document.querySelector(step.sel);
+  const spot = document.getElementById('tour-spot');
+  const tip = document.getElementById('tour-tip');
+  if(el){
+    const r = el.getBoundingClientRect();
+    const pad = 10;
+    spot.style.left   = (r.left - pad) + 'px';
+    spot.style.top    = (r.top - pad) + 'px';
+    spot.style.width  = (r.width + pad*2) + 'px';
+    spot.style.height = (r.height + pad*2) + 'px';
+
+    const tipW = Math.min(290, window.innerWidth - 24);
+    let tipLeft = r.left + r.width/2 - tipW/2;
+    tipLeft = Math.max(12, Math.min(tipLeft, window.innerWidth - tipW - 12));
+    let tipTop = r.top - 168;
+    if(tipTop < 50) tipTop = Math.min(r.bottom + 18, window.innerHeight - 200);
+    tip.style.left  = tipLeft + 'px';
+    tip.style.top   = tipTop + 'px';
+    tip.style.width = tipW + 'px';
+  }
+  document.getElementById('tour-step-num').textContent = (tourIdx+1)+' / '+TOUR_STEPS.length;
+  document.getElementById('tour-tip-title').textContent = step.title;
+  document.getElementById('tour-tip-text').textContent = step.text;
+  document.getElementById('tour-back-btn').style.visibility = tourIdx===0 ? 'hidden' : 'visible';
+  document.getElementById('tour-next-btn').textContent = tourIdx===TOUR_STEPS.length-1 ? 'Finish ✓' : 'Next ▶';
+}
+function tourNext(){
+  if(tourIdx >= TOUR_STEPS.length-1){ tourEnd(); return; }
+  tourIdx++; tourRender();
+}
+function tourBack(){ if(tourIdx>0){ tourIdx--; tourRender(); } }
+function tourSkip(){ tourEnd(); }
+function tourEnd(){
+  document.getElementById('tour-overlay').classList.add('hidden');
+  swShowTourDone();
+}
+window.addEventListener('resize', ()=>{
+  if(!document.getElementById('tour-overlay').classList.contains('hidden')) tourRender();
+});
+
+/* ── MANUAL CHECKLIST (floating, non-blocking) ── */
+const CHECKLIST_ITEMS = [
+  { id:'start',     label:'Open the Start Menu',                         app:null },
+  { id:'wallpaper', label:'Change the wallpaper (right-click desktop)',  app:null },
+  { id:'wp3',       label:'Try the Candy Sky cat customizer',            app:null },
+  { id:'memes',     label:'Browse the Meme Gallery',                     app:'memes' },
+  { id:'browser',   label:'Open PurrFox and visit a shortcut',           app:'browser' },
+  { id:'notepad',   label:'Write a note in Pawpad',                      app:'notepad' },
+  { id:'music',     label:'Play a track in MeowTunes',                   app:'music' },
+  { id:'paint',     label:'Draw something in CatPaint',                  app:'paint' },
+  { id:'terminal',  label:'Run a command in CatShell',                   app:'terminal' },
+  { id:'files',     label:'Browse Fur Files',                            app:'files' },
+  { id:'calculator',label:'Do some math in Calc-Cat',                    app:'calculator' },
+  { id:'game',      label:'Play Catch the Yarn',                         app:'game' },
+  { id:'calendar',  label:'Check PurrPlanner events',                    app:'calendar' },
+  { id:'chat',      label:'Send a message in MeowChat',                  app:'chat' },
+  { id:'reels',     label:'Scroll through PawGram reels',                app:'reels' },
+  { id:'settings',  label:'Look through the Settings tabs',              app:'settings' },
+  { id:'aboutme',   label:'Check out About Me',                          app:'aboutme' },
+];
+
+function checklistOpen(){
+  renderChecklist();
+  document.getElementById('checklist-fab').classList.add('hidden');
+  document.getElementById('checklist-panel').classList.remove('hidden');
+}
+function checklistExpand(){
+  document.getElementById('checklist-fab').classList.add('hidden');
+  document.getElementById('checklist-panel').classList.remove('hidden');
+}
+function checklistMinimize(){
+  document.getElementById('checklist-panel').classList.add('hidden');
+  document.getElementById('checklist-fab').classList.remove('hidden');
+}
+function checklistClose(){
+  document.getElementById('checklist-panel').classList.add('hidden');
+  document.getElementById('checklist-fab').classList.add('hidden');
+  swWelcomeToast();
+}
+function getChecklistState(){ return LS.get('catos-checklist', {}); }
+function setChecklistState(s){ LS.set('catos-checklist', s); }
+function checklistToggle(id){
+  const s = getChecklistState();
+  s[id] = !s[id];
+  setChecklistState(s);
+  renderChecklist();
+  SND.play('click');
+}
+function checklistReset(){
+  setChecklistState({});
+  renderChecklist();
+}
+function renderChecklist(){
+  const s = getChecklistState();
+  const list = document.getElementById('checklist-list');
+  if(!list) return;
+  list.innerHTML = CHECKLIST_ITEMS.map(it=>`
+    <div class="checklist-item ${s[it.id]?'checked':''}">
+      <div class="checklist-check" onclick="checklistToggle('${it.id}')">${s[it.id]?'✓':''}</div>
+      <div class="checklist-label">${it.label}</div>
+      ${it.app?`<button class="clay-btn sm" onclick="openApp('${it.app}')">Open</button>`:''}
+    </div>`).join('');
+  const total = CHECKLIST_ITEMS.length;
+  const done = CHECKLIST_ITEMS.filter(it=>s[it.id]).length;
+  const fill = document.getElementById('checklistProgressFill');
+  const label = document.getElementById('checklistProgressLabel');
+  if(fill) fill.style.width = (total ? (done/total*100) : 0) + '%';
+  if(label) label.textContent = `${done} / ${total} checked`;
 }
 
 /* ── CLOCK ───────────────────────────────────── */
@@ -1062,6 +1263,7 @@ function settingsTab(tab, el){
       Kernel: PurrLinux 6.9-meow<br>Desktop: CatDE 2.0 (Clay Edition)<br>Memory: 9 lives / 16 GB<br>Storage: Infinite boxes<br><br>
       Built with ❤️ by ajmaleee__<br><br>
       🐾 In cats we trust 🐾</p>
+      <button class="clay-btn sm" style="margin-top:14px" onclick="swRelaunch()">🧭 Replay Onboarding</button>
     </div>`;
   }
 }
