@@ -87,19 +87,6 @@ https://ajmaleee.github.io/MeowOS-v2/
 
 ---
 
-##AI use
-
-used ai to add basic framwork, to imrove ui flow and to fix bugs
-
-AI's used and the purpose -
-
--claude: main coding helper,used free plan,most fixes
--codex : used once,learned my lesson,never using again
--bolt.new : used it to organise files to folders,as i use github web,i cant upload folders so i uploaded the file in root and asked bolt to organise,but it did organise,but the assests stopped loading entirly
-
-
----
-
 MeowOS v2 is proof that giving a cat administrative privileges was a mistake.
 
 A very fun mistake.
