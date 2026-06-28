@@ -205,19 +205,19 @@
       <input id="start-search" type="text" placeholder="Search apps..." oninput="filterStartApps(this.value)"/>
     </div>
     <div class="start-grid" id="start-grid">
-      <div class="start-item" data-app="memes"><img src="gallery.png" onerror="this.outerHTML='🖼️'"/><small>Meme Gallery</small></div>
-      <div class="start-item" data-app="browser"><img src="browser.png" onerror="this.outerHTML='🌐'"/><small>PurrFox</small></div>
-      <div class="start-item" data-app="notepad"><img src="notepad.png" onerror="this.outerHTML='📝'"/><small>Pawpad</small></div>
-      <div class="start-item" data-app="music"><img src="music.png" onerror="this.outerHTML='🎵'"/><small>MeowTunes</small></div>
-      <div class="start-item" data-app="paint"><img src="paint.png" onerror="this.outerHTML='🎨'"/><small>CatPaint</small></div>
-      <div class="start-item" data-app="terminal"><img src="terminal.png" onerror="this.outerHTML='💻'"/><small>CatShell</small></div>
-      <div class="start-item" data-app="files"><img src="files.png" onerror="this.outerHTML='📁'"/><small>Fur Files</small></div>
-      <div class="start-item" data-app="calculator"><img src="calc.png" onerror="this.outerHTML='🔢'"/><small>Calc-Cat</small></div>
-      <div class="start-item" data-app="game"><img src="game.png" onerror="this.outerHTML='🎮'"/><small>Catch Yarn</small></div>
-      <div class="start-item" data-app="calendar"><img src="calendar.png" onerror="this.outerHTML='📅'"/><small>PurrPlanner</small></div>
-      <div class="start-item" data-app="chat"><img src="chat.png" onerror="this.outerHTML='💬'"/><small>MeowChat</small></div>
-      <div class="start-item" data-app="reels"><img src="reels.png" onerror="this.outerHTML='🎬'"/><small>PawGram</small></div>
-      <div class="start-item" data-app="settings"><img src="settings.png" onerror="this.outerHTML='⚙️'"/><small>Settings</small></div>
+      <div class="start-item" data-app="memes"><div class="start-icon-wrap"><img src="gallery.png" onerror="this.outerHTML='🖼️'"/></div><small>Meme Gallery</small></div>
+      <div class="start-item" data-app="browser"><div class="start-icon-wrap"><img src="browser.png" onerror="this.outerHTML='🌐'"/></div><small>PurrFox</small></div>
+      <div class="start-item" data-app="notepad"><div class="start-icon-wrap"><img src="notepad.png" onerror="this.outerHTML='📝'"/></div><small>Pawpad</small></div>
+      <div class="start-item" data-app="music"><div class="start-icon-wrap"><img src="music.png" onerror="this.outerHTML='🎵'"/></div><small>MeowTunes</small></div>
+      <div class="start-item" data-app="paint"><div class="start-icon-wrap"><img src="paint.png" onerror="this.outerHTML='🎨'"/></div><small>CatPaint</small></div>
+      <div class="start-item" data-app="terminal"><div class="start-icon-wrap"><img src="terminal.png" onerror="this.outerHTML='💻'"/></div><small>CatShell</small></div>
+      <div class="start-item" data-app="files"><div class="start-icon-wrap"><img src="files.png" onerror="this.outerHTML='📁'"/></div><small>Fur Files</small></div>
+      <div class="start-item" data-app="calculator"><div class="start-icon-wrap"><img src="calc.png" onerror="this.outerHTML='🔢'"/></div><small>Calc-Cat</small></div>
+      <div class="start-item" data-app="game"><div class="start-icon-wrap"><img src="game.png" onerror="this.outerHTML='🎮'"/></div><small>Catch Yarn</small></div>
+      <div class="start-item" data-app="calendar"><div class="start-icon-wrap"><img src="calendar.png" onerror="this.outerHTML='📅'"/></div><small>PurrPlanner</small></div>
+      <div class="start-item" data-app="chat"><div class="start-icon-wrap"><img src="chat.png" onerror="this.outerHTML='💬'"/></div><small>MeowChat</small></div>
+      <div class="start-item" data-app="reels"><div class="start-icon-wrap"><img src="reels.png" onerror="this.outerHTML='🎬'"/></div><small>PawGram</small></div>
+      <div class="start-item" data-app="settings"><div class="start-icon-wrap"><img src="settings.png" onerror="this.outerHTML='⚙️'"/></div><small>Settings</small></div>
     </div>
     <div class="start-footer">
       <button class="clay-btn sm" onclick="shutDown()"><img src="power.png" width="14" onerror="this.outerHTML='🔴'"/> Nap Mode</button>
@@ -289,6 +289,85 @@
   <audio id="snd-meow"  src="meow.mp3"  preload="auto"></audio>
   <audio id="snd-purr"  src="purr.mp3"  preload="auto" loop></audio>
 </div>
+
+<!-- ═══════════════════ SHIPWRIGHT ONBOARDING ═══════════════════ -->
+<div id="sw-overlay" class="hidden sw-overlay">
+  <button class="sw-skip-btn" onclick="swSkip()">✕ Skip</button>
+
+  <div id="sw-step-ask" class="sw-card clay-card">
+    <div class="sw-emoji">🐾⚓</div>
+    <h2>Ahoy, Shipwright?</h2>
+    <p>Welcome aboard <b>MeowOS 2.0</b>! Are you here to review/evaluate this build?</p>
+    <div class="sw-btn-row">
+      <button class="clay-btn accent" onclick="swChoose(true)">⚓ Yes, I'm a Shipwright</button>
+      <button class="clay-btn" onclick="swChoose(false)">🐾 No, just exploring</button>
+    </div>
+  </div>
+
+  <div id="sw-step-path" class="sw-card clay-card hidden">
+    <div class="sw-emoji">🧭</div>
+    <h2>How should we proceed?</h2>
+    <p>Pick whichever helps you review faster — you can switch anytime from Settings.</p>
+    <div class="sw-path-grid">
+      <div class="sw-path-opt" onclick="swStartTour()">
+        <div class="sw-path-icon">🧭</div>
+        <div class="sw-path-title">Guided Tour</div>
+        <div class="sw-path-sub">A quick walkthrough of the key spots</div>
+      </div>
+      <div class="sw-path-opt" onclick="swOpenChecklist()">
+        <div class="sw-path-icon">📋</div>
+        <div class="sw-path-title">Manual Checklist</div>
+        <div class="sw-path-sub">Self-guided list you check off as you go</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="sw-step-tourdone" class="sw-card clay-card hidden">
+    <div class="sw-emoji">🎉</div>
+    <h2>Tour complete!</h2>
+    <p>Want to switch to the detailed checklist and test each app one by one, or just explore freely?</p>
+    <div class="sw-btn-row">
+      <button class="clay-btn accent" onclick="swOpenChecklistFromTour()">📋 Open Checklist</button>
+      <button class="clay-btn" onclick="swSkip()">✓ Done — explore freely</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOUR SPOTLIGHT -->
+<div id="tour-overlay" class="hidden">
+  <div id="tour-spot" class="tour-spot"></div>
+  <div id="tour-tip" class="tour-tip clay-card">
+    <div class="tour-tip-step" id="tour-step-num">1 / 6</div>
+    <div class="tour-tip-title" id="tour-tip-title"></div>
+    <div class="tour-tip-text" id="tour-tip-text"></div>
+    <div class="tour-tip-actions">
+      <button class="clay-btn sm" onclick="tourSkip()">Skip tour</button>
+      <div class="tour-tip-nav">
+        <button class="clay-btn sm" id="tour-back-btn" onclick="tourBack()">◀ Back</button>
+        <button class="clay-btn sm accent" id="tour-next-btn" onclick="tourNext()">Next ▶</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MANUAL CHECKLIST (floating, non-blocking) -->
+<div id="checklist-panel" class="hidden clay-card cl-panel">
+  <div class="cl-panel-hdr">
+    <span>📋 Shipwright Checklist</span>
+    <div class="cl-panel-hdr-btns">
+      <button class="cl-icon-btn" onclick="checklistMinimize()" title="Minimize">—</button>
+      <button class="cl-icon-btn" onclick="checklistClose()" title="Skip / close">✕</button>
+    </div>
+  </div>
+  <div class="checklist-progress-track"><div class="checklist-progress-fill" id="checklistProgressFill"></div></div>
+  <div class="checklist-progress-label" id="checklistProgressLabel">0 / 0 checked</div>
+  <div class="checklist-list" id="checklist-list"></div>
+  <div class="checklist-footer">
+    <button class="clay-btn sm" onclick="checklistReset()">↺ Reset</button>
+    <button class="clay-btn sm accent" onclick="checklistClose()">Done</button>
+  </div>
+</div>
+<div id="checklist-fab" class="hidden clay-btn accent cl-fab" onclick="checklistExpand()">📋 Checklist</div>
 
 <!-- ═══════════════ APP TEMPLATES ═══════════════ -->
 
